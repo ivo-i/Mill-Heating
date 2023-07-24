@@ -1,10 +1,12 @@
-// eslint-disable-next-line import/no-unresolved
+'use strict';
+
+const { Device } = require('homey');
 const Homey = require('homey');
 const { Log } = require('./../../lib/log');
 const { debug, error } = require('./../../lib/util');
 const Room = require('./../../lib/models');
 
-class MillDevice extends Homey.Device {
+class MillDevice extends Device {
   onInit() {
     this.deviceId = this.getData().id;
 

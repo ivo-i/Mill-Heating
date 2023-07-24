@@ -1,10 +1,10 @@
 {
-  "id": "com.mill",
+  "id": "com.Coderax.MillHeating",
   "version": "1.0.8",
-  "compatibility": ">=1.5.0",
-  "sdk": 2,
+  "compatibility": ">=5.0.0",
+  "sdk": 3,
   "name": {
-    "en": "Mill WiFi"
+    "en": "Mill WiFi v2"
   },
   "tags": {
     "en": [
@@ -18,19 +18,8 @@
     "nl": "Gebruik Mill WiFi verwarming met Homey"
   },
   "author": {
-    "name": "Glenn S. Pedersen",
-    "email": "glenn.pedersen@gmail.com"
-  },
-  "contributors": {
-    "developers": [
-      {
-        "name": "Espen Ljosland",
-        "email": "espen@ljosland.com"
-      },
-      {
-        "name": "Ramón Baas"
-      }
-    ]
+    "name": "Jesper Grimstad",
+    "email": "jesper.grimstad@hotmail.com"
   },
   "homeyCommunityTopicId": 3851,
   "contributing": {
@@ -41,6 +30,7 @@
   "category": [
     "climate"
   ],
+  "brandColor": "#00FFFF",
   "permissions": [],
   "images": {
     "large": "/assets/images/large.png",

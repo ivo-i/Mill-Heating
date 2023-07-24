@@ -1,8 +1,10 @@
-// eslint-disable-next-line import/no-unresolved
+'use strict';
+
+const { Driver } = require('homey');
 const Homey = require('homey');
 const { debug } = require('./../../lib/util');
 
-class MillDriver extends Homey.Driver {
+class MillDriver extends Driver {
   async onInit() {
   }
 
