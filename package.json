@@ -6,7 +6,8 @@
   "dependencies": {
     "@sentry/node": "7.60.0",
     "axios": "^1.4.0",
-    "node-fetch": "3.3.1"
+    "node-fetch": "3.3.1",
+    "@types/node": "^20.3.3"
   },
   "devDependencies": {
     "@milanzor/homey-mock": "1.1.0",
