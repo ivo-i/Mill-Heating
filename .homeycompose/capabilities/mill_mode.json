@@ -1,0 +1,57 @@
+{
+  "type": "enum",
+  "title": {
+    "en": "Thermostat mode",
+    "no": "Termostatmodus",
+    "nl": "Thermostaat modus"
+  },
+  "desc": {
+    "en": "Mode of the thermostat",
+    "no": "Termostatmodus",
+    "nl": "Modus van de thermostaat"
+  },
+  "values": [
+    {
+      "id": "Program",
+      "title": {
+        "en": "Program",
+        "no": "Program",
+        "nl": "Programma"
+      }
+    },
+    {
+      "id": "Comfort",
+      "title": {
+        "en": "Comfort",
+        "no": "Komfort",
+        "nl": "Comfort"
+      }
+    },
+    {
+      "id": "Sleep",
+      "title": {
+        "en": "Sleep",
+        "no": "Sover",
+        "nl": "Slapen"
+      }
+    },
+    {
+      "id": "Away",
+      "title": {
+        "en": "Away",
+        "no": "Borte",
+        "nl": "Weg"
+      }
+    },
+    {
+      "id": "Off",
+      "title": {
+        "en": "Off",
+        "no": "Av",
+        "nl": "Uit"
+      }
+    }
+  ],
+  "getable": true,
+  "setable": true
+}

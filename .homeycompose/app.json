@@ -1,0 +1,39 @@
+{
+  "id": "com.Coderax.MillHeating",
+  "version": "1.0.8",
+  "compatibility": ">=5.0.0",
+  "sdk": 3,
+  "name": {
+    "en": "Mill WiFi v2"
+  },
+  "tags": {
+    "en": [
+      "mill",
+      "heating"
+    ]
+  },
+  "description": {
+    "en": "Let Homey control your Mill heaters",
+    "no": "La Homey kontrollere Mill WiFi-ovnene dine",
+    "nl": "Gebruik Mill WiFi verwarming met Homey"
+  },
+  "author": {
+    "name": "Jesper Grimstad",
+    "email": "jesper.grimstad@hotmail.com"
+  },
+  "homeyCommunityTopicId": 3851,
+  "contributing": {
+    "donate": {
+      "paypal": {}
+    }
+  },
+  "category": [
+    "climate"
+  ],
+  "brandColor": "#00FFFF",
+  "permissions": [],
+  "images": {
+    "large": "/assets/images/large.png",
+    "small": "/assets/images/small.png"
+  }
+}

@@ -1,4 +1,5 @@
 {
+  "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "com.Coderax.MillHeating",
   "version": "1.0.8",
   "compatibility": ">=5.0.0",
@@ -36,106 +37,6 @@
     "large": "/assets/images/large.png",
     "small": "/assets/images/small.png"
   },
-  "capabilities": {
-    "mill_onoff": {
-      "type": "boolean",
-      "uiComponent": "sensor",
-      "icon": "/drivers/mill/assets/mill_onoff.svg",
-      "noblink": false,
-      "title": {
-        "en": "State",
-        "no": "Status",
-        "nl": "Status"
-      },
-      "label": {
-        "true": {
-          "en": "Heating",
-          "no": "Varmer",
-          "nl": "Verwarmen"
-        },
-        "false": {
-          "en": "Idle",
-          "no": "Inaktiv",
-          "nl": "Stil"
-        }
-      },
-      "desc": {
-        "en": "State of the thermostat",
-        "no": "Termostatstatus",
-        "nl": "Thermostaat status"
-      },
-      "getable": true,
-      "setable": false,
-      "insights": true,
-      "insightsTitleTrue": {
-        "en": "Heating",
-        "no": "Varmer",
-        "nl": "Verwarmen"
-      },
-      "insightsTitleFalse": {
-        "en": "Idle",
-        "no": "Inaktiv",
-        "nl": "Stil"
-      }
-    },
-    "mill_mode": {
-      "type": "enum",
-      "title": {
-        "en": "Thermostat mode",
-        "no": "Termostatmodus",
-        "nl": "Thermostaat modus"
-      },
-      "desc": {
-        "en": "Mode of the thermostat",
-        "no": "Termostatmodus",
-        "nl": "Modus van de thermostaat"
-      },
-      "values": [
-        {
-          "id": "Program",
-          "title": {
-            "en": "Program",
-            "no": "Program",
-            "nl": "Programma"
-          }
-        },
-        {
-          "id": "Comfort",
-          "title": {
-            "en": "Comfort",
-            "no": "Komfort",
-            "nl": "Comfort"
-          }
-        },
-        {
-          "id": "Sleep",
-          "title": {
-            "en": "Sleep",
-            "no": "Sover",
-            "nl": "Slapen"
-          }
-        },
-        {
-          "id": "Away",
-          "title": {
-            "en": "Away",
-            "no": "Borte",
-            "nl": "Weg"
-          }
-        },
-        {
-          "id": "Off",
-          "title": {
-            "en": "Off",
-            "no": "Av",
-            "nl": "Uit"
-          }
-        }
-      ],
-      "getable": true,
-      "setable": true
-    }
-  },
   "flow": {
     "triggers": [
       {
@@ -147,8 +48,8 @@
         },
         "args": [
           {
-            "name": "device",
             "type": "device",
+            "name": "device",
             "filter": "driver_id=mill"
           }
         ],
@@ -173,6 +74,11 @@
           "nl": "Thermostaat modus is gewijzigd naar"
         },
         "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=mill"
+          },
           {
             "type": "dropdown",
             "name": "mill_mode",
@@ -210,11 +116,6 @@
                 }
               }
             ]
-          },
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=mill"
           }
         ]
       }
@@ -229,8 +130,8 @@
         },
         "args": [
           {
-            "name": "device",
             "type": "device",
+            "name": "device",
             "filter": "driver_id=mill"
           }
         ]
@@ -243,6 +144,11 @@
           "nl": "Thermostaat mode !{{is|is niet}}"
         },
         "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=mill"
+          },
           {
             "type": "dropdown",
             "name": "mill_mode",
@@ -288,11 +194,6 @@
                 }
               }
             ]
-          },
-          {
-            "name": "device",
-            "type": "device",
-            "filter": "driver_id=mill"
           }
         ]
       }
@@ -307,8 +208,8 @@
         },
         "args": [
           {
-            "name": "device",
             "type": "device",
+            "name": "device",
             "filter": "driver_id=mill"
           },
           {
@@ -363,7 +264,6 @@
   },
   "drivers": [
     {
-      "id": "mill",
       "name": {
         "en": "Mill"
       },
@@ -428,7 +328,108 @@
             }
           ]
         }
-      ]
+      ],
+      "id": "mill"
     }
-  ]
+  ],
+  "capabilities": {
+    "mill_mode": {
+      "type": "enum",
+      "title": {
+        "en": "Thermostat mode",
+        "no": "Termostatmodus",
+        "nl": "Thermostaat modus"
+      },
+      "desc": {
+        "en": "Mode of the thermostat",
+        "no": "Termostatmodus",
+        "nl": "Modus van de thermostaat"
+      },
+      "values": [
+        {
+          "id": "Program",
+          "title": {
+            "en": "Program",
+            "no": "Program",
+            "nl": "Programma"
+          }
+        },
+        {
+          "id": "Comfort",
+          "title": {
+            "en": "Comfort",
+            "no": "Komfort",
+            "nl": "Comfort"
+          }
+        },
+        {
+          "id": "Sleep",
+          "title": {
+            "en": "Sleep",
+            "no": "Sover",
+            "nl": "Slapen"
+          }
+        },
+        {
+          "id": "Away",
+          "title": {
+            "en": "Away",
+            "no": "Borte",
+            "nl": "Weg"
+          }
+        },
+        {
+          "id": "Off",
+          "title": {
+            "en": "Off",
+            "no": "Av",
+            "nl": "Uit"
+          }
+        }
+      ],
+      "getable": true,
+      "setable": true
+    },
+    "mill_onoff": {
+      "type": "boolean",
+      "uiComponent": "sensor",
+      "icon": "/drivers/mill/assets/mill_onoff.svg",
+      "noblink": false,
+      "title": {
+        "en": "State",
+        "no": "Status",
+        "nl": "Status"
+      },
+      "label": {
+        "true": {
+          "en": "Heating",
+          "no": "Varmer",
+          "nl": "Verwarmen"
+        },
+        "false": {
+          "en": "Idle",
+          "no": "Inaktiv",
+          "nl": "Stil"
+        }
+      },
+      "desc": {
+        "en": "State of the thermostat",
+        "no": "Termostatstatus",
+        "nl": "Thermostaat status"
+      },
+      "getable": true,
+      "setable": false,
+      "insights": true,
+      "insightsTitleTrue": {
+        "en": "Heating",
+        "no": "Varmer",
+        "nl": "Verwarmen"
+      },
+      "insightsTitleFalse": {
+        "en": "Idle",
+        "no": "Inaktiv",
+        "nl": "Stil"
+      }
+    }
+  }
 }

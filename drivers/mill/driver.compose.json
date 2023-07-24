@@ -1,0 +1,67 @@
+{
+  "name": {
+    "en": "Mill"
+  },
+  "class": "thermostat",
+  "capabilities": [
+    "onoff",
+    "measure_temperature",
+    "target_temperature",
+    "mill_onoff",
+    "mill_mode",
+    "measure_power"
+  ],
+  "capabilitiesOptions": {
+    "measure_power": {
+      "approximated": true
+    }
+  },
+  "images": {
+    "large": "/drivers/mill/assets/images/large.png",
+    "small": "/drivers/mill/assets/images/small.png"
+  },
+  "pair": [
+    {
+      "id": "list_devices",
+      "template": "list_devices",
+      "navigation": {
+        "next": "add_device"
+      }
+    },
+    {
+      "id": "add_device",
+      "template": "add_devices"
+    }
+  ],
+  "settings": [
+    {
+      "type": "group",
+      "label": {
+        "en": "Settings",
+        "no": "Innstillinger",
+        "nl": "Instellingen"
+      },
+      "children": [
+        {
+          "id": "energy_consumption",
+          "type": "number",
+          "label": {
+            "en": "Power (W)",
+            "no": "Energi (W)",
+            "nl": "Energie (W)"
+          },
+          "value": 1200,
+          "min": 100,
+          "max": 3600,
+          "units": {
+            "en": "Watt"
+          },
+          "hint": {
+            "en": "Max. power in watt that the heater uses when switched on. E.g. for the NE1200WIFI this will be 1200",
+            "no": "Maksimum energi når ovnen er påslått. F.eks. 1200 for AV1200WIFI/NE1200WIFI."
+          }
+        }
+      ]
+    }
+  ]
+}

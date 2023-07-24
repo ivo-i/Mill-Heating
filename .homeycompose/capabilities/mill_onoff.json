@@ -1,0 +1,41 @@
+{
+  "type": "boolean",
+  "uiComponent": "sensor",
+  "icon": "/drivers/mill/assets/mill_onoff.svg",
+  "noblink": false,
+  "title": {
+    "en": "State",
+    "no": "Status",
+    "nl": "Status"
+  },
+  "label": {
+    "true": {
+      "en": "Heating",
+      "no": "Varmer",
+      "nl": "Verwarmen"
+    },
+    "false": {
+      "en": "Idle",
+      "no": "Inaktiv",
+      "nl": "Stil"
+    }
+  },
+  "desc": {
+    "en": "State of the thermostat",
+    "no": "Termostatstatus",
+    "nl": "Thermostaat status"
+  },
+  "getable": true,
+  "setable": false,
+  "insights": true,
+  "insightsTitleTrue": {
+    "en": "Heating",
+    "no": "Varmer",
+    "nl": "Verwarmen"
+  },
+  "insightsTitleFalse": {
+    "en": "Idle",
+    "no": "Inaktiv",
+    "nl": "Stil"
+  }
+}
