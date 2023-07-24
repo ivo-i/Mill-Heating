@@ -2,7 +2,7 @@
 
 const { Driver } = require('homey');
 const Homey = require('homey');
-const { debug } = require('./../../lib/util');
+const { debug } = require('./../../lib/util').debug;
 
 class MillDriver extends Driver {
   async onInit() {
