@@ -37,6 +37,20 @@
     "large": "/assets/images/large.png",
     "small": "/assets/images/small.png"
   },
+  "api": {
+    "authenticate": {
+      "method": "POST",
+      "path": "/authenticate"
+    },
+    "clearSettings": {
+      "method": "POST",
+      "path": "/clearSettings"
+    },
+    "clearLog": {
+      "method": "POST",
+      "path": "/clearLog"
+    }
+  },
   "flow": {
     "triggers": [
       {

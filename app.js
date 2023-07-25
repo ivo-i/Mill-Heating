@@ -4,18 +4,23 @@ const Mill = require('./lib/mill');
 const { debug } = require('./lib/util');
 
 class MillApp extends Homey.App {
-  onInit() {
+  async onInit() {
     this.millApi = new Mill();
     this.user = null;
     this.isAuthenticated = false;
     this.isAuthenticating = false;
 
-    debug(`${Homey.manifest.id} is running..`);
+    this.log(`${this.homey.manifest.id} is running..`);
+
+    process.env.TZ = 'Europe/Oslo';
+    await this.connectToMill();
   }
 
   async connectToMill() {
-    const username = Homey.ManagerSettings.get('username');
-    const password = Homey.ManagerSettings.get('password');
+    const username = this.homey.settings.get('username');
+    const password = this.homey.settings.get('password');
+
+    this.log(username, password);
 
     return this.authenticate(username, password);
   }
@@ -26,8 +31,13 @@ class MillApp extends Homey.App {
         this.isAuthenticating = true;
         this.user = await this.millApi.login(username, password) || null;
         this.isAuthenticated = true;
-        debug('Mill authenticated');
+        this.log('Mill authenticated');
         return true;
+      } catch (e) {
+        this.log('Error authenticating', e);
+        this.isAuthenticated = false;
+        this.user = null;
+        return false;
       } finally {
         this.isAuthenticating = false;
       }
