@@ -86,7 +86,7 @@ class MillDevice extends Device {
 
   async scheduleRefresh(interval) {
     const refreshInterval = interval || this.homey.settings.get('interval');
-    this.refreshTimeout = setTimeout(this.refreshState.bind(this), refreshInterval * 1000);
+    this.refreshTimeout = this.homey.setTimeout(this.refreshState.bind(this), refreshInterval * 1000);
     this.log(`[${this.getName()}] Next refresh in ${refreshInterval} seconds`);
   }
 
@@ -120,7 +120,7 @@ class MillDevice extends Device {
             this.setCapabilityValue('measure_temperature', room.averageTemperature),
             this.setCapabilityValue('mill_mode', room.mode),
             this.setCapabilityValue('mill_onoff', room.roomHeatStatus),
-            this.setCapabilityValue('onoff', room.mode !== 'Off')
+            this.setCapabilityValue('onoff', room.mode !== 'off')
           ];
 
           if (this.hasCapability('measure_power')) {
@@ -129,8 +129,28 @@ class MillDevice extends Device {
               jobs.push(this.setCapabilityValue('measure_power', this.room.roomHeatStatus ? settings.energy_consumption : 2));
           }
 
-          if (room.mode !== 'Off') {
-            jobs.push(this.setCapabilityValue('target_temperature', this.room.devices[0].lastMetrics.temperature));
+          if (room.mode !== 'off') {
+            switch (room.mode) {
+              case 'weekly_program':
+                jobs.push(this.setCapabilityValue('target_temperature', room.roomComfortTemperature));
+                break;
+              case 'comfort':
+                jobs.push(this.setCapabilityValue('target_temperature', room.roomComfortTemperature));
+                break;
+              case 'sleep':
+                jobs.push(this.setCapabilityValue('target_temperature', room.roomSleepTemperature));
+                break;
+              case 'away':
+                jobs.push(this.setCapabilityValue('target_temperature', room.roomAwayTemperature));
+                break;
+              case 'vacation':
+                jobs.push(this.setCapabilityValue('target_temperature', room.vacationTemperature));
+                break;
+              default:
+                jobs.push(this.setCapabilityValue('target_temperature', room.averageTemperature));
+                break;
+            }
+            //jobs.push(this.setCapabilityValue('target_temperature', this.room.devices[0].lastMetrics.temperature));
           }
           return Promise.all(jobs).catch((err) => {
             error(`[${this.getName()}] Error caught while refreshing state`, err);
