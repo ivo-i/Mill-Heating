@@ -108,9 +108,6 @@ class MillDevice extends Device {
         if (room.roomProgramName !== undefined) {
           if (this.room && !this.room.modesMatch(room) && this.room.mode !== room.mode) {
             this.log(`[${this.getName()}] Triggering mode change from ${this.room.mode} to ${room.mode}`);
-            // not needed, setCapabilityValue will trigger
-            // this.modeChangedTrigger.trigger(this, { mill_mode: room.modeName })
-            //   .catch(this.error);
             this.modeChangedToTrigger.trigger(this, null, { mill_mode: room.mode })
               .catch(this.error);
           }
@@ -150,7 +147,6 @@ class MillDevice extends Device {
                 jobs.push(this.setCapabilityValue('target_temperature', room.averageTemperature));
                 break;
             }
-            //jobs.push(this.setCapabilityValue('target_temperature', this.room.devices[0].lastMetrics.temperature));
           }
           return Promise.all(jobs).catch((err) => {
             error(`[${this.getName()}] Error caught while refreshing state`, err);
@@ -179,7 +175,6 @@ class MillDevice extends Device {
     }
     const millApi = this.homey.app.getMillApi();
 
-    this.log('Current modeName: ' + this.room.modeName);
     if (this.room.modeName === 'Weekly_program') {
       this.room.roomComfortTemperature = temp;
     } else if (this.room.modeName === 'Comfort') {
@@ -211,7 +206,17 @@ class MillDevice extends Device {
       const jobs = [];
       if (value !== 'off') {
         if (value === 'weekly_program') {
-          jobs.push(this.setCapabilityValue('target_temperature', this.room.roomComfortTemperature));
+          switch (this.room.activeModeFromWeeklyProgram) {
+            case 'comfort':
+              jobs.push(this.setCapabilityValue('target_temperature', this.room.roomComfortTemperature));
+              break;
+            case 'sleep':
+              jobs.push(this.setCapabilityValue('target_temperature', this.room.roomSleepTemperature));
+              break;
+            case 'away':
+              jobs.push(this.setCapabilityValue('target_temperature', this.room.roomAwayTemperature));
+              break;
+          }
         } else if (value === 'comfort') {
           jobs.push(this.setCapabilityValue('target_temperature', this.room.roomComfortTemperature));
         } else if (value === 'sleep') {

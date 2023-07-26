@@ -1,51 +1,50 @@
-All Mill WiFi heaters should in theory be supported.
-The following devices has been tested by the community and reported working:
-    - AV600WIFI
-    - AV800LWIFI
-    - AV1000LWIFI
-    - AV1200WIFI
-    - NE600WIFI
-    - NE1200WIFI
+🎉🔥Get warm and have fun with our updated app, "Mill Heating"! Thanks to the brilliant work by Glenn S. Pedersen 👏💻, we've forged this app to work with Homey apps SDK 3 and support for the new and improved Homey Pro 2023.🚀🏠
 
-The module supports all normal thermostat triggers, conditions and actions, but also has a few in addition.
+We're diving deep into the warmth sphere and support all your Mill WiFi heaters, in theory though 😉💨🔥. Our fantastic, warmth-loving community have tested and confirmed the following models work perfectly:
 
-Supported triggers:
-    - Thermostat mode has changed
-    - Thermostat mode has changed to <mode>
+AV600WIFI 🌡️
+AV800LWIFI 🌡️
+AV1000LWIFI 🌡️
+AV1200WIFI 🌡️
+NE600WIFI 🌡️
+NE1200WIFI 🌡️
+We're giving you all the thermostat control you've ever dreamed of, and a bit more! 🎛️⏱️😎
 
-Supported conditions:
-    - Thermostat is/isn't heating
-    - Thermostat mode is/isn't <mode>
+What can you trigger? 🎯
 
-Supported actions:
-    - Set thermostat mode
+Thermostat mode has changed
+Thermostat mode has changed to <mode>
+What are the conditions? 🤔
 
+Thermostat is/isn't heating
+Thermostat mode is/isn't <mode>
+What actions can you take? 🦸‍♂️
 
-To use the app
-Open Settings and enter you Mill credentials before trying to add any Mill heaters.
+Set thermostat mode
+To use the app 📱, open Settings and enter your Mill credentials before attempting to add any heaters. Then enter the heater device settings to set the power usage.
 
-After adding a heater device, enter the device settings to set the power usage of the heater.
+Mill service comes with three comfy modes: Comfort 😌, Sleep 🌙, and Away 🏖️.
 
-The Mill service has three modes, Comfort, Sleep and Away.
+Upon mode change, the temperature will adjust to the set temperature of that mode. Adjusting the temperature changes the set point for that mode.
 
-When you change the mode, the temperature will change to that mode's temperature set point. Adjusting the temperature changes the set point for that mode.
+If you select the mode "Program", Mill service will take control and adjust the mode throughout the day according to the program you set up in the Mill app. The device will then change to the current thermostat mode.
 
-If you select the mode "Program", the Mill service will take control and adjust the mode during the day according to the program you set up on the Mill app. The device will then change to the current thermostat mode.
+Pro-tip: If you want Homey to have complete control, make sure to turn on "Control Device Individually" in the Mill app. If not, the Mill app might override Homey. 😱🔧
 
-Tip: If you want Homey to have complete control, make sure to turn on "Control Device Individually" in the Mill app. If not, the Mill app can override Homey.
+Now we also support Energy (requires re-pairing if device was added prior to version 1.0.6). Set power consumption in device settings to match the heater model.
 
-Now also supports Energy (requires re-pairing if device is added prior to version 1.0.6). Set power consumption in the device settings to match the heater model.
+We speak your language! 🌍💬 Supported languages:
 
-Supported Languages:
-    - English
-    - Norwegian
-    - Dutch
+English
+Norwegian
+Dutch
+Privacy ⛔🕵️‍♂️
+We're using Sentry.io to log exceptions and errors. By installing this app, you accept that the app may send error logs to Sentry. No personal or device information, like email, passwords, Homey identification etc., is ever sent, only logs regarding the error if that occurred.
 
-Privacy
-This app is using Sentry.io to log exceptions and errors. By installing this app, you accept that the app may send error logs to Sentry. No personal or device information, like email, passwords, Homey identification etc., is ever sent, only logs regarding the error if that occurred. The logs includes exception messages, parts of source code, line numbers, app version etc.
+Disclaimer ⚖️
+Use this app at your own risk. The app has been developed using the same APIs and interfaces used by the official Mill app, but there is a chance that API calls can have unexpected consequences for which nobody but you are responsible.
 
-Disclaimer
-Use this app at your own risk. The app has been developed with the same APIs and interfaces used by the official Mill app, but there is a chance that the API calls can have unexpected consequences for which nobody but you are responsible.
+Thanks to 🙏
+Stan Diers from the Noun Project for the Heat icon.
 
-Credits
-Heat by Stan Diers from the Noun Project
+And now, let's take control over the temperature! 🔥🤘🔥
