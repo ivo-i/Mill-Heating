@@ -60,7 +60,7 @@ class MillDevice extends Device {
     this.log(`[${this.getName()}] Refreshing state`);
 
     if (this.refreshTimeout) {
-      clearTimeout(this.refreshTimeout);
+      this.homey.clearTimeout(this.refreshTimeout);
       this.refreshTimeout = null;
     }
 
