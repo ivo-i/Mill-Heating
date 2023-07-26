@@ -166,9 +166,10 @@ class MillDevice extends Device {
 
   async onCapabilityTargetTemperature(value, opts) {
     this.log(`onCapabilityTargetTemperature(${value})`);
-    const temp = Math.ceil(value);
-    if (temp !== value && this.room.modeName !== 'off') { // half degrees isn't supported by Mill, need to round it up
-      this.setCapabilityValue('target_temperature', temp);
+    //const temp = Math.ceil(value);
+    const temp = value;
+    if (temp !== value && this.room.modeName !== 'Off') { // half degrees isn't supported by Mill, need to round it up
+      await this.setCapabilityValue('target_temperature', temp);
       this.log(`onCapabilityTargetTemperature(${value}=>${temp})`);
     }
     const millApi = this.homey.app.getMillApi();
@@ -199,7 +200,7 @@ class MillDevice extends Device {
   }
 
   async setThermostatMode(value) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       const millApi = this.homey.app.getMillApi();
       this.room.modeName = value;
       const jobs = [];
@@ -207,23 +208,26 @@ class MillDevice extends Device {
         if (value === 'weekly_program') {
           switch (this.room.activeModeFromWeeklyProgram) {
             case 'comfort':
-              jobs.push(this.setCapabilityValue('target_temperature', this.room.roomComfortTemperature));
+              jobs.push(await this.setCapabilityValue('target_temperature', this.room.roomComfortTemperature));
               break;
             case 'sleep':
-              jobs.push(this.setCapabilityValue('target_temperature', this.room.roomSleepTemperature));
+              jobs.push(await this.setCapabilityValue('target_temperature', this.room.roomSleepTemperature));
               break;
             case 'away':
-              jobs.push(this.setCapabilityValue('target_temperature', this.room.roomAwayTemperature));
+              jobs.push(await this.setCapabilityValue('target_temperature', this.room.roomAwayTemperature));
+              break;
+            case 'vacation':
+              jobs.push(await this.setCapabilityValue('target_temperature', this.room.vacationTemperature));
               break;
           }
         } else if (value === 'comfort') {
-          jobs.push(this.setCapabilityValue('target_temperature', this.room.roomComfortTemperature));
+          jobs.push(await this.setCapabilityValue('target_temperature', this.room.roomComfortTemperature));
         } else if (value === 'sleep') {
-          jobs.push(this.setCapabilityValue('target_temperature', this.room.roomSleepTemperature));
+          jobs.push(await this.setCapabilityValue('target_temperature', this.room.roomSleepTemperature));
         } else if (value === 'away') {
-          jobs.push(this.setCapabilityValue('target_temperature', this.room.roomAwayTemperature));
+          jobs.push(await this.setCapabilityValue('target_temperature', this.room.roomAwayTemperature));
         } else if (value === 'vacation') {
-          jobs.push(this.setCapabilityValue('target_temperature', this.room.vacationTemperature));
+          jobs.push(await this.setCapabilityValue('target_temperature', this.room.vacationTemperature));
         }
       }
       jobs.push(millApi.changeRoomMode(this.deviceId, value.toLowerCase()));
