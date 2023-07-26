@@ -1,5 +1,3 @@
-Sure, here's the revised README.md with better formatting:
-
 # 🔥Mill Heaters🔥
 
 Welcome to Athom Homey's support for the sensational [Mill WiFi](https://www.millheat.com/mill-wifi/) heaters! 
