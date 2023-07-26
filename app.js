@@ -17,7 +17,7 @@ class MillApp extends Homey.App {
 
     this.homey.setInterval(() => {
       this.log('Refreshing access tokens');
-      this.millApi.updateAccessToken();
+      this.connectToMill();
     }, 5*60*1000);
   }
 
