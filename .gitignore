@@ -7,7 +7,7 @@ npm-debug.log*
 /.homeybuild/
 /node_modules/
 /.homeycompose/
-./env.json
-./README.nl.txt
-./README.no.txt
-./README.txt
+env.json
+README.nl.txt
+README.no.txt
+README.txt
