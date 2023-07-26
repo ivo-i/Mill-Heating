@@ -168,6 +168,14 @@ class MillDevice extends Device {
     this.log('device deleted', this.getState());
   }
 
+  async onSettings(oldSettings, newSettings, changedKeys) {
+    this.log('onSettings', oldSettings, newSettings, changedKeys);
+    if (changedKeys.includes('username') && changedKeys.includes('password')) {
+      this.log('onSettings', 'username and password changed');
+      this.homey.app.connectToMill();
+    }
+  }
+
   async onCapabilityTargetTemperature(value, opts) {
     this.log(`onCapabilityTargetTemperature(${value})`);
     //const temp = Math.ceil(value);
