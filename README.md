@@ -1,11 +1,12 @@
-# Mill heaters
+Sure, here's the revised README.md with better formatting:
 
-Athom Homey support for for [Mill WiFi](https://www.millheat.com/mill-wifi/) heaters.
+# 🔥Mill Heaters🔥
 
-### Supported devices
+Welcome to Athom Homey's support for the sensational [Mill WiFi](https://www.millheat.com/mill-wifi/) heaters! 
 
-All Mill WiFi heaters should in theory be supported.
-The following devices has been tested by the community and reported working:
+## 📱Supported Devices
+
+In theory, all Mill WiFi heaters should be on our compatibility list. However, our awesome community has tested and reported the following devices to be working perfectly:
 * AV600WIFI
 * AV800LWIFI
 * AV1000LWIFI
@@ -13,59 +14,60 @@ The following devices has been tested by the community and reported working:
 * NE600WIFI
 * NE1200WIFI
 
-### Flow cards
-The module supports all normal thermostat triggers, conditions and actions, but also has a few in addition.
+## 🃏Flow Cards
+Our module is a champ! Not only does it support all normal thermostat triggers, conditions, and actions, it also has a few special ones up its sleeve.
 
-Supported triggers:
+**Supported triggers:**
 * Thermostat mode has changed
 * Thermostat mode has changed to <mode>
 
-Supported conditions:
+**Supported conditions:**
 * Thermostat is/isn't heating
 * Thermostat mode is/isn't <mode>
 
-Supported actions:
+**Supported actions:**
 * Set thermostat mode
 
-### Setup
+## ⚙️Setup
 
-Open Settings and enter you Mill credentials before trying to add any Mill heaters.
+Time to start the engines! Open Settings and enter your Mill credentials before trying to add any Mill heaters.
 
-### Device Settings
-The default power consumption is set to 1200W, please adjust this to match you model in the device advanced settings.
+## 🎚️Device Settings
 
-### Usage
+Default power consumption is set to a whopping 1200W. Please tweak this to match your model in the device's advanced settings.
 
-The Mill service has three modes, _Comfort_, _Sleep_ and _Away_. (There's also a _Holiday_ mode exposed in the API, but not supported in the Mill UI yet).
+## 💼Usage
 
-When you change the mode, the temperature will change to that mode's temperature set point. Adjusting the temperature changes the set point for that mode.
+The Mill service is designed with three modes - _Comfort_, _Sleep_ and _Away_ (and a secret _Holiday_ mode hidden in the API, but not supported in the Mill UI yet😉).
 
-If you select the mode _Program_, the Mill service will take control and adjust the mode during the day according to the program you set up on the Mill app. The device will then change to the current thermostat mode.
+Mode change alert!🔔 When you change the mode, the temperature shifts to that mode's temperature set point. Adjusting the temperature changes the set point for that mode. 
 
-### Supported Languages
+Choose the _Program_ mode and watch the Mill service take control, adjusting the mode throughout the day according to the program you set up on the Mill app. The device will then shift to the current thermostat mode.
+
+## 🌍Supported Languages
 
 * English
 * Norwegian
 * Dutch
 
-### Privacy
+## 🔒Privacy
 
-This app is using [sentry.io](http://sentry.io) to log exceptions and errors. By installing this app, you accept that the app may send error logs to Sentry. No personal or device information, like email, passwords, Homey identification etc., is ever sent, only logs regarding the error if that occurred. The logs includes exception messages, parts of source code, line numbers, app version etc.
+This app uses [sentry.io](http://sentry.io) to log exceptions and errors. By installing this app, you agree that the app may send error logs to Sentry. Rest assured, no personal or device information, such as email, passwords, Homey identification etc., is ever sent, only logs related to errors. This includes exception messages, parts of source code, line numbers, app version etc.
 
-### Disclaimer
+## ⚠️Disclaimer
 
-Use this app at your own risk. The app has been developed with the same APIs and interfaces used by the official Mill app, but there is a chance that the API calls can have unexpected consequences for which nobody but you are responsible.
+Remember, use this app at your own risk. The app has been developed with the same APIs and interfaces used by the official Mill app. However, there is a tiny chance that the API calls can have unexpected consequences, for which you're the captain of the ship!
 
-### Change Log:
+## 🔄Change Log:
 
 ##### v1.0.8
-* Updated temperature change endpont
+* Updated temperature change endpoint
 * Improved feedback on errors
 
 ##### v1.0.7
 * Added more languages
 * Improved logging
-* Validating Mill API requests
+* Validated Mill API requests
 
 ##### v1.0.6
 * Added support for Energy (may require re-pairing if device is added prior to version 1.0.6)
@@ -93,5 +95,6 @@ Use this app at your own risk. The app has been developed with the same APIs and
 ##### v0.0.1
 * First version
 
-### Credits
-[Heat](https://thenounproject.com/search/?q=heat&i=860995) by Stan Diers from the Noun Project
+## 👏Credits
+
+Special thanks to [Stan Diers](https://thenounproject.com/search/?q=heat&i=860995) from the Noun Project for the 'Heat' icon.

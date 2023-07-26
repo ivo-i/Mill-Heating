@@ -1,3 +1,5 @@
 {
-    
+  "2.0.0": {
+    "en": "Initial release of recoded and upgraded app based on the work by Glenn S. Pedersen. App also supports SDK 3, which means that Homey Pro 2023 users can use the app"
+  }
 }
