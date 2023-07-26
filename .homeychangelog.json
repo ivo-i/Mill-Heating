@@ -4,5 +4,8 @@
   },
   "2.0.1": {
     "en": "Changed formatting in readme files"
+  },
+  "2.0.2": {
+    "en": "Fixed authentication"
   }
 }
