@@ -6,7 +6,6 @@ npm-debug.log*
 # Added by Homey CLI
 /.homeybuild/
 /node_modules/
-/.homeycompose/
 env.json
 README.nl.txt
 README.no.txt
