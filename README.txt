@@ -38,6 +38,7 @@ We speak your language! 🌍💬 Supported languages:
 English
 Norwegian
 Dutch
+
 Privacy ⛔🕵️‍♂️
 We're using Sentry.io to log exceptions and errors. By installing this app, you accept that the app may send error logs to Sentry. No personal or device information, like email, passwords, Homey identification etc., is ever sent, only logs regarding the error if that occurred.
 

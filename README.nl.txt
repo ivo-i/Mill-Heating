@@ -38,6 +38,7 @@ We spreken jouw taal! 🌍💬 Ondersteunde talen:
 Engels
 Noors
 Nederlands
+
 Privacy ⛔🕵️‍♂️
 We gebruiken Sentry.io om uitzonderingen en fouten te loggen. Door deze app te installeren, accepteer je dat de app mogelijk foutlogs naar Sentry kan sturen. Er wordt nooit persoonlijke of apparaatinformatie, zoals e-mail, wachtwoorden, Homey-identificatie enz., verzonden, alleen logs met betrekking tot de fout, als die zich voordoet.
 

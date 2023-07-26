@@ -38,6 +38,7 @@ Vi snakker ditt språk! 🌍💬 Støttede språk:
 Engelsk
 Norsk
 Nederlandsk
+
 Personvern ⛔🕵️‍♂️
 Vi bruker Sentry.io for å logge unntak og feil. Ved å installere denne appen, aksepterer du at appen kan sende feillogger til Sentry. Ingen personlig eller enhetsinformasjon, som e-post, passord, Homey-identifikasjon osv., blir noensinne sendt, bare logger angående feilen, hvis det har skjedd.
 
