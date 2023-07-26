@@ -7,6 +7,9 @@ const Room = require('./../../lib/models');
 class MillDevice extends Device {
   async onInit() {
     this.deviceId = this.getData().id;
+    this.millApi = this.homey.app.getMillApi();
+    this.room = this.millApi.listDevices(this.deviceId);
+    this.room = new Room(this.room);
 
     this.log(`[${this.getName()}] ${this.getClass()} (${this.deviceId}) initialized`);
 
@@ -33,11 +36,11 @@ class MillDevice extends Device {
     // conditions
     this.isHeatingCondition = await this.homey.flow.getConditionCard('mill_is_heating');
     this.isHeatingCondition
-      .registerRunListener(() => (this.room && this.room.heatStatus === 1));
+      .registerRunListener(() => (this.room.roomHeatStatus === true));
 
     this.isMatchingModeCondition = await this.homey.flow.getConditionCard('mill_mode_matching');
     this.isMatchingModeCondition
-      .registerRunListener(args => (args.mill_mode === this.room.modeName));
+      .registerRunListener(args => (args.mill_mode.toLowerCase() === this.room.mode));
 
     // actions
     this.setProgramAction = await this.homey.flow.getActionCard('mill_set_mode');
@@ -48,6 +51,7 @@ class MillDevice extends Device {
       });
 
     this.refreshTimeout = null;
+    this.millApi = null;
     this.room = null;
     this.refreshState();
   }
