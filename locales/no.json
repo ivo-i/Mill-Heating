@@ -1,39 +1,39 @@
 {
-"pair": {
-"title": "Legg til Mill-varmeovn",
-"intro": "Hvis en gyldig Mill-konto er konfigurert i appinnstillingsdelen av Homey, vil ovnene i din Mill-konto bli listet opp.",
-"buttonClose": "Lukk",
-"messages": {
-"busyValidation": "Validerer kontoinnstillinger...",
-"busyGetHeaters": "Henter varmeovner fra konto...",
-"notAuthorized": "Vennligst skriv inn korrekte Mill-innloggingsdetaljer i Innstillinger før du prøver å pare nye enheter"
-}
-},
-"settings": {
-"title": "Mill-innstillinger",
-"account": {
-"title": "Konto",
-"intro": "Før du kan legge til varmeovner, må du legge inn Mill-innloggingsdetaljene dine. Innloggingsdetaljene er kun lagret lokalt på din Homey.",
-"credentials": "Mill-innloggingsdetaljer",
-"fieldUsername": "Brukernavn",
-"fieldPassword": "Passord",
-"settings": "Innstillinger",
-"fieldPolling": "Spørring (i sekunder)",
-"buttonSave": "Lagre",
-"buttonClear": "Tøm kontoinnstillinger",
-"messages": {
-"errorSaving": "Dessverre fikk vi en feil fra Mill:\r\n\r\n__error__",
-"successSaving": "Kontoinnstillinger ble lagret vellykket",
-"errorClearing": "Dessverre oppstod det en feil ved tømming av kontoinnstillinger:\r\n\r\n__error__",
-"successClearing": "Kontoinnstillinger ble tømt vellykket"
-}
-},
-"debug": {
-"title": "Feilsøk",
-"enableDebugLogging": "Aktiver feilsøkingslogging",
-"registered": "Registrert",
-"severity": "Alvorlighetsgrad",
-"message": "Melding"
-}
-}
+    "pair": {
+        "title": "Legg til Mill-varmeovn",
+        "intro": "Hvis en gyldig Mill-konto er konfigurert i appinnstillingsdelen av Homey, vil ovnene i din Mill-konto bli listet opp.",
+        "buttonClose": "Lukk",
+        "messages": {
+            "busyValidation": "Validerer kontoinnstillinger...",
+            "busyGetHeaters": "Henter varmeovner fra konto...",
+            "notAuthorized": "Vennligst skriv inn korrekte Mill-innloggingsdetaljer i Innstillinger før du prøver å pare nye enheter"
+        }
+    },
+    "settings": {
+        "title": "Mill-innstillinger",
+        "account": {
+            "title": "Konto",
+            "intro": "Før du kan legge til varmeovner, må du legge inn Mill-innloggingsdetaljene dine. Innloggingsdetaljene er kun lagret lokalt på din Homey.",
+            "credentials": "Mill-innloggingsdetaljer",
+            "fieldUsername": "Brukernavn",
+            "fieldPassword": "Passord",
+            "settings": "Innstillinger",
+            "fieldPolling": "Spørring (i sekunder)",
+            "buttonSave": "Lagre",
+            "buttonClear": "Tøm kontoinnstillinger",
+            "messages": {
+                "errorSaving": "Dessverre fikk vi en feil fra Mill:\r\n\r\n__error__",
+                "successSaving": "Kontoinnstillinger ble lagret vellykket",
+                "errorClearing": "Dessverre oppstod det en feil ved tømming av kontoinnstillinger:\r\n\r\n__error__",
+                "successClearing": "Kontoinnstillinger ble tømt vellykket"
+            }
+        },
+        "debug": {
+            "title": "Feilsøk",
+            "enableDebugLogging": "Aktiver feilsøkingslogging",
+            "registered": "Registrert",
+            "severity": "Alvorlighetsgrad",
+            "message": "Melding"
+        }
+    }
 }

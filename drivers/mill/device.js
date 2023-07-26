@@ -1,9 +1,7 @@
 'use strict';
 
 const { Device } = require('homey');
-const Homey = require('homey');
-const { Log } = require('./../../lib/log');
-const { debug, error } = require('./../../lib/util');
+const { error } = require('./../../lib/util');
 const Room = require('./../../lib/models');
 
 class MillDevice extends Device {
@@ -192,6 +190,7 @@ class MillDevice extends Device {
         this.log(`onCapabilityTargetTemperature(${temp}) done`);
         this.log(`[${this.getName()}] Changed temp to ${temp}: mode: ${this.room.modeName}/${this.room.roomProgramName}, comfortTemp: ${this.room.roomComfortTemperature}, awayTemp: ${this.room.roomAwayTemperature}, avgTemp: ${this.room.averageTemperature}, sleepTemp: ${this.room.roomSleepTemperature}`);
         this.log(temp);
+        this.scheduleRefresh(10);
       }).catch((err) => {
         this.log(`onCapabilityTargetTemperature(${temp}) error`);
         this.log(`[${this.getName()}] Change temp to ${temp} resultet in error`, err);
@@ -231,6 +230,7 @@ class MillDevice extends Device {
 
       Promise.all(jobs).then(() => {
         this.log(`[${this.getName()}] Changed mode to ${value}: mode: ${value}/${this.room.roomProgramName}, comfortTemp: ${this.room.roomComfortTemperature}, awayTemp: ${this.room.roomAwayTemperature}, avgTemp: ${this.room.averageTemperature}, sleepTemp: ${this.room.roomSleepTemperature}`);
+        this.scheduleRefresh(1);
         resolve(value);
       }).catch((err) => {
         error(`[${this.getName()}] Change mode to ${value} resulted in error`, err);

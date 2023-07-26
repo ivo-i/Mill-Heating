@@ -2,7 +2,6 @@
 
 const Homey = require('homey');
 const Mill = require('./lib/mill');
-const { debug } = require('./lib/util');
 
 class MillApp extends Homey.App {
   async onInit() {

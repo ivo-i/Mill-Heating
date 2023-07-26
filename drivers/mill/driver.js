@@ -1,8 +1,6 @@
 'use strict';
 
 const { Driver } = require('homey');
-const Homey = require('homey');
-const { debug } = require('./../../lib/util');
 
 class MillDriver extends Driver {
   async onInit() {

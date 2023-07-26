@@ -1,13 +1,13 @@
 {
   "pair": {
-		"title": "Add Mill heater",
+    "title": "Add Mill heater",
     "intro": "If a valid Mill account is configured in the app settings sections of Homey, the heaters in your Mill account will be listed.",
-		"buttonClose": "Close",
-		"messages": {
-			"busyValidation": "Validation account settings...",
-			"busyGetHeaters": "Get heaters from account...",
+    "buttonClose": "Close",
+    "messages": {
+      "busyValidation": "Validation account settings...",
+      "busyGetHeaters": "Get heaters from account...",
       "notAuthorized": "Please enter correct Mill credentials in Settings before you try to pair new devices"
-		}
+    }
   },
   "settings": {
     "title": "Mill settings",

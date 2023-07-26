@@ -1,39 +1,39 @@
 {
-"pair": {
-"title": "Voeg Mill-verwarming toe",
-"intro": "Als er een geldige Mill-account is geconfigureerd in het app-instellingengedeelte van Homey, worden de kachels in uw Mill-account vermeld.",
-"buttonClose": "Sluiten",
-"messages": {
-"busyValidation": "Valideer accountinstellingen...",
-"busyGetHeaters": "Haal kachels van account...",
-"notAuthorized": "Voer de juiste Mill-inloggegevens in bij Instellingen voordat u nieuwe apparaten probeert te koppelen"
-}
-},
-"settings": {
-"title": "Mill-instellingen",
-"account": {
-"title": "Account",
-"intro": "Voordat je kachels kunt toevoegen, moet je je Mill-inloggegevens invoeren. De inloggegevens worden alleen lokaal op uw Homey opgeslagen.",
-"credentials": "Mill-inloggegevens",
-"fieldUsername": "Gebruikersnaam",
-"fieldPassword": "Wachtwoord",
-"settings": "Instellingen",
-"fieldPolling": "Polling (in seconden)",
-"buttonSave": "Opslaan",
-"buttonClear": "Wis accountinstellingen",
-"messages": {
-"errorSaving": "Helaas hebben we een fout van Mill ontvangen:\r\n\r\n__error__",
-"successSaving": "Accountinstellingen zijn succesvol opgeslagen",
-"errorClearing": "Helaas hebben we een fout ondervonden bij het wissen van de accountinstellingen:\r\n\r\n__error__",
-"successClearing": "Accountinstellingen succesvol gewist"
-}
-},
-"debug": {
-"title": "Debug",
-"enableDebugLogging": "Schakel debug-logging in",
-"registered": "Geregistreerd",
-"severity": "Ernst",
-"message": "Bericht"
-}
-}
+    "pair": {
+        "title": "Voeg Mill-verwarming toe",
+        "intro": "Als er een geldige Mill-account is geconfigureerd in het app-instellingengedeelte van Homey, worden de kachels in uw Mill-account vermeld.",
+        "buttonClose": "Sluiten",
+        "messages": {
+            "busyValidation": "Valideer accountinstellingen...",
+            "busyGetHeaters": "Haal kachels van account...",
+            "notAuthorized": "Voer de juiste Mill-inloggegevens in bij Instellingen voordat u nieuwe apparaten probeert te koppelen"
+        }
+    },
+    "settings": {
+        "title": "Mill-instellingen",
+        "account": {
+            "title": "Account",
+            "intro": "Voordat je kachels kunt toevoegen, moet je je Mill-inloggegevens invoeren. De inloggegevens worden alleen lokaal op uw Homey opgeslagen.",
+            "credentials": "Mill-inloggegevens",
+            "fieldUsername": "Gebruikersnaam",
+            "fieldPassword": "Wachtwoord",
+            "settings": "Instellingen",
+            "fieldPolling": "Polling (in seconden)",
+            "buttonSave": "Opslaan",
+            "buttonClear": "Wis accountinstellingen",
+            "messages": {
+                "errorSaving": "Helaas hebben we een fout van Mill ontvangen:\r\n\r\n__error__",
+                "successSaving": "Accountinstellingen zijn succesvol opgeslagen",
+                "errorClearing": "Helaas hebben we een fout ondervonden bij het wissen van de accountinstellingen:\r\n\r\n__error__",
+                "successClearing": "Accountinstellingen succesvol gewist"
+            }
+        },
+        "debug": {
+            "title": "Debug",
+            "enableDebugLogging": "Schakel debug-logging in",
+            "registered": "Geregistreerd",
+            "severity": "Ernst",
+            "message": "Bericht"
+        }
+    }
 }
