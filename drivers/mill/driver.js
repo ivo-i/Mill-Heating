@@ -9,9 +9,10 @@ class MillDriver extends Driver {
 
   async onPairListDevices() {
     if (!this.homey.app.isConnected()) {
-      
       this.log('Unable to pair, not authenticated');
       this.log(new Error(this.homey.__('pair.messages.notAuthorized')));
+      await this.homey.app.connectToMill();
+      return this.onPairListDevices();
     } else {
       this.log('Pairing');
       const millApi = this.homey.app.getMillApi();
