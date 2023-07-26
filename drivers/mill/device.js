@@ -26,29 +26,24 @@ class MillDevice extends Device {
     this.registerCapabilityListener('onoff', this.onCapabilityOnOff.bind(this));
 
     // triggers
-    this.modeChangedTrigger = new Homey.FlowCardTriggerDevice('mill_mode_changed');
-    this.modeChangedTrigger.register();
+    this.modeChangedTrigger = await this.homey.flow.getDeviceTriggerCard('mill_mode_changed');
 
-    this.modeChangedToTrigger = new Homey.FlowCardTriggerDevice('mill_mode_changed_to');
+    this.modeChangedToTrigger = await this.homey.flow.getDeviceTriggerCard('mill_mode_changed_to');
     this.modeChangedToTrigger
-      .register()
       .registerRunListener((args, state) => args.mill_mode === state.mill_mode);
 
     // conditions
-    this.isHeatingCondition = new Homey.FlowCardCondition('mill_is_heating');
+    this.isHeatingCondition = await this.homey.flow.getConditionCard('mill_is_heating');
     this.isHeatingCondition
-      .register()
       .registerRunListener(() => (this.room && this.room.heatStatus === 1));
 
-    this.isMatchingModeCondition = new Homey.FlowCardCondition('mill_mode_matching');
+    this.isMatchingModeCondition = await this.homey.flow.getConditionCard('mill_mode_matching');
     this.isMatchingModeCondition
-      .register()
       .registerRunListener(args => (args.mill_mode === this.room.modeName));
 
     // actions
-    this.setProgramAction = new Homey.FlowCardAction('mill_set_mode');
+    this.setProgramAction = await this.homey.flow.getActionCard('mill_set_mode');
     this.setProgramAction
-      .register()
       .registerRunListener((args) => {
         this.log(`[${args.device.getName()}] Flow changed mode to ${args.mill_mode}`);
         return args.device.setThermostatMode(args.mill_mode);
@@ -68,13 +63,13 @@ class MillDevice extends Device {
     }
 
     try {
-      if (Homey.app.isConnected()) {
+      if (this.homey.app.isConnected()) {
         await this.refreshMillService();
         this.setAvailable();
       } else {
         this.log(`[${this.getName()}] Mill not connected`);
         this.setUnavailable();
-        await Homey.app.connectToMill().then(() => {
+        await this.homey.app.connectToMill().then(() => {
           this.scheduleRefresh(10);
         }).catch((err) => {
           error('Error caught while refreshing state', err);
@@ -82,7 +77,6 @@ class MillDevice extends Device {
       }
     } catch (e) {
       error('Exception caught', e);
-      Log.captureException(e);
     } finally {
       if (this.refreshTimeout === null) {
         this.scheduleRefresh();
@@ -90,57 +84,56 @@ class MillDevice extends Device {
     }
   }
 
-  scheduleRefresh(interval) {
-    const refreshInterval = interval || Homey.ManagerSettings.get('interval');
+  async scheduleRefresh(interval) {
+    const refreshInterval = interval || this.homey.settings.get('interval');
     this.refreshTimeout = setTimeout(this.refreshState.bind(this), refreshInterval * 1000);
     this.log(`[${this.getName()}] Next refresh in ${refreshInterval} seconds`);
   }
 
   async refreshMillService() {
-    const millApi = Homey.app.getMillApi();
+    const millApi = this.homey.app.getMillApi();
 
     return millApi.listDevices(this.getData().id)
       .then((room) => {
         this.log(`[${this.getName()}] Mill state refreshed`, {
-          comfortTemp: room.comfortTemp,
-          awayTemp: room.awayTemp,
-          holidayTemp: room.holidayTemp,
-          sleepTemp: room.sleepTemp,
-          avgTemp: room.avgTemp,
-          currentMode: room.currentMode,
-          programMode: room.programMode,
-          heatStatus: room.heatStatus
+          comfortTemp: room.roomComfortTemperature,
+          awayTemp: room.roomAwayTemperature,
+          sleepTemp: room.roomSleepTemperature,
+          avgTemp: room.averageTemperature,
+          mode: room.mode,
+          programMode: room.roomProgramName,
+          heatStatus: room.roomHeatStatus
         });
 
-        if (room.programMode !== undefined) {
-          if (this.room && !this.room.modesMatch(room) && this.room.modeName !== room.modeName) {
-            this.log(`[${this.getName()}] Triggering mode change from ${this.room.modeName} to ${room.modeName}`);
+        if (room.roomProgramName !== undefined) {
+          if (this.room && !this.room.modesMatch(room) && this.room.mode !== room.mode) {
+            this.log(`[${this.getName()}] Triggering mode change from ${this.room.mode} to ${room.mode}`);
             // not needed, setCapabilityValue will trigger
             // this.modeChangedTrigger.trigger(this, { mill_mode: room.modeName })
             //   .catch(this.error);
-            this.modeChangedToTrigger.trigger(this, null, { mill_mode: room.modeName })
+            this.modeChangedToTrigger.trigger(this, null, { mill_mode: room.mode })
               .catch(this.error);
           }
 
           this.room = new Room(room);
           const jobs = [
-            this.setCapabilityValue('measure_temperature', room.avgTemp),
-            this.setCapabilityValue('mill_mode', room.modeName),
-            this.setCapabilityValue('mill_onoff', room.isHeating),
-            this.setCapabilityValue('onoff', room.modeName !== 'Off')
+            this.setCapabilityValue('measure_temperature', room.averageTemperature),
+            this.setCapabilityValue('mill_mode', room.mode),
+            this.setCapabilityValue('mill_onoff', room.roomHeatStatus),
+            this.setCapabilityValue('onoff', room.mode !== 'Off')
           ];
 
-          if(this.hasCapability('measure_power')) {
+          if (this.hasCapability('measure_power')) {
             const settings = this.getSettings();
             if (settings.energy_consumption > 0)
-              jobs.push(this.setCapabilityValue('measure_power', room.isHeating ? settings.energy_consumption : 2));
+              jobs.push(this.setCapabilityValue('measure_power', this.room.roomHeatStatus ? settings.energy_consumption : 2));
           }
 
-          if (room.modeName !== 'Off') {
-            jobs.push(this.setCapabilityValue('target_temperature', room.targetTemp));
+          if (room.mode !== 'Off') {
+            jobs.push(this.setCapabilityValue('target_temperature', this.room.devices[0].lastMetrics.temperature));
           }
           return Promise.all(jobs).catch((err) => {
-            Log.captureException(err);
+            error(`[${this.getName()}] Error caught while refreshing state`, err);
           });
         }
       }).catch((err) => {
@@ -148,48 +141,71 @@ class MillDevice extends Device {
       });
   }
 
-  onAdded() {
+  async onAdded() {
     this.log('device added', this.getState());
   }
 
-  onDeleted() {
+  async onDeleted() {
     clearTimeout(this.refreshTimeout);
     this.log('device deleted', this.getState());
   }
 
-  onCapabilityTargetTemperature(value, opts, callback) {
+  async onCapabilityTargetTemperature(value, opts) {
     this.log(`onCapabilityTargetTemperature(${value})`);
     const temp = Math.ceil(value);
-    if (temp !== value && this.room.modeName !== 'Off') { // half degrees isn't supported by Mill, need to round it up
+    if (temp !== value && this.room.modeName !== 'off') { // half degrees isn't supported by Mill, need to round it up
       this.setCapabilityValue('target_temperature', temp);
       this.log(`onCapabilityTargetTemperature(${value}=>${temp})`);
     }
-    const millApi = Homey.app.getMillApi();
-    this.room.targetTemp = temp;
+    const millApi = this.homey.app.getMillApi();
+
+    this.log('Current modeName: ' + this.room.modeName);
+    if (this.room.modeName === 'Weekly_program') {
+      this.room.roomComfortTemperature = temp;
+    } else if (this.room.modeName === 'Comfort') {
+      this.room.roomComfortTemperature = temp;
+    } else if (this.room.modeName === 'Sleep') {
+      this.room.roomSleepTemperature = temp;
+    } else if (this.room.modeName === 'Away') {
+      this.room.roomAwayTemperature = temp;
+    } else if (this.room.modeName === 'Vacation') {
+      this.room.vacationTemperature = temp;
+    }
+
     millApi.changeRoomTemperature(this.deviceId, this.room)
       .then(() => {
         this.log(`onCapabilityTargetTemperature(${temp}) done`);
-        this.log(`[${this.getName()}] Changed temp to ${temp}: currentMode: ${this.room.currentMode}/${this.room.programMode}, comfortTemp: ${this.room.comfortTemp}, awayTemp: ${this.room.awayTemp}, avgTemp: ${this.room.avgTemp}, sleepTemp: ${this.room.sleepTemp}`);
-        callback(null, temp);
+        this.log(`[${this.getName()}] Changed temp to ${temp}: mode: ${this.room.modeName}/${this.room.roomProgramName}, comfortTemp: ${this.room.roomComfortTemperature}, awayTemp: ${this.room.roomAwayTemperature}, avgTemp: ${this.room.averageTemperature}, sleepTemp: ${this.room.roomSleepTemperature}`);
+        this.log(temp);
       }).catch((err) => {
         this.log(`onCapabilityTargetTemperature(${temp}) error`);
         this.log(`[${this.getName()}] Change temp to ${temp} resultet in error`, err);
-        callback(err);
+        this.log(err);
       });
   }
 
-  setThermostatMode(value) {
+  async setThermostatMode(value) {
     return new Promise((resolve, reject) => {
-      const millApi = Homey.app.getMillApi();
+      const millApi = this.homey.app.getMillApi();
       this.room.modeName = value;
       const jobs = [];
-      if (this.room.modeName !== 'Off') {
-        jobs.push(this.setCapabilityValue('target_temperature', this.room.targetTemp));
+      if (value !== 'off') {
+        if (value === 'weekly_program') {
+          jobs.push(this.setCapabilityValue('target_temperature', this.room.roomComfortTemperature));
+        } else if (value === 'comfort') {
+          jobs.push(this.setCapabilityValue('target_temperature', this.room.roomComfortTemperature));
+        } else if (value === 'sleep') {
+          jobs.push(this.setCapabilityValue('target_temperature', this.room.roomSleepTemperature));
+        } else if (value === 'away') {
+          jobs.push(this.setCapabilityValue('target_temperature', this.room.roomAwayTemperature));
+        } else if (value === 'vacation') {
+          jobs.push(this.setCapabilityValue('target_temperature', this.room.vacationTemperature));
+        }
       }
-      jobs.push(millApi.changeRoomMode(this.deviceId, this.room.currentMode));
+      jobs.push(millApi.changeRoomMode(this.deviceId, value.toLowerCase()));
 
       Promise.all(jobs).then(() => {
-        this.log(`[${this.getName()}] Changed mode to ${value}: currentMode: ${this.room.currentMode}/${this.room.programMode}, comfortTemp: ${this.room.comfortTemp}, awayTemp: ${this.room.awayTemp}, avgTemp: ${this.room.avgTemp}, sleepTemp: ${this.room.sleepTemp}`);
+        this.log(`[${this.getName()}] Changed mode to ${value}: mode: ${value}/${this.room.roomProgramName}, comfortTemp: ${this.room.roomComfortTemperature}, awayTemp: ${this.room.roomAwayTemperature}, avgTemp: ${this.room.averageTemperature}, sleepTemp: ${this.room.roomSleepTemperature}`);
         resolve(value);
       }).catch((err) => {
         error(`[${this.getName()}] Change mode to ${value} resulted in error`, err);
@@ -198,17 +214,18 @@ class MillDevice extends Device {
     });
   }
 
-  onCapabilityThermostatMode(value, opts, callback) {
+  async onCapabilityThermostatMode(value, opts) {
+    this.log(`onCapabilityThermostatMode(${value})`);
     this.setThermostatMode(value)
-      .then(result => callback(null, result))
-      .catch(err => callback(err));
+      .then(result => this.log(result))
+      .catch(err => this.log(err));
   }
 
-  onCapabilityOnOff(value, opts, callback) {
-    let mode = value ? 'Program' : 'Off';
+  async onCapabilityOnOff(value, opts) {
+    let mode = value ? 'weekly_program' : 'off';
     this.setThermostatMode(mode)
-      .then(result => callback(null, result))
-      .catch(err => callback(err));
+      .then(result => this.log(result))
+      .catch(err => this.log(err));
   }
 }
 

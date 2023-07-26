@@ -22,9 +22,9 @@ class MillDriver extends Driver {
 
       const rooms = await Promise.all(homes.ownHouses.map(async (home) => {
         const rooms = await millApi.listRooms(home.id);
-        this.log(`Found following rooms in ${home.name}: ${rooms.roomInfo.map(room => `${room.name} (${room.id})`).join(', ')}`);
+        this.log(`Found following rooms in ${home.name}: ${rooms.rooms.map(room => `${room.name} (${room.id})`).join(', ')}`);
 
-        return rooms.roomInfo.map(room => (
+        return rooms.rooms.map(room => (
           {
             name: room.name,
             data: {
@@ -32,8 +32,8 @@ class MillDriver extends Driver {
               homeId: homes.ownHouses[0].id,
               homeName: homes.ownHouses[0].name,
               name: room.name,
-              temp: room.avgTemp,
-              alive: room.isOffline === 1
+              temp: room.averageTemperature,
+              alive: room.isRoomOnline === true
             }
           }
         ));

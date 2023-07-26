@@ -1,4 +1,5 @@
-// eslint-disable-next-line import/no-unresolved
+'use strict';
+
 const Homey = require('homey');
 const Mill = require('./lib/mill');
 const { debug } = require('./lib/util');
@@ -19,8 +20,6 @@ class MillApp extends Homey.App {
   async connectToMill() {
     const username = this.homey.settings.get('username');
     const password = this.homey.settings.get('password');
-
-    this.log(username, password);
 
     return this.authenticate(username, password);
   }

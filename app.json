@@ -361,7 +361,7 @@
       },
       "values": [
         {
-          "id": "Program",
+          "id": "weekly_program",
           "title": {
             "en": "Program",
             "no": "Program",
@@ -369,7 +369,7 @@
           }
         },
         {
-          "id": "Comfort",
+          "id": "comfort",
           "title": {
             "en": "Comfort",
             "no": "Komfort",
@@ -377,7 +377,7 @@
           }
         },
         {
-          "id": "Sleep",
+          "id": "sleep",
           "title": {
             "en": "Sleep",
             "no": "Sover",
@@ -385,7 +385,7 @@
           }
         },
         {
-          "id": "Away",
+          "id": "away",
           "title": {
             "en": "Away",
             "no": "Borte",
@@ -393,7 +393,7 @@
           }
         },
         {
-          "id": "Off",
+          "id": "off",
           "title": {
             "en": "Off",
             "no": "Av",
