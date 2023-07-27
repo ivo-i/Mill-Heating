@@ -189,6 +189,11 @@ class MillDevice extends Device {
     const room = await millApi.listDevices(this.getData().id);
     this.room = new Room(room);
 
+    if (!this.room.roomHeatStatus) {
+      this.log(`[${this.getName()}] Room is off, skipping power usage update`);
+      return;
+    }
+
     let powerUsage = [];
     for (const device of this.room.devices) {
       if (device.lastMetrics.currentPower) {
