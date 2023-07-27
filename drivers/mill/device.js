@@ -122,11 +122,27 @@ class MillDevice extends Device {
             this.setCapabilityValue('onoff', room.mode !== 'off')
           ];
 
+          let powerUsage = [];
+          for (const device of this.room.devices) {
+            if (device.lastMetrics.currentPower) {
+              const devicePowerUsage = device.lastMetrics.currentPower;
+              powerUsage.push(devicePowerUsage);
+            }
+          }
+
           if (this.hasCapability('measure_power')) {
+            if (powerUsage.length > 1) {
+              const totalPowerUsage = powerUsage.reduce((a, b) => a + b, 0);
+              this.log(`Total power usage for ${this.getName()} ${totalPowerUsage}w`);
+              jobs.push(this.setCapabilityValue('measure_power', this.room.roomHeatStatus ? totalPowerUsage : 0));
+            }
+          }
+
+          /*if (this.hasCapability('measure_power')) {
             const settings = this.getSettings();
             if (settings.energy_consumption > 0)
               jobs.push(this.setCapabilityValue('measure_power', this.room.roomHeatStatus ? settings.energy_consumption : 2));
-          }
+          }*/
 
           if (room.mode !== 'off') {
             switch (room.mode) {
