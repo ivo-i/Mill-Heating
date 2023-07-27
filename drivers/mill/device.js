@@ -50,6 +50,15 @@ class MillDevice extends Device {
         return args.device.setThermostatMode(args.mill_mode);
       });
 
+    this.homey.setInterval(() => {
+      this.updatePowerUsage();
+    }, 5 * 1000);
+
+    /*this.homey.setTimeout(() => {
+      this.millApi = this.homey.app.getMillApi();
+      this.millApi.updateAccessToken();
+    }, 10 * 1000);*/
+
     this.refreshTimeout = null;
     this.millApi = null;
     this.room = null;
@@ -96,7 +105,7 @@ class MillDevice extends Device {
     const millApi = this.homey.app.getMillApi();
 
     return millApi.listDevices(this.getData().id)
-      .then((room) => {
+      .then(async (room) => {
         this.log(`[${this.getName()}] Mill state refreshed`, {
           comfortTemp: room.roomComfortTemperature,
           awayTemp: room.roomAwayTemperature,
@@ -131,11 +140,9 @@ class MillDevice extends Device {
           }
 
           if (this.hasCapability('measure_power')) {
-            if (powerUsage.length > 1) {
-              const totalPowerUsage = powerUsage.reduce((a, b) => a + b, 0);
-              this.log(`Total power usage for ${this.getName()} ${totalPowerUsage}w`);
-              jobs.push(this.setCapabilityValue('measure_power', this.room.roomHeatStatus ? totalPowerUsage : 0));
-            }
+            const totalPowerUsage = powerUsage.reduce((a, b) => a + b, 0);
+            this.log(`Total power usage for ${this.getName()} ${totalPowerUsage}w`);
+            jobs.push(await this.setCapabilityValue('measure_power', this.room.roomHeatStatus ? totalPowerUsage : 0));
           }
 
           /*if (this.hasCapability('measure_power')) {
@@ -173,6 +180,28 @@ class MillDevice extends Device {
       }).catch((err) => {
         error(`[${this.getName()}] Error caught while refreshing state`, err);
       });
+  }
+
+  async updatePowerUsage() {
+    this.log(`[${this.getName()}] Updating power usage`);
+
+    const millApi = this.homey.app.getMillApi();
+    const room = await millApi.listDevices(this.getData().id);
+    this.room = new Room(room);
+
+    let powerUsage = [];
+    for (const device of this.room.devices) {
+      if (device.lastMetrics.currentPower) {
+        const devicePowerUsage = device.lastMetrics.currentPower;
+        powerUsage.push(devicePowerUsage);
+      }
+    }
+
+    if (this.hasCapability('measure_power')) {
+      const totalPowerUsage = powerUsage.reduce((a, b) => a + b, 0);
+      this.log(`Total power usage for ${this.getName()} ${totalPowerUsage}w`);
+      await this.setCapabilityValue('measure_power', this.room.roomHeatStatus ? totalPowerUsage : 0);
+    }
   }
 
   async onAdded() {
@@ -219,6 +248,7 @@ class MillDevice extends Device {
         this.log(`onCapabilityTargetTemperature(${temp}) done`);
         this.log(`[${this.getName()}] Changed temp to ${temp}: mode: ${this.room.modeName}/${this.room.roomProgramName}, comfortTemp: ${this.room.roomComfortTemperature}, awayTemp: ${this.room.roomAwayTemperature}, avgTemp: ${this.room.averageTemperature}, sleepTemp: ${this.room.roomSleepTemperature}`);
         this.log(temp);
+        this.scheduleRefresh(1);
         this.scheduleRefresh(10);
       }).catch((err) => {
         this.log(`onCapabilityTargetTemperature(${temp}) error`);
@@ -263,6 +293,7 @@ class MillDevice extends Device {
       Promise.all(jobs).then(() => {
         this.log(`[${this.getName()}] Changed mode to ${value}: mode: ${value}/${this.room.roomProgramName}, comfortTemp: ${this.room.roomComfortTemperature}, awayTemp: ${this.room.roomAwayTemperature}, avgTemp: ${this.room.averageTemperature}, sleepTemp: ${this.room.roomSleepTemperature}`);
         this.scheduleRefresh(1);
+        this.scheduleRefresh(10);
         resolve(value);
       }).catch((err) => {
         error(`[${this.getName()}] Change mode to ${value} resulted in error`, err);
