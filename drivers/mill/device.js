@@ -191,6 +191,7 @@ class MillDevice extends Device {
 
     if (!this.room.roomHeatStatus) {
       this.log(`[${this.getName()}] Room is off, skipping power usage update`);
+      await this.setCapabilityValue('measure_power', 0);
       return;
     }
 
