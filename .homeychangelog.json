@@ -19,5 +19,8 @@
   },
   "2.1.0": {
     "en": "Permanently fixed the re-authentication error. The app won't sign in every 5 minutes anymore, rather it will refresh the access tokens periodically."
+  },
+  "2.1.1": {
+    "en": "Disabled pulling data from API if device isn't heating"
   }
 }
