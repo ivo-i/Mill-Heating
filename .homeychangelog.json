@@ -13,5 +13,8 @@
   },
   "2.0.4": {
     "en": "Changed the method of authentication. Apparently refreshing tokens after 5 minutes results in 401 error (Not authorized). The app now logs you in every 5 minutes"
+  },
+  "2.0.5": {
+    "en": "Added contribution/donation links"
   }
 }
