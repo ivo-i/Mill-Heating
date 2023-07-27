@@ -25,5 +25,8 @@
   },
   "2.1.2": {
     "en": "Fixed the power meter not resetting to 0 when oven is turned off"
+  },
+  "2.1.3": {
+    "en": "Increased the refresh interval of the power meter, as it seems the Mill API doesn't like too many requests."
   }
 }
