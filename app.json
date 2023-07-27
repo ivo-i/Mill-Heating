@@ -44,7 +44,12 @@
   "homeyCommunityTopicId": 3851,
   "contributing": {
     "donate": {
-      "paypal": {}
+      "paypal": {
+        "username": "Coderaxxx"
+      },
+      "githubSponsors": {
+        "username": "Coderaxx"
+      }
     }
   },
   "category": [
