@@ -22,5 +22,8 @@
   },
   "2.1.1": {
     "en": "Disabled pulling data from API if device isn't heating"
+  },
+  "2.1.2": {
+    "en": "Fixed the power meter not resetting to 0 when oven is turned off"
   }
 }
