@@ -145,12 +145,6 @@ class MillDevice extends Device {
             jobs.push(await this.setCapabilityValue('measure_power', this.room.roomHeatStatus ? totalPowerUsage : 0));
           }
 
-          /*if (this.hasCapability('measure_power')) {
-            const settings = this.getSettings();
-            if (settings.energy_consumption > 0)
-              jobs.push(this.setCapabilityValue('measure_power', this.room.roomHeatStatus ? settings.energy_consumption : 2));
-          }*/
-
           if (room.mode !== 'off') {
             switch (room.mode) {
               case 'weekly_program':
