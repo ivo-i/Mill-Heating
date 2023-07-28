@@ -7,7 +7,12 @@
     "nl": "Mill Sense"
   },
   "class": "sensor",
-  "capabilities": ["measure_temperature", "measure_humidity", "measure_co2", "measure_pm25", "measure_battery"],
+  "capabilities": ["measure_temperature", "measure_humidity", "measure_co2", "measure_tvoc", "measure_battery"],
+  "capabilitiesOptions": {
+    "measure_co2": {
+      "title": "eCO₂"
+    }
+  },
   "platforms": [
     "local"
   ],

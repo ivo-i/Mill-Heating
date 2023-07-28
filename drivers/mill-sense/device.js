@@ -2,7 +2,6 @@
 
 const { Device } = require('homey');
 const { error } = require('./../../lib/util');
-const Room = require('./../../lib/models');
 
 class MillSense extends Device {
   async onInit() {
@@ -22,12 +21,13 @@ class MillSense extends Device {
     if (!this.hasCapability('measure_co2')) {
       this.addCapability('measure_co2');
     }
-    if (!this.hasCapability('measure_pm25')) {
-      this.addCapability('measure_pm25');
+    if (!this.hasCapability('measure_tvoc')) {
+      this.addCapability('measure_tvoc');
     }
     if (!this.hasCapability('measure_battery')) {
       this.addCapability('measure_battery');
     }
+    if 
 
     this.refreshTimeout = null;
     this.millApi = null;
@@ -84,7 +84,7 @@ class MillSense extends Device {
         await this.setCapabilityValue('measure_temperature', device.lastMetrics.temperature);
         await this.setCapabilityValue('measure_humidity', device.lastMetrics.humidity);
         await this.setCapabilityValue('measure_co2', device.lastMetrics.eco2);
-        await this.setCapabilityValue('measure_pm25', device.lastMetrics.tvoc);
+        await this.setCapabilityValue('measure_tvoc', device.lastMetrics.tvoc);
         await this.setCapabilityValue('measure_battery', device.lastMetrics.batteryPercentage);
       }).catch((err) => {
         error('Error caught while refreshing state', err);

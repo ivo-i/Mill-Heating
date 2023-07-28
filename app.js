@@ -19,6 +19,13 @@ class MillApp extends Homey.App {
       this.log('Refreshing access tokens');
       this.connectToMill();
     }, 5*60*1000);*/
+
+    if (!this.homey.settings.get('interval')) {
+      this.homey.settings.set('interval', 300);
+    }
+    if (!this.homey.settings.get('senseInterval')) {
+      this.homey.settings.set('senseInterval', 900);
+    }
   }
 
   async connectToMill() {

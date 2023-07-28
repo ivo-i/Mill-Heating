@@ -1,0 +1,10 @@
+{
+    "type": "number",
+    "uiComponent": "sensor",
+    "icon": "/drivers/mill-sense/assets/voc.svg",
+    "title": "TVOC",
+    "units": "ppb",
+    "getable": true,
+    "setable": false,
+    "insights": true
+}

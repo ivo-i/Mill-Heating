@@ -392,9 +392,14 @@
         "measure_temperature",
         "measure_humidity",
         "measure_co2",
-        "measure_pm25",
+        "measure_tvoc",
         "measure_battery"
       ],
+      "capabilitiesOptions": {
+        "measure_co2": {
+          "title": "eCO₂"
+        }
+      },
       "platforms": [
         "local"
       ],
@@ -421,6 +426,16 @@
     }
   ],
   "capabilities": {
+    "measure_tvoc": {
+      "type": "number",
+      "uiComponent": "sensor",
+      "icon": "/drivers/mill-sense/assets/voc.svg",
+      "title": "TVOC",
+      "units": "ppb",
+      "getable": true,
+      "setable": false,
+      "insights": true
+    },
     "mill_mode": {
       "type": "enum",
       "title": {
