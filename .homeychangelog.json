@@ -37,5 +37,8 @@
   },
   "2.3.0": {
     "en": "Re-coded the whole authentication system. Now it shouldn't spam the Mill API with requests."
+  },
+  "2.3.1": {
+    "en": "Removed unnecessary logging"
   }
 }
