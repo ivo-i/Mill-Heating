@@ -34,5 +34,8 @@
   },
   "2.2.0": {
     "en": "Added support for Mill Sense"
+  },
+  "2.3.0": {
+    "en": "Re-coded the whole authentication system. Now it shouldn't spam the Mill API with requests."
   }
 }
