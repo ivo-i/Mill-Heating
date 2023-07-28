@@ -31,11 +31,17 @@ class MillSenseDriver extends Driver {
 
       const devices = await Promise.all(allHomes.map(async (home) => {
         const devices = await millApi.listIndependentDevices(home.id);
-        console.log(devices);
 
-        this.log(`Found following devices in ${home.name}: ${devices.items.map(device => `${device.customName} (${device.deviceId})`).join(', ')}`);
+        // Filter devices that meet your condition
+        const filteredDevices = devices.items.filter(device =>
+          device.deviceType &&
+          device.deviceType.childType &&
+          device.deviceType.childType.name.includes('GL-Sense')
+        );
 
-        return devices.items.map(device => (
+        this.log(`Found following devices in all homes: ${filteredDevices.map(device => `${device.customName} (${device.deviceId})`).join(', ')}`);
+
+        return filteredDevices.map(device => (
           {
             name: device.customName,
             data: {

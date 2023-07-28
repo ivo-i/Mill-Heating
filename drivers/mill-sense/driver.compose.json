@@ -7,10 +7,13 @@
     "nl": "Mill Sense"
   },
   "class": "sensor",
-  "capabilities": ["measure_temperature", "measure_humidity", "measure_co2", "measure_tvoc", "measure_battery"],
+  "capabilities": ["measure_temperature", "measure_humidity", "measure_co2", "alarm_co2", "measure_tvoc", "measure_battery", "alarm_battery"],
   "capabilitiesOptions": {
     "measure_co2": {
-      "title": "eCO₂"
+      "title": "eCO2"
+    },
+    "alarm_co2": {
+      "title": "eCO2 Alarm"
     }
   },
   "platforms": [
@@ -22,6 +25,7 @@
     "large": "{{driverAssetsPath}}/images/large.png",
     "xlarge": "{{driverAssetsPath}}/images/xlarge.png"
   },
+  "icon": "{{driverAssetsPath}}/icon.svg",
   "pair": [
     {
       "id": "list_devices",

@@ -13,21 +13,26 @@ class MillSense extends Device {
 
     // Add new capailities for devices that don't have them yet
     if (!this.hasCapability('measure_temperature')) {
-      this.addCapability('measure_temperature');
+      await this.addCapability('measure_temperature');
     }
     if (!this.hasCapability('measure_humidity')) {
-      this.addCapability('measure_humidity');
+      await this.addCapability('measure_humidity');
     }
     if (!this.hasCapability('measure_co2')) {
-      this.addCapability('measure_co2');
+      await this.addCapability('measure_co2');
     }
     if (!this.hasCapability('measure_tvoc')) {
-      this.addCapability('measure_tvoc');
+      await this.addCapability('measure_tvoc');
     }
     if (!this.hasCapability('measure_battery')) {
-      this.addCapability('measure_battery');
+      await this.addCapability('measure_battery');
     }
-    if 
+    if (!this.hasCapability('alarm_battery')) {
+      await this.addCapability('alarm_battery');
+    }
+    if (!this.hasCapability('alarm_co2')) {
+      await this.addCapability('alarm_co2');
+    }
 
     this.refreshTimeout = null;
     this.millApi = null;
@@ -78,14 +83,28 @@ class MillSense extends Device {
           temperature: device.lastMetrics.temperature,
           humidity: device.lastMetrics.humidity,
           co2: device.lastMetrics.eco2,
-          pm25: device.lastMetrics.tvoc,
+          tvoc: device.lastMetrics.tvoc,
           battery: device.lastMetrics.batteryPercentage,
         });
+        
         await this.setCapabilityValue('measure_temperature', device.lastMetrics.temperature);
         await this.setCapabilityValue('measure_humidity', device.lastMetrics.humidity);
         await this.setCapabilityValue('measure_co2', device.lastMetrics.eco2);
         await this.setCapabilityValue('measure_tvoc', device.lastMetrics.tvoc);
         await this.setCapabilityValue('measure_battery', device.lastMetrics.batteryPercentage);
+
+        if (device.lastMetrics.batteryPercentage < 20) {
+          await this.setCapabilityValue('alarm_battery', true);
+        } else {
+          await this.setCapabilityValue('alarm_battery', false);
+        }
+
+        if (device.lastMetrics.eco2 > device.deviceSettings.desired.ccs811_ranges.eco2_red) {
+          await this.setCapabilityValue('alarm_co2', true);
+        } else {
+          await this.setCapabilityValue('alarm_co2', false);
+        }
+
       }).catch((err) => {
         error('Error caught while refreshing state', err);
       });

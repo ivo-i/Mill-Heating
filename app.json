@@ -392,12 +392,17 @@
         "measure_temperature",
         "measure_humidity",
         "measure_co2",
+        "alarm_co2",
         "measure_tvoc",
-        "measure_battery"
+        "measure_battery",
+        "alarm_battery"
       ],
       "capabilitiesOptions": {
         "measure_co2": {
-          "title": "eCO₂"
+          "title": "eCO2"
+        },
+        "alarm_co2": {
+          "title": "eCO2 Alarm"
         }
       },
       "platforms": [
@@ -409,6 +414,7 @@
         "large": "/drivers/mill-sense/assets/images/large.png",
         "xlarge": "/drivers/mill-sense/assets/images/xlarge.png"
       },
+      "icon": "/drivers/mill-sense/assets/icon.svg",
       "pair": [
         {
           "id": "list_devices",
