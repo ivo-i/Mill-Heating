@@ -15,11 +15,6 @@ class MillApp extends Homey.App {
     process.env.TZ = 'Europe/Oslo';
     await this.connectToMill();
 
-    /*this.homey.setInterval(() => {
-      this.log('Refreshing access tokens');
-      this.connectToMill();
-    }, 5*60*1000);*/
-
     if (!this.homey.settings.get('interval')) {
       this.homey.settings.set('interval', 300);
     }
