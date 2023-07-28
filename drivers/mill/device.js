@@ -54,11 +54,6 @@ class MillDevice extends Device {
       this.updatePowerUsage();
     }, 30 * 1000);
 
-    /*this.homey.setTimeout(() => {
-      this.millApi = this.homey.app.getMillApi();
-      this.millApi.updateAccessToken();
-    }, 10 * 1000);*/
-
     this.refreshTimeout = null;
     this.millApi = null;
     this.room = null;
