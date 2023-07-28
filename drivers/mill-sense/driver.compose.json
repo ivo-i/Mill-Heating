@@ -16,6 +16,11 @@
       "title": "eCO2 Alarm"
     }
   },
+  "energy": {
+    "batteries": [
+      "Rechargeable battery"
+    ]
+  },
   "platforms": [
     "local"
   ],
