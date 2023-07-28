@@ -34,6 +34,10 @@
     		  <label for="interval" data-i18n="settings.account.fieldPolling"></label>
     		  <input id="interval" type="number" value="300" min="60" max="3600" />
     	  </div>
+        <div class="field row">
+          <label for="senseInterval" data-i18n="settings.account.sensePolling"></label>
+          <input id="senseInterval" type="number" value="300" min="60" max="3600" />
+        </div>
       </fieldset>
     	<button id="save-bt" class="right"><i class="fa fa-save"></i> <span data-i18n="settings.account.buttonSave"></span></button>
     </fieldset>
@@ -134,6 +138,11 @@
         _$('#interval').set({ value });
       });
 
+      Homey.get('senseInterval', function (err, value) {
+        if (err) return Homey.alert(err);
+        _$('#senseInterval').set({ value });
+      });
+
       _$('#clear-bt').onClick(function (e) {
     		Homey.api('POST', '/clearSettings', {}, function (err, result) {
     			if (err) {
@@ -160,6 +169,10 @@
 
       _$('#save-bt').onClick(function (e) {
         Homey.set('interval', _$('#interval').get('value') || 300, function (err) {
+          if (err) return Homey.alert(err);
+        });
+
+        Homey.set('senseInterval', _$('#senseInterval').get('value') || 900, function (err) {
           if (err) return Homey.alert(err);
         });
 

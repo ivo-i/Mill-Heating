@@ -65,7 +65,7 @@ class MillSense extends Device {
   }
 
   async scheduleRefresh(interval) {
-    const refreshInterval = interval || this.homey.settings.get('interval');
+    const refreshInterval = interval || this.homey.settings.get('senseInterval');
     this.refreshTimeout = this.homey.setTimeout(this.refreshState.bind(this), refreshInterval * 1000);
     this.log(`[${this.getName()}] Next refresh in ${refreshInterval} seconds`);
   }

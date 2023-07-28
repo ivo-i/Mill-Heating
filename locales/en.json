@@ -19,6 +19,7 @@
       "fieldPassword": "Password",
       "settings": "Settings",
       "fieldPolling": "Polling (in seconds)",
+      "sensePolling": "Mill Sense polling (in seconds)",
       "buttonSave": "Save",
       "buttonClear": "Clear account settings",
       "messages": {

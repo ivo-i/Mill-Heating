@@ -19,6 +19,7 @@
             "fieldPassword": "Wachtwoord",
             "settings": "Instellingen",
             "fieldPolling": "Polling (in seconden)",
+            "sensePolling": "Mill Sense polling (in seconden)",
             "buttonSave": "Opslaan",
             "buttonClear": "Wis accountinstellingen",
             "messages": {

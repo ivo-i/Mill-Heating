@@ -19,6 +19,7 @@
             "fieldPassword": "Passord",
             "settings": "Innstillinger",
             "fieldPolling": "Spørring (i sekunder)",
+            "sensePolling": "Mill Sense spørring (i sekunder)",
             "buttonSave": "Lagre",
             "buttonClear": "Tøm kontoinnstillinger",
             "messages": {
