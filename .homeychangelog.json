@@ -40,5 +40,8 @@
   },
   "2.3.1": {
     "en": "Removed unnecessary logging"
+  },
+  "2.3.2": {
+    "en": "Added necessary logging"
   }
 }
