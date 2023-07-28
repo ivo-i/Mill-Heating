@@ -93,7 +93,7 @@
           "name": "mill_mode",
           "values": [
             {
-              "id": "Program",
+              "id": "Weekly_program",
               "label": {
                 "en": "Program",
                 "no": "Program",
@@ -151,7 +151,7 @@
           "name": "mill_mode",
           "values": [
             {
-              "id": "Program",
+              "id": "Weekly_program",
               "label": {
                 "en": "Program",
                 "no": "Program",
