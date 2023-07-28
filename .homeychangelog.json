@@ -31,5 +31,8 @@
   },
   "2.1.4": {
     "en": "Fixed an issue where the device wouldn't set the mode to Weekly program from flow."
+  },
+  "2.2.0": {
+    "en": "Added support for Mill Sense"
   }
 }
