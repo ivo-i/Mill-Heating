@@ -55,7 +55,7 @@ class MillSense extends Device {
         this.log(`[${this.getName()}] Mill not connected`);
         this.setUnavailable();
         await this.homey.app.connectToMill().then(() => {
-          this.scheduleRefresh(10);
+          this.scheduleRefresh(5);
         }).catch((err) => {
           error('Error caught while refreshing state', err);
         });
