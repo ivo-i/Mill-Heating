@@ -4,7 +4,6 @@ const { Driver } = require('homey');
 
 class MillDriver extends Driver {
   async onInit() {
-    this.log(this.homey.app.isConnected());
   }
 
   async onPairListDevices() {
