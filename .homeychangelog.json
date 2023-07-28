@@ -28,5 +28,8 @@
   },
   "2.1.3": {
     "en": "Increased the refresh interval of the power meter, as it seems the Mill API doesn't like too many requests."
+  },
+  "2.1.4": {
+    "en": "Fixed an issue where the device wouldn't set the mode to Weekly program from flow."
   }
 }
