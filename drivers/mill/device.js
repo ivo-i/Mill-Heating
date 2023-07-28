@@ -183,8 +183,6 @@ class MillDevice extends Device {
   }
 
   async updatePowerUsage() {
-    this.log(`[${this.getName()}] Updating power usage`);
-
     const millApi = this.homey.app.getMillApi();
     const room = await millApi.listDevices(this.getData().id);
     this.room = new Room(room);
@@ -194,6 +192,8 @@ class MillDevice extends Device {
       await this.setCapabilityValue('measure_power', 0);
       return;
     }
+
+    this.log(`[${this.getName()}] Updating power usage`);
 
     let powerUsage = [];
     for (const device of this.room.devices) {
