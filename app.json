@@ -378,6 +378,46 @@
         }
       ],
       "id": "mill"
+    },
+    {
+      "name": {
+        "en": "Mill Sense",
+        "no": "Mill Sense",
+        "se": "Mill Sense",
+        "da": "Mill Sense",
+        "nl": "Mill Sense"
+      },
+      "class": "sensor",
+      "capabilities": [
+        "measure_temperature",
+        "measure_humidity",
+        "measure_co2",
+        "measure_pm25",
+        "measure_battery"
+      ],
+      "platforms": [
+        "local"
+      ],
+      "connectivity": [],
+      "images": {
+        "small": "/drivers/mill-sense/assets/images/small.png",
+        "large": "/drivers/mill-sense/assets/images/large.png",
+        "xlarge": "/drivers/mill-sense/assets/images/xlarge.png"
+      },
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_device"
+          }
+        },
+        {
+          "id": "add_device",
+          "template": "add_devices"
+        }
+      ],
+      "id": "mill-sense"
     }
   ],
   "capabilities": {
