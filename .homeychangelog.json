@@ -43,5 +43,8 @@
   },
   "2.3.2": {
     "en": "Added necessary logging"
+  },
+  "2.3.3": {
+    "en": "Switched over to using the open_api instead of the mobile_api. This change should now prevent you from being completely logged out of the Mill mobile app."
   }
 }
