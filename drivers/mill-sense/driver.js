@@ -16,8 +16,6 @@ class MillSenseDriver extends Driver {
       this.homey.app.dDebug('Pairing');
       const millApi = this.homey.app.getMillApi();
       const homes = await millApi.listHomes();
-      this.log(`Found following homes: ${homes.ownHouses.map(home => `${home.name} (${home.id})`).join(', ')}`);
-      this.log(`Found following shared homes: ${homes.sharedHouses.map(home => `${home.house.name} (${home.house.id})`).join(', ')}`);
       this.homey.app.dDebug(`Found following homes: ${homes.ownHouses.map(home => `${home.name} (${home.id})`).join(', ')}`);
       this.homey.app.dDebug(`Found following shared homes: ${homes.sharedHouses.map(home => `${home.house.name} (${home.house.id})`).join(', ')}`);
 
@@ -39,8 +37,7 @@ class MillSenseDriver extends Driver {
           device.deviceType.childType &&
           device.deviceType.childType.name.includes('GL-Sense')
         );
-
-        this.log(`Found following devices in all homes: ${filteredDevices.map(device => `${device.customName} (${device.deviceId})`).join(', ')}`);
+        
         this.homey.app.dDebug(`Found following devices in all homes: ${filteredDevices.map(device => `${device.customName} (${device.deviceId})`).join(', ')}`);
 
         return filteredDevices.map(device => (

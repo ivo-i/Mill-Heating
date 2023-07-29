@@ -13,7 +13,12 @@ class MillApp extends Homey.App {
     this.log(`${this.homey.manifest.id} is running..`);
 
     process.env.TZ = 'Europe/Oslo';
-    await this.connectToMill();
+    await this.connectToMill().then(() => {
+      this.dDebug('Connected to Mill');
+    }).catch((err) => {
+      this.dError('Error caught while connecting to Mill', err);
+      return err;
+    });
 
     if (!this.homey.settings.get('interval')) {
       this.homey.settings.set('interval', 300);
@@ -26,6 +31,11 @@ class MillApp extends Homey.App {
   async connectToMill() {
     const username = this.homey.settings.get('username');
     const password = this.homey.settings.get('password');
+
+    if (!username || !password) {
+      this.dError('No username or password set');
+      throw new Error('No username or password set');
+    }
 
     return this.authenticate(username, password);
   }
