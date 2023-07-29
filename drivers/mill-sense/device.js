@@ -57,10 +57,12 @@ class MillSense extends Device {
         await this.homey.app.connectToMill().then(() => {
           this.scheduleRefresh(5);
         }).catch((err) => {
+          this.homey.app.dError('Error caught while refreshing state', err);
           error('Error caught while refreshing state', err);
         });
       }
     } catch (e) {
+      this.homey.app.dError('Exception caught', e);
       error('Exception caught', e);
     } finally {
       if (this.refreshTimeout === null) {
@@ -106,23 +108,27 @@ class MillSense extends Device {
         }
 
       }).catch((err) => {
+        this.homey.app.dError('Error caught while refreshing state', err);
         error('Error caught while refreshing state', err);
       });
   }
 
   async onAdded() {
-    this.log('device added', this.getState());
+    this.log('Device added', this.getState());
+    this.homey.app.dDebug('Device added', this.getState());
   }
 
   async onDeleted() {
     clearTimeout(this.refreshTimeout);
-    this.log('device deleted', this.getState());
+    this.log('Device deleted', this.getState());
+    this.homey.app.dDebug('Device deleted', this.getState());
   }
 
   async onSettings(oldSettings, newSettings, changedKeys) {
     this.log('onSettings', oldSettings, newSettings, changedKeys);
     if (changedKeys.includes('username') && changedKeys.includes('password')) {
       this.log('onSettings', 'username and password changed');
+      this.homey.app.dDebug('Username and password changed');
       this.homey.app.connectToMill();
     }
   }

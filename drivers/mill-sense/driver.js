@@ -8,16 +8,18 @@ class MillSenseDriver extends Driver {
 
   async onPairListDevices() {
     if (!this.homey.app.isConnected()) {
-      this.log('Unable to pair, not authenticated');
-      this.log(new Error(this.homey.__('pair.messages.notAuthorized')));
+      this.homey.app.dDebug('Unable to pair, not authenticated');
+      this.homey.app.dError(new Error(this.homey.__('pair.messages.notAuthorized')));
       await this.homey.app.connectToMill();
       return this.onPairListDevices();
     } else {
-      this.log('Pairing');
+      this.homey.app.dDebug('Pairing');
       const millApi = this.homey.app.getMillApi();
       const homes = await millApi.listHomes();
       this.log(`Found following homes: ${homes.ownHouses.map(home => `${home.name} (${home.id})`).join(', ')}`);
       this.log(`Found following shared homes: ${homes.sharedHouses.map(home => `${home.house.name} (${home.house.id})`).join(', ')}`);
+      this.homey.app.dDebug(`Found following homes: ${homes.ownHouses.map(home => `${home.name} (${home.id})`).join(', ')}`);
+      this.homey.app.dDebug(`Found following shared homes: ${homes.sharedHouses.map(home => `${home.house.name} (${home.house.id})`).join(', ')}`);
 
       let allHomes = [];
       // Se gjennom alle ownHouses og sharedHouses og legg til i allHomes
@@ -39,6 +41,7 @@ class MillSenseDriver extends Driver {
         );
 
         this.log(`Found following devices in all homes: ${filteredDevices.map(device => `${device.customName} (${device.deviceId})`).join(', ')}`);
+        this.homey.app.dDebug(`Found following devices in all homes: ${filteredDevices.map(device => `${device.customName} (${device.deviceId})`).join(', ')}`);
 
         return filteredDevices.map(device => (
           {
