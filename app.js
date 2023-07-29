@@ -2,6 +2,7 @@
 
 const Homey = require('homey');
 const Mill = require('./lib/mill');
+const Util = require('./lib/util');
 
 class MillApp extends Homey.App {
   async onInit() {
@@ -9,6 +10,8 @@ class MillApp extends Homey.App {
     this.user = null;
     this.isAuthenticated = false;
     this.isAuthenticating = false;
+
+    this.util = new Util(this.homey);
 
     this.log(`${this.homey.manifest.id} is running..`);
 
