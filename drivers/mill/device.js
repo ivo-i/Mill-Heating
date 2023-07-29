@@ -241,7 +241,7 @@ class MillDevice extends Device {
       .then(() => {
         this.log(`onCapabilityTargetTemperature(${temp}) done`);
         this.homey.app.dDebug(`[${this.getName()}] Changed temp to ${temp}: mode: ${this.room.modeName}/${this.room.roomProgramName}, comfortTemp: ${this.room.roomComfortTemperature}, awayTemp: ${this.room.roomAwayTemperature}, avgTemp: ${this.room.averageTemperature}, sleepTemp: ${this.room.roomSleepTemperature}`);
-        this.scheduleRefresh(5);
+        this.scheduleRefresh(7);
       }).catch((err) => {
         this.log(`onCapabilityTargetTemperature(${temp}) error`);
         this.homey.app.dError(`[${this.getName()}] Change temp to ${temp} resultet in error`, err);
@@ -283,7 +283,7 @@ class MillDevice extends Device {
 
       Promise.all(jobs).then(() => {
         this.homey.app.dDebug(`[${this.getName()}] Changed mode to ${value}: mode: ${value}/${this.room.roomProgramName}, comfortTemp: ${this.room.roomComfortTemperature}, awayTemp: ${this.room.roomAwayTemperature}, avgTemp: ${this.room.averageTemperature}, sleepTemp: ${this.room.roomSleepTemperature}`);
-        this.scheduleRefresh(5);
+        this.scheduleRefresh(7);
         resolve(value);
       }).catch((err) => {
         this.homey.app.dError(`[${this.getName()}] Change mode to ${value} resulted in error`, err);
