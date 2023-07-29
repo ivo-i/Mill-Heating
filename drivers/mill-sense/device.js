@@ -1,7 +1,6 @@
 'use strict';
 
 const { Device } = require('homey');
-const { error } = require('./../../lib/util');
 
 class MillSense extends Device {
   async onInit() {

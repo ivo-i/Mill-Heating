@@ -1,7 +1,6 @@
 'use strict';
 
 const { Device } = require('homey');
-const { error } = require('./../../lib/util');
 const Room = require('./../../lib/models');
 
 class MillDevice extends Device {

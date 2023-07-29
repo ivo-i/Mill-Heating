@@ -26,11 +26,19 @@ class MillApp extends Homey.App {
     if (!this.homey.settings.get('senseInterval')) {
       this.homey.settings.set('senseInterval', 900);
     }
+
+    await this.homey.settings.on('set', async (key) => {
+      if (key === 'username' || key === 'password') {
+        await this.homey.settings.unset('debugLog');
+        await this.homey.api.realtime('debugLog', null);
+        return await this.onInit();
+      }
+    });
   }
 
   async connectToMill() {
-    const username = this.homey.settings.get('username');
-    const password = this.homey.settings.get('password');
+    const username = await this.homey.settings.get('username');
+    const password = await this.homey.settings.get('password');
 
     if (!username || !password) {
       this.dError('No username or password set');
@@ -46,10 +54,10 @@ class MillApp extends Homey.App {
         this.isAuthenticating = true;
         this.user = await this.millApi.login(username, password) || null;
         this.isAuthenticated = true;
-        this.log('Mill authenticated');
+        this.dDebug('Mill authenticated');
         return true;
       } catch (e) {
-        this.log('Error authenticating', e);
+        this.dError('Error authenticating', e);
         this.isAuthenticated = false;
         this.user = null;
         return false;

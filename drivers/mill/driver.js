@@ -17,7 +17,7 @@ class MillDriver extends Driver {
         this.homey.app.dError(error);
         this.homey.app.dDebug('Unable to connect to Mill');
         const errorString = `Unable to connect to Mill: ${error}`;
-        return errorString;
+        return new Error(errorString);
       });
     } else {
       this.homey.app.dDebug('Pairing');
