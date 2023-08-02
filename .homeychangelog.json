@@ -46,5 +46,8 @@
   },
   "2.3.3": {
     "en": "Switched over to using the open_api instead of the mobile_api. This change should now prevent you from being completely logged out of the Mill mobile app."
+  },
+  "2.3.4": {
+    "en": "Fixed the interval validation in the app settings. It now doesn't allow polling intervals under 60 seconds. This is for both Mill and Mill Sense products. Default is respectively 300 and 900."
   }
 }
