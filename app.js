@@ -27,8 +27,12 @@ class MillApp extends Homey.App {
       await this.homey.settings.set('senseInterval', 900);
     }
 
-    if (!this.homey.settings.get('interval') < 60 || !this.homey.settings.get('interval') > 3600 || !this.homey.settings.get('senseInterval') < 60 || !this.homey.settings.get('senseInterval') > 3600) {
+    if (this.homey.settings.get('interval') < 60 || this.homey.settings.get('interval') > 3600) {
+      this.dWarn('Interval is not between 60 and 3600 seconds, resetting to 300 seconds');
       await this.homey.settings.set('interval', 300);
+    }
+    if (this.homey.settings.get('senseInterval') < 60 || this.homey.settings.get('senseInterval') > 3600) {
+      this.dWarn('Sense interval is not between 60 and 3600 seconds, resetting to 900 seconds');
       await this.homey.settings.set('senseInterval', 900);
     }
 
