@@ -168,6 +168,12 @@
       });
 
       _$('#save-bt').onClick(function (e) {
+        if (_$('#interval').get('value') < 60 || _$('#interval').get('value') > 3600 || _$('#senseInterval').get('value') < 60 || _$('#senseInterval').get('value') > 3600) {
+          return Homey.alert(
+            Homey.__('settings.account.messages.errorInvalidInterval')
+          );
+        }
+
         Homey.set('interval', _$('#interval').get('value') || 300, function (err) {
           if (err) return Homey.alert(err);
         });

@@ -26,7 +26,8 @@
                 "errorSaving": "Dessverre fikk vi en feil fra Mill:\r\n\r\n__error__",
                 "successSaving": "Kontoinnstillinger ble lagret vellykket",
                 "errorClearing": "Dessverre oppstod det en feil ved tømming av kontoinnstillinger:\r\n\r\n__error__",
-                "successClearing": "Kontoinnstillinger ble tømt vellykket"
+                "successClearing": "Kontoinnstillinger ble tømt vellykket",
+                "errorInvalidInterval": "Spørringsintervallet må være et heltall mellom 60 og 3600 sekunder"
             }
         },
         "debug": {

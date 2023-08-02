@@ -26,7 +26,8 @@
                 "errorSaving": "Helaas hebben we een fout van Mill ontvangen:\r\n\r\n__error__",
                 "successSaving": "Accountinstellingen zijn succesvol opgeslagen",
                 "errorClearing": "Helaas hebben we een fout ondervonden bij het wissen van de accountinstellingen:\r\n\r\n__error__",
-                "successClearing": "Accountinstellingen succesvol gewist"
+                "successClearing": "Accountinstellingen succesvol gewist",
+                "errorInvalidInterval": "Ongeldige polling-interval. Voer een getal in tussen 60 en 3600."
             }
         },
         "debug": {

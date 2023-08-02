@@ -21,10 +21,15 @@ class MillApp extends Homey.App {
     });
 
     if (!this.homey.settings.get('interval')) {
-      this.homey.settings.set('interval', 300);
+      await this.homey.settings.set('interval', 300);
     }
     if (!this.homey.settings.get('senseInterval')) {
-      this.homey.settings.set('senseInterval', 900);
+      await this.homey.settings.set('senseInterval', 900);
+    }
+
+    if (!this.homey.settings.get('interval') < 60 || !this.homey.settings.get('interval') > 3600 || !this.homey.settings.get('senseInterval') < 60 || !this.homey.settings.get('senseInterval') > 3600) {
+      await this.homey.settings.set('interval', 300);
+      await this.homey.settings.set('senseInterval', 900);
     }
 
     await this.homey.settings.on('set', async (key) => {

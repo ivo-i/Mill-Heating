@@ -26,7 +26,8 @@
         "errorSaving": "Unfortunately, we received an error from Mill:\r\n\r\n__error__",
         "successSaving": "Account settings saved successfully",
         "errorClearing": "Unfortunately, we encountered an error while clearing account settings:\r\n\r\n__error__",
-        "successClearing": "Account settings cleared successfully"
+        "successClearing": "Account settings cleared successfully",
+        "errorInvalidInterval": "Please enter a valid polling interval (in seconds) between 60 and 3600"
       }
     },
     "debug": {
