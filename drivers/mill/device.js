@@ -52,7 +52,7 @@ class MillDevice extends Device {
 
     this.homey.setInterval(() => {
       this.updatePowerUsage();
-    }, 30 * 1000);
+    }, 300 * 1000);
 
     this.refreshTimeout = null;
     this.millApi = null;
