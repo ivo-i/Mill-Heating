@@ -49,5 +49,8 @@
   },
   "2.3.4": {
     "en": "Fixed the interval validation in the app settings. It now doesn't allow polling intervals under 60 seconds. This is for both Mill and Mill Sense products. Default is respectively 300 and 900."
+  },
+  "2.3.5": {
+    "en": "Increased the update interval for the power meter"
   }
 }
