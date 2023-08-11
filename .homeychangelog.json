@@ -52,5 +52,8 @@
   },
   "2.3.5": {
     "en": "Increased the update interval for the power meter"
+  },
+  "2.3.6": {
+    "en": "Changed the Mill Sense driver image"
   }
 }
