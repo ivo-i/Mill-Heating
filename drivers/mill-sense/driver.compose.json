@@ -1,13 +1,21 @@
 {
   "name": {
-    "en": "Mill Sense",
-    "no": "Mill Sense",
+    "en": "Mill Sense Air",
+    "no": "Mill Sense Air",
     "se": "Mill Sense",
-    "da": "Mill Sense",
-    "nl": "Mill Sense"
+    "da": "Mill Sense Air",
+    "nl": "Mill Sense Air"
   },
   "class": "sensor",
-  "capabilities": ["measure_temperature", "measure_humidity", "measure_co2", "alarm_co2", "measure_tvoc", "measure_battery", "alarm_battery"],
+  "capabilities": [
+    "measure_temperature",
+    "measure_humidity",
+    "measure_co2",
+    "alarm_co2",
+    "measure_tvoc",
+    "measure_battery",
+    "alarm_battery"
+  ],
   "capabilitiesOptions": {
     "measure_co2": {
       "title": "eCO2"
