@@ -1,0 +1,24 @@
+{
+    "triggers": [
+        {
+            "id": "measure_tvoc_changed",
+            "title": {
+                "en": "TVOC level was changed",
+                "no": "TVOC-nivået ble endret",
+                "nl": "TVOC-niveau is gewijzigd"
+            },
+            "tokens": [
+                {
+                    "name": "measure_tvoc",
+                    "type": "string",
+                    "title": {
+                        "en": "TVOC",
+                        "no": "TVOC",
+                        "nl": "TVOC"
+                    },
+                    "example": "800"
+                }
+            ]
+        }
+    ]
+}
