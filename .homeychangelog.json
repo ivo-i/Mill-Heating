@@ -61,5 +61,8 @@
   },
   "2.3.8": {
     "en": "Changed \"Mill Sense\" to \"Mill Sense Air\""
+  },
+  "2.3.9": {
+    "en": "Added flow card \"When TVOC was changed\" for Mill sense devices."
   }
 }
