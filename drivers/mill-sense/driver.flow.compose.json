@@ -10,13 +10,13 @@
             "tokens": [
                 {
                     "name": "measure_tvoc",
-                    "type": "string",
+                    "type": "number",
                     "title": {
                         "en": "TVOC",
                         "no": "TVOC",
                         "nl": "TVOC"
                     },
-                    "example": "800"
+                    "example": 800
                 }
             ]
         }

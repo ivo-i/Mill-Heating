@@ -166,6 +166,33 @@
             ]
           }
         ]
+      },
+      {
+        "id": "measure_tvoc_changed",
+        "title": {
+          "en": "TVOC level was changed",
+          "no": "TVOC-nivået ble endret",
+          "nl": "TVOC-niveau is gewijzigd"
+        },
+        "tokens": [
+          {
+            "name": "measure_tvoc",
+            "type": "number",
+            "title": {
+              "en": "TVOC",
+              "no": "TVOC",
+              "nl": "TVOC"
+            },
+            "example": "800"
+          }
+        ],
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=mill-sense"
+          }
+        ]
       }
     ],
     "conditions": [
@@ -383,7 +410,7 @@
       "name": {
         "en": "Mill Sense Air",
         "no": "Mill Sense Air",
-        "se": "Mill Sense",
+        "se": "Mill Sense Air",
         "da": "Mill Sense Air",
         "nl": "Mill Sense Air"
       },
