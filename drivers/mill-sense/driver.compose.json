@@ -11,17 +11,29 @@
     "measure_temperature",
     "measure_humidity",
     "measure_co2",
-    "alarm_co2",
     "measure_tvoc",
     "measure_battery",
+    "alarm_temperature",
+    "alarm_humidity",
+    "alarm_co2",
+    "alarm_tvoc",
     "alarm_battery"
   ],
   "capabilitiesOptions": {
     "measure_co2": {
       "title": "eCO2"
     },
+    "alarm_temperature": {
+      "title": "temperature Alarm"
+    },
+    "alarm_humidity": {
+      "title": "hunidity Alarm"
+    },
     "alarm_co2": {
       "title": "eCO2 Alarm"
+    },
+    "alarm_tvoc": {
+      "title": "TVOC Alarm"
     }
   },
   "energy": {
