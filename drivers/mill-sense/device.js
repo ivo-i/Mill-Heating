@@ -25,12 +25,21 @@ class MillSense extends Device {
     }
     if (!this.hasCapability('measure_battery')) {
       await this.addCapability('measure_battery');
-    }
-    if (!this.hasCapability('alarm_battery')) {
-      await this.addCapability('alarm_battery');
+    }    
+    if (!this.hasCapability('alarm_temperature')) {
+      await this.addCapability('alarm_temperature');
+    }   
+    if (!this.hasCapability('alarm_humidity')) {
+      await this.addCapability('alarm_humidity');
     }
     if (!this.hasCapability('alarm_co2')) {
       await this.addCapability('alarm_co2');
+    }
+    if (!this.hasCapability('alarm_tvoc')) {
+      await this.addCapability('alarm_tvoc');
+    }
+    if (!this.hasCapability('alarm_battery')) {
+      await this.addCapability('alarm_battery');
     }
 
     this.refreshTimeout = null;
@@ -92,16 +101,36 @@ class MillSense extends Device {
         await this.setCapabilityValue('measure_tvoc', device.lastMetrics.tvoc);
         await this.setCapabilityValue('measure_battery', device.lastMetrics.batteryPercentage);
 
-        if (device.lastMetrics.batteryPercentage < 20) {
-          await this.setCapabilityValue('alarm_battery', true);
+        if (device.lastMetrics.temperature < device.deviceSettings.desired.ens210_ranges.temperature_red_low ||
+          device.lastMetrics.temperature > device.deviceSettings.desired.ens210_ranges.temperature_red_high ) {
+          await this.setCapabilityValue('alarm_temperature', true);
         } else {
-          await this.setCapabilityValue('alarm_battery', false);
+          await this.setCapabilityValue('alarm_temperature', false);
+        }
+
+        if (device.lastMetrics.humidity < device.deviceSettings.desired.ens210_ranges.humidity_red_low ||
+            device.lastMetrics.humidity > device.deviceSettings.desired.ens210_ranges.humidity_red_high ) {
+          await this.setCapabilityValue('alarm_humidity', true);
+        } else {
+          await this.setCapabilityValue('alarm_humidity', false);
         }
 
         if (device.lastMetrics.eco2 > device.deviceSettings.desired.ccs811_ranges.eco2_red) {
           await this.setCapabilityValue('alarm_co2', true);
         } else {
           await this.setCapabilityValue('alarm_co2', false);
+        }
+
+        if (device.lastMetrics.tvoc > device.deviceSettings.desired.ccs811_ranges.tvoc_red) {
+          await this.setCapabilityValue('alarm_tvoc', true);
+        } else {
+          await this.setCapabilityValue('alarm_tvoc', false);
+        }
+
+        if (device.lastMetrics.batteryPercentage < 20) {
+          await this.setCapabilityValue('alarm_battery', true);
+        } else {
+          await this.setCapabilityValue('alarm_battery', false);
         }
 
       }).catch((err) => {
