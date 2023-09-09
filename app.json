@@ -419,17 +419,35 @@
         "measure_temperature",
         "measure_humidity",
         "measure_co2",
-        "alarm_co2",
         "measure_tvoc",
         "measure_battery",
+        "alarm_temperature",
+        "alarm_humidity",
+        "alarm_co2",
+        "alarm_tvoc",
         "alarm_battery"
       ],
       "capabilitiesOptions": {
         "measure_co2": {
           "title": "eCO2"
         },
+        "alarm_temperature": {
+          "title": {
+            "en": "Temperature Alarm",
+            "no": "Temperatur Alarm"
+          }
+        },
+        "alarm_humidity": {
+          "title": {
+            "en": "Humidity Alarm",
+            "no": "Luftfuktighet Alarm"
+          }
+        },
         "alarm_co2": {
           "title": "eCO2 Alarm"
+        },
+        "alarm_tvoc": {
+          "title": "TVOC Alarm"
         }
       },
       "energy": {
@@ -464,6 +482,93 @@
     }
   ],
   "capabilities": {
+    "alarm_humidity": {
+      "type": "boolean",
+      "uiComponent": "sensor",
+      "icon": "/drivers/mill-sense/assets/humidity.svg",
+      "title": "Humidity Alarm",
+      "getable": true,
+      "setable": false,
+      "insights": true
+    },
+    "alarm_temperature": {
+      "type": "boolean",
+      "uiComponent": "sensor",
+      "icon": "/drivers/mill-sense/assets/temperature.svg",
+      "title": {
+        "en": "Temperature alarm",
+        "nl": "Temperatuur alarm",
+        "de": "Temperatur-Alarm",
+        "fr": "Alarme température",
+        "it": "Allarme temperatura",
+        "no": "Temperatur-alarm",
+        "es": "Alarma de Temperatura",
+        "da": "Temperatur-alarm",
+        "ru": "Сигнал температура",
+        "pl": "Alarm o temperatura"
+      },
+      "getable": true,
+      "setable": false,
+      "insights": true
+    },
+    "alarm_tvoc": {
+      "type": "boolean",
+      "title": {
+        "en": "TVOC alarm",
+        "nl": "TVOC alarm",
+        "de": "TVOC-Alarm",
+        "fr": "Alarme TVOC",
+        "it": "Allarme TVOC",
+        "no": "TVOC-alarm",
+        "es": "Alarma de TVOC",
+        "da": "TVOC-alarm",
+        "ru": "Сигнал TVOC",
+        "pl": "Alarm o TVOC"
+      },
+      "desc": {
+        "en": "True when dangerous TVOC values have been detected",
+        "nl": "Gaat af bij gevaarlijke concentraties TVOC alarm",
+        "de": "True, wenn gefährliche TVOC-Werte erkannt wurden",
+        "fr": "Vrai si des valeurs dangereuses de TVOC ont été détectées",
+        "it": "Vero quando sono stati rilevati valori pericolosi di TVOC",
+        "no": "Sant når farlige TVOC-verdier har blitt oppdaget",
+        "es": "Verdadero cuando se han detectado valores peligrosos de TVOC",
+        "da": "Sandt, når farlige TVOC-værdier er blevet opdaget",
+        "ru": "Верно при обнаружении опасных значений TVOC",
+        "pl": "Adekwatny, kiedy wykryty zostanie niebezpieczny poziom stężenia TVOC"
+      },
+      "insights": true,
+      "insightsTitleTrue": {
+        "en": "TVOC alarm turned on",
+        "nl": "TVOC alarm ging af",
+        "de": "TVOC-Alarm ist angegangen",
+        "fr": "L'alarme TVOC s'est activée",
+        "it": "Allarme TVOC attivato",
+        "sv": "TVOC-larm på",
+        "no": "TVOC-alarm aktivert",
+        "es": "Alarma de TVOC activada",
+        "da": "TVOC-alarm aktiveret",
+        "ru": "Сигнал TVOC включен",
+        "pl": "Alarm o TVOC włączony"
+      },
+      "insightsTitleFalse": {
+        "en": "TVOC alarm turned off",
+        "nl": "TVOC alarm ging uit",
+        "de": "TVOC-Alarm ist ausgegangen",
+        "fr": "L'alarme TVOC s'est désactivée",
+        "it": "Allarme TVOC disattivato",
+        "sv": "TVOC-larm av",
+        "no": "TVOC-alarm deaktivert",
+        "es": "Alarma de TVOC desactivada",
+        "da": "TVOC-alarm deaktiveret",
+        "ru": "Сигнал TVOC выключен",
+        "pl": "Alarm o TVOC wyłączony"
+      },
+      "getable": true,
+      "setable": false,
+      "uiComponent": "sensor",
+      "icon": "/drivers/mill-sense/assets/voc.svg"
+    },
     "measure_tvoc": {
       "type": "number",
       "uiComponent": "sensor",

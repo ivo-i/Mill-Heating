@@ -101,8 +101,8 @@ class MillSense extends Device {
         await this.setCapabilityValue('measure_tvoc', device.lastMetrics.tvoc);
         await this.setCapabilityValue('measure_battery', device.lastMetrics.batteryPercentage);
 
-        if (device.lastMetrics.temperature < device.deviceSettings.desired.ens210_ranges.temperature_red_low ||
-          device.lastMetrics.temperature > device.deviceSettings.desired.ens210_ranges.temperature_red_high ) {
+        if (device.lastMetrics.temperature <= 5 ||
+          device.lastMetrics.temperature >= 35 ) {
           await this.setCapabilityValue('alarm_temperature', true);
         } else {
           await this.setCapabilityValue('alarm_temperature', false);

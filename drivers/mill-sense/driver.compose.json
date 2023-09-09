@@ -24,10 +24,16 @@
       "title": "eCO2"
     },
     "alarm_temperature": {
-      "title": "Temperature Alarm"
+      "title": { 
+	"en": "Temperature Alarm",
+        "no": "Temperatur Alarm"
+      }
     },
     "alarm_humidity": {
-      "title": "Humidity Alarm"
+      "title": { 
+        "en": "Humidity Alarm",  
+        "no": "Luftfuktighet Alarm"
+      }
     },
     "alarm_co2": {
       "title": "eCO2 Alarm"

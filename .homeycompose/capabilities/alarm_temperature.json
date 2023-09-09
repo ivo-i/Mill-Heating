@@ -1,0 +1,20 @@
+{
+    "type": "boolean",
+    "uiComponent": "sensor",
+    "icon": "/drivers/mill-sense/assets/temperature.svg",
+    "title": {
+        "en": "Temperature alarm",
+        "nl": "Temperatuur alarm",
+        "de": "Temperatur-Alarm",
+        "fr": "Alarme température",
+        "it": "Allarme temperatura",
+        "no": "Temperatur-alarm",
+        "es": "Alarma de Temperatura",
+        "da": "Temperatur-alarm",
+        "ru": "Сигнал температура",
+        "pl": "Alarm o temperatura"
+    },
+    "getable": true,
+    "setable": false,
+    "insights": true
+}
