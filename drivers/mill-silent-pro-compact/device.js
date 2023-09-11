@@ -144,9 +144,6 @@ class MillSilentProCompact extends Device {
           case 'MANUAL_LEVEL7':
             await this.setCapabilityValue('mill_silent_pro_mode', device.deviceSettings.reported.fan_speed_mode);
             break;
-          // default:
-          //   await this.setCapabilityValue('mill_silent_pro_mode', "AUTO");
-          //   break;
         }
         if (device.isEnabled == false ) {
               await this.setCapabilityValue('measure_temperature', 0);
@@ -246,8 +243,6 @@ class MillSilentProCompact extends Device {
       .then(result => this.log(result))
       .catch(err => this.log(err));
   }
-  // deviceSettings.reported.fan_speed_mode : HARD_OFF SOFT_OFF AUTO  SLEEP BOOST MANUAL_LEVEL1 - MANUAL_LEVEL7
-
 }
 
 module.exports = MillSilentProCompact;
