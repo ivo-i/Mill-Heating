@@ -1,0 +1,22 @@
+{
+    "type": "boolean",
+    "uiComponent": "sensor",
+    "icon": "/drivers/mill-silent-pro-compact/assets/HEPA-filter.svg",
+    "title": {
+        "en": "Filter status",
+        "no": "Filterstatus"
+      },
+      "label": {
+        "true": {
+          "en": "Error",
+          "no": "Feil"
+        },
+        "false": {
+          "en": "OK",
+          "no": "Ok"
+        }
+      },
+    "getable": true,
+    "setable": false,
+    "insights": true
+}

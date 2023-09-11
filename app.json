@@ -425,7 +425,8 @@
         "alarm_humidity",
         "alarm_co2",
         "alarm_tvoc",
-        "alarm_battery"
+        "alarm_battery",
+        "alarm_charging_status"
       ],
       "capabilitiesOptions": {
         "measure_co2": {
@@ -448,6 +449,9 @@
         },
         "alarm_tvoc": {
           "title": "TVOC Alarm"
+        },
+        "alarm_charging_status": {
+          "title": "Charging"
         }
       },
       "energy": {
@@ -479,9 +483,125 @@
         }
       ],
       "id": "mill-sense"
+    },
+    {
+      "name": {
+        "en": "Mill Silent Pro Compact",
+        "no": "Mill Silent Pro Compact",
+        "se": "Mill Silent Pro Compact",
+        "da": "Mill Silent Pro Compact",
+        "nl": "Mill Silent Pro Compact"
+      },
+      "class": "thermostat",
+      "capabilities": [
+        "onoff",
+        "mill_silent_pro_mode",
+        "measure_temperature",
+        "measure_humidity",
+        "measure_tvoc_pm1",
+        "measure_tvoc_pm2_5",
+        "measure_tvoc_pm10",
+        "alarm_temperature",
+        "alarm_humidity",
+        "alarm_tvoc",
+        "alarm_filter_status"
+      ],
+      "capabilitiesOptions": {
+        "alarm_temperature": {
+          "title": {
+            "en": "Temperature Alarm",
+            "no": "Temperatur Alarm"
+          }
+        },
+        "alarm_humidity": {
+          "title": {
+            "en": "Humidity Alarm",
+            "no": "Luftfuktighet Alarm"
+          }
+        },
+        "alarm_tvoc": {
+          "title": {
+            "en": "TVOC Alarm",
+            "no": "TVOC-Alarm"
+          }
+        }
+      },
+      "energy": {
+        "batteries": [
+          "INTERNAL"
+        ]
+      },
+      "platforms": [
+        "local"
+      ],
+      "connectivity": [],
+      "images": {
+        "small": "/drivers/mill-silent-pro-compact/assets/images/small.png",
+        "large": "/drivers/mill-silent-pro-compact/assets/images/large.png",
+        "xlarge": "/drivers/mill-silent-pro-compact/assets/images/xlarge.png"
+      },
+      "icon": "/drivers/mill-silent-pro-compact/assets/icon.svg",
+      "pair": [
+        {
+          "id": "list_devices",
+          "template": "list_devices",
+          "navigation": {
+            "next": "add_device"
+          }
+        },
+        {
+          "id": "add_device",
+          "template": "add_devices"
+        }
+      ],
+      "id": "mill-silent-pro-compact"
     }
   ],
   "capabilities": {
+    "alarm_charging_status": {
+      "type": "boolean",
+      "uiComponent": "sensor",
+      "icon": "/drivers/mill-sense/assets/battery-charging.svg",
+      "title": {
+        "en": "Charging",
+        "no": "Ladding"
+      },
+      "label": {
+        "true": {
+          "en": "Yes",
+          "no": "Ja"
+        },
+        "false": {
+          "en": "No",
+          "no": "Nei"
+        }
+      },
+      "getable": true,
+      "setable": false,
+      "insights": true
+    },
+    "alarm_filter_status": {
+      "type": "boolean",
+      "uiComponent": "sensor",
+      "icon": "/drivers/mill-silent-pro-compact/assets/HEPA-filter.svg",
+      "title": {
+        "en": "Filter status",
+        "no": "Filterstatus"
+      },
+      "label": {
+        "true": {
+          "en": "Error",
+          "no": "Feil"
+        },
+        "false": {
+          "en": "OK",
+          "no": "Ok"
+        }
+      },
+      "getable": true,
+      "setable": false,
+      "insights": true
+    },
     "alarm_humidity": {
       "type": "boolean",
       "uiComponent": "sensor",
@@ -567,13 +687,43 @@
       "getable": true,
       "setable": false,
       "uiComponent": "sensor",
-      "icon": "/drivers/mill-sense/assets/voc.svg"
+      "icon": "/drivers/mill-sense/assets/tvoc.svg"
     },
     "measure_tvoc": {
       "type": "number",
       "uiComponent": "sensor",
-      "icon": "/drivers/mill-sense/assets/voc.svg",
+      "icon": "/drivers/mill-sense/assets/tvoc.svg",
       "title": "TVOC",
+      "units": "ppb",
+      "getable": true,
+      "setable": false,
+      "insights": true
+    },
+    "measure_tvoc_pm1": {
+      "type": "number",
+      "uiComponent": "sensor",
+      "icon": "/drivers/mill-silent-pro-compact/assets/tvoc-pm1.svg",
+      "title": "TVOC pm1",
+      "units": "ppb",
+      "getable": true,
+      "setable": false,
+      "insights": true
+    },
+    "measure_tvoc_pm10": {
+      "type": "number",
+      "uiComponent": "sensor",
+      "icon": "/drivers/mill-silent-pro-compact/assets/tvoc-pm10.svg",
+      "title": "TVOC pm10",
+      "units": "ppb",
+      "getable": true,
+      "setable": false,
+      "insights": true
+    },
+    "measure_tvoc_pm2_5": {
+      "type": "number",
+      "uiComponent": "sensor",
+      "icon": "/drivers/mill-silent-pro-compact/assets/tvoc-pm2_5.svg",
+      "title": "TVOC pm2.5",
       "units": "ppb",
       "getable": true,
       "setable": false,
@@ -676,6 +826,105 @@
         "no": "Inaktiv",
         "nl": "Stil"
       }
+    },
+    "mill_silent_pro_mode": {
+      "type": "enum",
+      "title": {
+        "en": "Fan mode",
+        "no": "Vifter modus"
+      },
+      "desc": {
+        "en": "Mode of the fan",
+        "no": "viftermodus"
+      },
+      "values": [
+        {
+          "id": "HARD_OFF",
+          "title": {
+            "en": "Hard off",
+            "no": "Hardt av"
+          }
+        },
+        {
+          "id": "SOFT_OFF",
+          "title": {
+            "en": "Off",
+            "no": "Av"
+          }
+        },
+        {
+          "id": "AUTO",
+          "title": {
+            "en": "Auto",
+            "no": "Auto"
+          }
+        },
+        {
+          "id": "SLEEP",
+          "title": {
+            "en": "Night",
+            "no": "Natt"
+          }
+        },
+        {
+          "id": "BOOST",
+          "title": {
+            "en": "Boosted",
+            "no": "Forsterket"
+          }
+        },
+        {
+          "id": "MANUAL_LEVEL1",
+          "title": {
+            "en": "Manual til level 1",
+            "no": "Manuelt på nivå 1"
+          }
+        },
+        {
+          "id": "MANUAL_LEVEL2",
+          "title": {
+            "en": "Manual til level 2",
+            "no": "Manuelt på nivå 2"
+          }
+        },
+        {
+          "id": "MANUAL_LEVEL3",
+          "title": {
+            "en": "Manual til level 3",
+            "no": "Manuelt på nivå 3"
+          }
+        },
+        {
+          "id": "MANUAL_LEVEL4",
+          "title": {
+            "en": "Manual til level 4",
+            "no": "Manuelt på nivå 4"
+          }
+        },
+        {
+          "id": "MANUAL_LEVEL5",
+          "title": {
+            "en": "Manual til level 5",
+            "no": "Manuelt på nivå 5"
+          }
+        },
+        {
+          "id": "MANUAL_LEVEL6",
+          "title": {
+            "en": "Manual til level 6",
+            "no": "Manuelt på nivå 6"
+          }
+        },
+        {
+          "id": "MANUAL_LEVEL7",
+          "title": {
+            "en": "Manual at level 7",
+            "no": "Manuelt på nivå 7"
+          }
+        }
+      ],
+      "getable": true,
+      "setable": true
     }
   }
 }

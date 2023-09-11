@@ -1,0 +1,99 @@
+{
+  "type": "enum",
+  "title": {
+    "en": "Fan mode",
+    "no": "Vifter modus"
+  },
+  "desc": {
+    "en": "Mode of the fan",
+    "no": "viftermodus"
+  },
+  "values": [
+    {
+      "id": "HARD_OFF",
+      "title": {
+        "en": "Hard off",
+        "no": "Hardt av"
+      }
+    },
+    {
+      "id": "SOFT_OFF",
+      "title": {
+        "en": "Off",
+        "no": "Av"
+      }
+    },
+    {
+      "id": "AUTO",
+      "title": {
+        "en": "Auto",
+        "no": "Auto"      
+      }
+    },
+    {
+      "id": "SLEEP",
+      "title": {
+        "en": "Night",
+        "no": "Natt"
+      }
+    },
+    {
+      "id": "BOOST",
+      "title": {
+        "en": "Boosted",
+        "no": "Forsterket"
+      }
+    },
+    {
+      "id": "MANUAL_LEVEL1",
+      "title": {
+        "en": "Manual til level 1",
+        "no": "Manuelt på nivå 1"
+      }
+    },
+    {
+      "id": "MANUAL_LEVEL2",
+      "title": {
+        "en": "Manual til level 2",
+        "no": "Manuelt på nivå 2"
+      }
+    },
+    {
+      "id": "MANUAL_LEVEL3",
+      "title": {
+        "en": "Manual til level 3",
+        "no": "Manuelt på nivå 3"
+      }
+    },
+    {
+      "id": "MANUAL_LEVEL4",
+      "title": {
+        "en": "Manual til level 4",
+        "no": "Manuelt på nivå 4"
+      }
+    },
+    {
+      "id": "MANUAL_LEVEL5",
+      "title": {
+        "en": "Manual til level 5",
+        "no": "Manuelt på nivå 5"
+      }
+    },
+    {
+      "id": "MANUAL_LEVEL6",
+      "title": {
+        "en": "Manual til level 6",
+        "no": "Manuelt på nivå 6"
+      }
+    },
+    {
+      "id": "MANUAL_LEVEL7",
+      "title": {
+        "en": "Manual at level 7",
+        "no": "Manuelt på nivå 7"
+      }
+    }
+  ],
+  "getable": true,
+  "setable": true
+}

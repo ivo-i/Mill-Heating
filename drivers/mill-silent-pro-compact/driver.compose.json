@@ -1,32 +1,29 @@
 {
   "name": {
-    "en": "Mill Sense Air",
-    "no": "Mill Sense Air",
-    "se": "Mill Sense Air",
-    "da": "Mill Sense Air",
-    "nl": "Mill Sense Air"
+    "en": "Mill Silent Pro Compact",
+    "no": "Mill Silent Pro Compact",
+    "se": "Mill Silent Pro Compact",
+    "da": "Mill Silent Pro Compact",
+    "nl": "Mill Silent Pro Compact"
   },
-  "class": "sensor",
+  "class": "thermostat",
   "capabilities": [
+    "onoff",
+    "mill_silent_pro_mode",
     "measure_temperature",
     "measure_humidity",
-    "measure_co2",
-    "measure_tvoc",
-    "measure_battery",
+    "measure_tvoc_pm1",
+    "measure_tvoc_pm2_5",
+    "measure_tvoc_pm10",
     "alarm_temperature",
     "alarm_humidity",
-    "alarm_co2",
     "alarm_tvoc",
-    "alarm_battery",
-    "alarm_charging_status"
+    "alarm_filter_status"
   ],
   "capabilitiesOptions": {
-    "measure_co2": {
-      "title": "eCO2"
-    },
     "alarm_temperature": {
       "title": { 
-	"en": "Temperature Alarm",
+      	"en": "Temperature Alarm",
         "no": "Temperatur Alarm"
       }
     },
@@ -36,14 +33,11 @@
         "no": "Luftfuktighet Alarm"
       }
     },
-    "alarm_co2": {
-      "title": "eCO2 Alarm"
-    },
     "alarm_tvoc": {
-      "title": "TVOC Alarm"
-    },
-    "alarm_charging_status": {
-      "title": "Charging"
+      "title": { 
+        "en": "TVOC Alarm",  
+        "no": "TVOC-Alarm"
+      }
     }
   },
   "energy": {

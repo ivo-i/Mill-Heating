@@ -54,7 +54,7 @@
   "getable": true,
   "setable": false,
   "uiComponent": "sensor",
-  "icon": "/drivers/mill-sense/assets/voc.svg",
+  "icon": "/drivers/mill-sense/assets/tvoc.svg",
   "$flow": {
     "triggers": [
       {
