@@ -1,0 +1,25 @@
+{
+  "name": {
+    "en": "Mill"
+  },
+  "class": "thermostat",
+  "capabilities": [
+    "alarm_heat",
+    "measure_power",
+    "target_temperature",
+    "measure_temperature",
+    "thermostat_mode",
+    "onoff"
+  ],
+  "platforms": [
+    "local"
+  ],
+  "connectivity": [
+    "lan"
+  ],
+  "images": {
+    "small": "{{driverAssetsPath}}/images/small.png",
+    "large": "{{driverAssetsPath}}/images/large.png",
+    "xlarge": "{{driverAssetsPath}}/images/xlarge.png"
+  }
+}

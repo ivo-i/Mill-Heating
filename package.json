@@ -4,10 +4,10 @@
   "description": "Integrate Mill WiFi heating devices with Homey",
   "main": "app.js",
   "dependencies": {
-    "@sentry/node": "7.60.0",
-    "axios": "^1.4.0",
+    "@sentry/node": "7.74.1",
+    "axios": "1.5.1",
     "node-fetch": "3.3.2",
-    "@types/node": "^20.4.5"
+    "@types/node": "20.8.7"
   },
   "devDependencies": {
   },
