@@ -41,6 +41,9 @@ class MillSense extends Device {
     if (!this.hasCapability('alarm_battery')) {
       await this.addCapability('alarm_battery');
     }
+    if (!this.hasCapability('alarm_charging_status')) {
+      await this.addCapability('alarm_charging_status');
+    }
 
     this.refreshTimeout = null;
     this.millApi = null;
@@ -94,45 +97,65 @@ class MillSense extends Device {
           tvoc: device.lastMetrics.tvoc,
           battery: device.lastMetrics.batteryPercentage,
         });
-        
-        await this.setCapabilityValue('measure_temperature', device.lastMetrics.temperature);
-        await this.setCapabilityValue('measure_humidity', device.lastMetrics.humidity);
-        await this.setCapabilityValue('measure_co2', device.lastMetrics.eco2);
-        await this.setCapabilityValue('measure_tvoc', device.lastMetrics.tvoc);
-        await this.setCapabilityValue('measure_battery', device.lastMetrics.batteryPercentage);
 
-        if (device.lastMetrics.temperature < device.deviceSettings.desired.ens210_ranges.temperature_red_low ||
-          device.lastMetrics.temperature > device.deviceSettings.desired.ens210_ranges.temperature_red_high ) {
-          await this.setCapabilityValue('alarm_temperature', true);
-        } else {
+        if ( device.lastMetrics.chargingStatus == 2 ) {
+          await this.setCapabilityValue('alarm_charging_status', true);
+          await this.setCapabilityValue('measure_temperature', 0);
+          await this.setCapabilityValue('measure_humidity', 0);
+          await this.setCapabilityValue('measure_co2', 0);
+          await this.setCapabilityValue('measure_tvoc', 0);
+          await this.setCapabilityValue('measure_battery', 0);
           await this.setCapabilityValue('alarm_temperature', false);
-        }
-
-        if (device.lastMetrics.humidity < device.deviceSettings.desired.ens210_ranges.humidity_red_low ||
-            device.lastMetrics.humidity > device.deviceSettings.desired.ens210_ranges.humidity_red_high ) {
-          await this.setCapabilityValue('alarm_humidity', true);
-        } else {
           await this.setCapabilityValue('alarm_humidity', false);
-        }
-
-        if (device.lastMetrics.eco2 > device.deviceSettings.desired.ccs811_ranges.eco2_red) {
-          await this.setCapabilityValue('alarm_co2', true);
-        } else {
           await this.setCapabilityValue('alarm_co2', false);
-        }
-
-        if (device.lastMetrics.tvoc > device.deviceSettings.desired.ccs811_ranges.tvoc_red) {
-          await this.setCapabilityValue('alarm_tvoc', true);
-        } else {
           await this.setCapabilityValue('alarm_tvoc', false);
-        }
-
-        if (device.lastMetrics.batteryPercentage < 20) {
-          await this.setCapabilityValue('alarm_battery', true);
+          if (device.lastMetrics.batteryPercentage < 20) {
+            await this.setCapabilityValue('alarm_battery', true);
+          } else {
+            await this.setCapabilityValue('alarm_battery', false);
+          }
         } else {
-          await this.setCapabilityValue('alarm_battery', false);
-        }
+          await this.setCapabilityValue('measure_temperature', device.lastMetrics.temperature);
+          await this.setCapabilityValue('measure_humidity', device.lastMetrics.humidity);
+          await this.setCapabilityValue('measure_co2', device.lastMetrics.eco2);
+          await this.setCapabilityValue('measure_tvoc', device.lastMetrics.tvoc);
+          await this.setCapabilityValue('measure_battery', device.lastMetrics.batteryPercentage);
+          await this.setCapabilityValue('alarm_charging_status', false);
 
+          if ((device.lastMetrics.temperature != 0 &&
+              device.lastMetrics.temperature <= 5 ) ||
+              device.lastMetrics.temperature >= 35 ) {
+            await this.setCapabilityValue('alarm_temperature', true);
+          } else {
+            await this.setCapabilityValue('alarm_temperature', false);
+          }
+
+          if ((device.lastMetrics.humidity > 0 &&
+              device.lastMetrics.humidity <= device.deviceSettings.desired.ens210_ranges.humidity_red_low ) ||
+              device.lastMetrics.humidity >= device.deviceSettings.desired.ens210_ranges.humidity_red_high ) {
+            await this.setCapabilityValue('alarm_humidity', true);
+          } else {
+            await this.setCapabilityValue('alarm_humidity', false);
+          }
+
+          if (device.lastMetrics.eco2 > device.deviceSettings.desired.ccs811_ranges.eco2_red) {
+            await this.setCapabilityValue('alarm_co2', true);
+          } else {
+            await this.setCapabilityValue('alarm_co2', false);
+          }
+
+          if (device.lastMetrics.tvoc > device.deviceSettings.desired.ccs811_ranges.tvoc_red) {
+            await this.setCapabilityValue('alarm_tvoc', true);
+          } else {
+            await this.setCapabilityValue('alarm_tvoc', false);
+          }
+
+          if (device.lastMetrics.batteryPercentage < 20) {
+            await this.setCapabilityValue('alarm_battery', true);
+          } else {
+            await this.setCapabilityValue('alarm_battery', false);
+          }
+        } 
       }).catch((err) => {
         this.homey.app.dError('Error caught while refreshing state', err);
       });

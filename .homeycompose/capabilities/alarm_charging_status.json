@@ -1,0 +1,22 @@
+{
+    "type": "boolean",
+    "uiComponent": "sensor",
+    "icon": "/drivers/mill-sense/assets/battery-charging.svg",
+    "title": {
+        "en": "Charging",
+        "no": "Ladding"
+      },
+      "label": {
+        "true": {
+          "en": "Yes",
+          "no": "Ja"
+        },
+        "false": {
+          "en": "No",
+          "no": "Nei"
+        }
+      },
+    "getable": true,
+    "setable": false,
+    "insights": true
+}

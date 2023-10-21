@@ -1,8 +1,8 @@
 {
     "type": "number",
     "uiComponent": "sensor",
-    "icon": "/drivers/mill-sense/assets/tvoc.svg",
-    "title": "TVOC",
+    "icon": "/drivers/mill-silent-pro-compact/assets/tvoc-pm2_5.svg",
+    "title": "TVOC pm2.5",
     "units": "ppb",
     "getable": true,
     "setable": false,

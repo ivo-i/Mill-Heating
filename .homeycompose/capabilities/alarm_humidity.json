@@ -1,0 +1,9 @@
+{
+    "type": "boolean",
+    "uiComponent": "sensor",
+    "icon": "/drivers/mill-sense/assets/humidity.svg",
+    "title": "Humidity Alarm",
+    "getable": true,
+    "setable": false,
+    "insights": true
+}

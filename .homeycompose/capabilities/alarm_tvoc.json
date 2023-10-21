@@ -1,0 +1,113 @@
+{
+  "type": "boolean",
+  "title": {
+    "en": "TVOC alarm",
+    "nl": "TVOC alarm",
+    "de": "TVOC-Alarm",
+    "fr": "Alarme TVOC",
+    "it": "Allarme TVOC",
+    "no": "TVOC-alarm",
+    "es": "Alarma de TVOC",
+    "da": "TVOC-alarm",
+    "ru": "Сигнал TVOC",
+    "pl": "Alarm o TVOC"
+  },
+  "desc": {
+    "en": "True when dangerous TVOC values have been detected",
+    "nl": "Gaat af bij gevaarlijke concentraties TVOC alarm",
+    "de": "True, wenn gefährliche TVOC-Werte erkannt wurden",
+    "fr": "Vrai si des valeurs dangereuses de TVOC ont été détectées",
+    "it": "Vero quando sono stati rilevati valori pericolosi di TVOC",
+    "no": "Sant når farlige TVOC-verdier har blitt oppdaget",
+    "es": "Verdadero cuando se han detectado valores peligrosos de TVOC",
+    "da": "Sandt, når farlige TVOC-værdier er blevet opdaget",
+    "ru": "Верно при обнаружении опасных значений TVOC",
+    "pl": "Adekwatny, kiedy wykryty zostanie niebezpieczny poziom stężenia TVOC"
+  },
+  "insights": true,
+  "insightsTitleTrue": {
+    "en": "TVOC alarm turned on",
+    "nl": "TVOC alarm ging af",
+    "de": "TVOC-Alarm ist angegangen",
+    "fr": "L'alarme TVOC s'est activée",
+    "it": "Allarme TVOC attivato",
+    "sv": "TVOC-larm på",
+    "no": "TVOC-alarm aktivert",
+    "es": "Alarma de TVOC activada",
+    "da": "TVOC-alarm aktiveret",
+    "ru": "Сигнал TVOC включен",
+    "pl": "Alarm o TVOC włączony"
+  },
+  "insightsTitleFalse": {
+    "en": "TVOC alarm turned off",
+    "nl": "TVOC alarm ging uit",
+    "de": "TVOC-Alarm ist ausgegangen",
+    "fr": "L'alarme TVOC s'est désactivée",
+    "it": "Allarme TVOC disattivato",
+    "sv": "TVOC-larm av",
+    "no": "TVOC-alarm deaktivert",
+    "es": "Alarma de TVOC desactivada",
+    "da": "TVOC-alarm deaktiveret",
+    "ru": "Сигнал TVOC выключен",
+    "pl": "Alarm o TVOC wyłączony"
+  },
+  "getable": true,
+  "setable": false,
+  "uiComponent": "sensor",
+  "icon": "/drivers/mill-sense/assets/tvoc.svg",
+  "$flow": {
+    "triggers": [
+      {
+        "id": "alarm_TVOC_true",
+        "highlight": true,
+        "title": {
+          "en": "The TVOC alarm turned on",
+          "nl": "Het TVOC alarm gaat aan",
+          "de": "Der TVOC-Alarm ist angegangen",
+          "fr": "L'alarme TVOC s'est activée",
+          "it": "L'allarme TVOC è stato attivato",
+          "sv": "TVOC-larmet på",
+          "no": "TVOC-alarmen er aktivert",
+          "es": "La alarma de TVOC se ha activado",
+          "da": "TVOC-alarmen blev aktiveret",
+          "ru": "Сигнал TVOC включен",
+          "pl": "Alarm o TVOC włączony"
+        }
+      },
+      {
+        "id": "alarm_TVOC_false",
+        "title": {
+          "en": "The TVOC alarm turned off",
+          "nl": "Het TVOC alarm gaat uit",
+          "de": "Der TVOC-Alarm ist ausgegangen",
+          "fr": "L'alarme TVOC s'est désactivée",
+          "it": "L'allarme TVOC è stato disattivato",
+          "sv": "TVOC-larmet av",
+          "no": "TVOC-alarmen er deaktivert",
+          "es": "La alarma de TVOC se ha desactivado",
+          "da": "TVOC-alarmen blev deaktiveret",
+          "ru": "Сигнал TVOC выключен",
+          "pl": "Alarm o TVOC wyłączony"
+        }
+      }
+    ],
+    "conditions": [
+      {
+        "id": "alarm_TVOC",
+        "title": {
+          "en": "The TVOC alarm is !{{on|off}}",
+          "nl": "Het TVOC alarm is !{{aan|uit}}",
+          "de": "Der TVOC-Alarm ist !{{an|aus}}",
+          "fr": "L'alarme TVOC est !{{en marche|arrêtée}}",
+          "it": "L'allarme TVOC è !{{acceso|spento}}",
+          "sv": "TVOC-larmet är !{{på|av}}",
+          "no": "TVOC-alarmen er !{{på|av}}",
+          "es": "La alarma de TVOC está !{{activada|desactivada}}",
+          "da": "TVOC-alarmen er !{{tændt|slukket}}",
+          "ru": "Сигнал TVOC !{{вкл.|выкл.}}",
+          "pl": "Alarm o TVOC !{{włączony|wyłączony}}"
+        }
+      }
+    ]
+  }
+}
