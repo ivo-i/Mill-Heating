@@ -6,9 +6,10 @@ const MillLocalAPI = require('../../lib/millLocal');
 
 class MillDeviceV2 extends Device {
 	async onInit() {
-		this.log('MillDeviceV2 has been initialized');
+		this.homey.app.dDebug(`[${this.getName()}] (${this.deviceId}) initialized`);
 
 		this.deviceId = this.getData().id;
+		this.deviceData = {};
 
 		if (this.getData().api === 'local') {
 			this.millApi = new MillLocalAPI(this.getData().ip);
@@ -16,7 +17,17 @@ class MillDeviceV2 extends Device {
 			this.millApi = this.homey.app.getMillApi();
 		}
 
-		this.log(`[${this.getName()}] ${this.getClass()} (${this.deviceId}) initialized`);
+		const operationMode = await this.millApi.getOperationMode();
+		if (operationMode.mode !== 'Control individually') {
+			this.log(`[${this.getName()}] Mill is not in Control individually mode. Changing now...`);
+			await this.millApi.setOperationMode('Control individually').then((result) => {
+				this.log(`[${this.getName()}] Mill is now in Control individually mode`, {
+					response: result,
+				});
+			}).catch((err) => {
+				this.homey.app.dError(`[${this.getName()}] Error caught while changing operation mode`, err);
+			});
+		}
 
 		// Add new capailities for devices that don't have them yet
 		if (!this.getCapabilities().includes('onoff')) {
@@ -25,40 +36,23 @@ class MillDeviceV2 extends Device {
 		if (!this.getCapabilities().includes('measure_power')) {
 			this.addCapability('measure_power').catch(this.error);
 		}
+		// Remove old capabilities that are not used on the local API
+		if (this.hasCapability('mill_mode')) {
+			this.removeCapability('mill_mode').catch(this.error);
+		}
 
 		// capabilities
 		this.registerCapabilityListener('target_temperature', this.onCapabilityTargetTemperature.bind(this));
-		this.registerCapabilityListener('mill_mode', this.onCapabilityThermostatMode.bind(this));
 		this.registerCapabilityListener('onoff', this.onCapabilityOnOff.bind(this));
-
-		// triggers
-		this.modeChangedTrigger = await this.homey.flow.getDeviceTriggerCard('mill_mode_changed');
-
-		this.modeChangedToTrigger = await this.homey.flow.getDeviceTriggerCard('mill_mode_changed_to');
-		this.modeChangedToTrigger
-			.registerRunListener((args, state) => args.mill_mode === state.mill_mode);
 
 		// conditions
 		this.isHeatingCondition = await this.homey.flow.getConditionCard('mill_is_heating');
 		this.isHeatingCondition
-			.registerRunListener(() => (this.room.roomHeatStatus === true));
-
-		this.isMatchingModeCondition = await this.homey.flow.getConditionCard('mill_mode_matching');
-		this.isMatchingModeCondition
-			.registerRunListener(args => (args.mill_mode.toLowerCase() === this.room.mode));
-
-		// actions
-		this.setProgramAction = await this.homey.flow.getActionCard('mill_set_mode');
-		this.setProgramAction
-			.registerRunListener((args) => {
-				this.log(`[${args.device.getName()}] Flow changed mode to ${args.mill_mode}`);
-				this.homey.app.dDebug(`[${args.device.getName()}] Flow changed mode to ${args.mill_mode}`);
-				return args.device.setThermostatMode(args.mill_mode);
-			});
+			.registerRunListener(() => (this.deviceData.switched_on === true));
 
 		this.homey.setInterval(() => {
 			this.refreshMillService();
-		}, 10 * 1000);
+		}, 5 * 1000);
 
 		this.refreshTimeout = null;
 		this.refreshState();
@@ -73,7 +67,7 @@ class MillDeviceV2 extends Device {
 		}
 
 		try {
-			if (this.homey.app.isConnected()) {
+			if (this.millApi.ping()) {
 				await this.refreshMillService();
 				this.setAvailable();
 			} else {
@@ -115,12 +109,14 @@ class MillDeviceV2 extends Device {
 					status: device.status,
 				});
 
+				this.deviceData = device;
+
 				if (device.operation_mode !== undefined) {
 					const jobs = [
 						this.setCapabilityValue('measure_temperature', device.ambient_temperature),
-						this.setCapabilityValue('mill_mode', device.operation_mode),
+						this.setCapabilityValue('target_temperature', device.set_temperature < 4 ? 4 : device.set_temperature),
 						this.setCapabilityValue('mill_onoff', device.switched_on),
-						this.setCapabilityValue('onoff', device.switched_on !== 'off')
+						this.setCapabilityValue('onoff', device.operation_mode !== 'OFF')
 					];
 
 					if (this.hasCapability('measure_power')) {
@@ -129,28 +125,6 @@ class MillDeviceV2 extends Device {
 						jobs.push(await this.setCapabilityValue('measure_power', device.switched_on ? totalPowerUsage : 0));
 					}
 
-					/*if (room.mode !== 'off') {
-						switch (room.mode) {
-							case 'weekly_program':
-								jobs.push(this.setCapabilityValue('target_temperature', room.roomComfortTemperature));
-								break;
-							case 'comfort':
-								jobs.push(this.setCapabilityValue('target_temperature', room.roomComfortTemperature));
-								break;
-							case 'sleep':
-								jobs.push(this.setCapabilityValue('target_temperature', room.roomSleepTemperature));
-								break;
-							case 'away':
-								jobs.push(this.setCapabilityValue('target_temperature', room.roomAwayTemperature));
-								break;
-							case 'vacation':
-								jobs.push(this.setCapabilityValue('target_temperature', room.vacationTemperature));
-								break;
-							default:
-								jobs.push(this.setCapabilityValue('target_temperature', room.averageTemperature));
-								break;
-						}
-					}*/
 					return Promise.all(jobs).catch((err) => {
 						this.homey.app.dError(`[${this.getName()}] Error caught while refreshing state`, err);
 					});
@@ -180,91 +154,33 @@ class MillDeviceV2 extends Device {
 		this.log(`onCapabilityTargetTemperature(${value})`);
 		//const temp = Math.ceil(value);
 		const temp = value;
-		if (temp !== value && this.room.modeName !== 'Off') { // half degrees isn't supported by Mill, need to round it up
+		if (temp !== value && this.deviceData.switched_on !== false) {
 			await this.setCapabilityValue('target_temperature', temp);
 			this.homey.app.dDebug(`onCapabilityTargetTemperature(${value}=>${temp})`);
 		}
-		const millApi = this.homey.app.getMillApi();
 
-		if (this.room.modeName === 'Weekly_program') {
-			this.room.roomComfortTemperature = temp;
-		} else if (this.room.modeName === 'Comfort') {
-			this.room.roomComfortTemperature = temp;
-		} else if (this.room.modeName === 'Sleep') {
-			this.room.roomSleepTemperature = temp;
-		} else if (this.room.modeName === 'Away') {
-			this.room.roomAwayTemperature = temp;
-		} else if (this.room.modeName === 'Vacation') {
-			this.room.vacationTemperature = temp;
-		}
-
-		millApi.changeRoomTemperature(this.deviceId, this.room)
+		this.millApi.setTemperature('Normal', temp)
 			.then(() => {
 				this.log(`onCapabilityTargetTemperature(${temp}) done`);
-				this.homey.app.dDebug(`[${this.getName()}] Changed temp to ${temp}: mode: ${this.room.modeName}/${this.room.roomProgramName}, comfortTemp: ${this.room.roomComfortTemperature}, awayTemp: ${this.room.roomAwayTemperature}, avgTemp: ${this.room.averageTemperature}, sleepTemp: ${this.room.roomSleepTemperature}`);
-				this.scheduleRefresh(7);
+				this.homey.app.dDebug(`[${this.getName()}] Changed temp to ${temp}.`);
+				this.scheduleRefresh(5);
 			}).catch((err) => {
 				this.log(`onCapabilityTargetTemperature(${temp}) error`);
 				this.homey.app.dError(`[${this.getName()}] Change temp to ${temp} resultet in error`, err);
 			});
 	}
 
-	async setThermostatMode(value) {
-		return new Promise(async (resolve, reject) => {
-			const millApi = this.homey.app.getMillApi();
-			this.room.modeName = value;
-			const jobs = [];
-			if (value !== 'off') {
-				if (value === 'weekly_program') {
-					switch (this.room.activeModeFromWeeklyProgram) {
-						case 'comfort':
-							jobs.push(await this.setCapabilityValue('target_temperature', this.room.roomComfortTemperature));
-							break;
-						case 'sleep':
-							jobs.push(await this.setCapabilityValue('target_temperature', this.room.roomSleepTemperature));
-							break;
-						case 'away':
-							jobs.push(await this.setCapabilityValue('target_temperature', this.room.roomAwayTemperature));
-							break;
-						case 'vacation':
-							jobs.push(await this.setCapabilityValue('target_temperature', this.room.vacationTemperature));
-							break;
-					}
-				} else if (value === 'comfort') {
-					jobs.push(await this.setCapabilityValue('target_temperature', this.room.roomComfortTemperature));
-				} else if (value === 'sleep') {
-					jobs.push(await this.setCapabilityValue('target_temperature', this.room.roomSleepTemperature));
-				} else if (value === 'away') {
-					jobs.push(await this.setCapabilityValue('target_temperature', this.room.roomAwayTemperature));
-				} else if (value === 'vacation') {
-					jobs.push(await this.setCapabilityValue('target_temperature', this.room.vacationTemperature));
-				}
-			}
-			jobs.push(millApi.changeRoomMode(this.deviceId, value.toLowerCase()));
-
-			Promise.all(jobs).then(() => {
-				this.homey.app.dDebug(`[${this.getName()}] Changed mode to ${value}: mode: ${value}/${this.room.roomProgramName}, comfortTemp: ${this.room.roomComfortTemperature}, awayTemp: ${this.room.roomAwayTemperature}, avgTemp: ${this.room.averageTemperature}, sleepTemp: ${this.room.roomSleepTemperature}`);
-				this.scheduleRefresh(7);
-				resolve(value);
-			}).catch((err) => {
-				this.homey.app.dError(`[${this.getName()}] Change mode to ${value} resulted in error`, err);
-				reject(err);
-			});
-		});
-	}
-
-	async onCapabilityThermostatMode(value, opts) {
-		this.log(`onCapabilityThermostatMode(${value})`);
-		this.setThermostatMode(value)
-			.then(result => this.log(result))
-			.catch(err => this.log(err));
-	}
-
 	async onCapabilityOnOff(value, opts) {
-		let mode = value ? 'weekly_program' : 'off';
-		this.setThermostatMode(mode)
-			.then(result => this.log(result))
-			.catch(err => this.log(err));
+		console.log()
+		let mode = value ? 'Control individually' : 'Off';
+		this.millApi.setOperationMode(mode).then(() => {
+			this.log(`onCapabilityOnOff(${value}) done`);
+			this.homey.app.dDebug(`[${this.getName()}] Changed mode to ${mode}.`);
+			this.scheduleRefresh(5);
+		}).catch((err) => {
+			this.log(`onCapabilityOnOff(${value}) error`);
+			this.homey.app.dError(`[${this.getName()}] Change mode to ${mode} resultet in error`, err);
+		});
 	}
 }
 
