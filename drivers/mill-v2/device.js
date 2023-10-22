@@ -114,10 +114,12 @@ class MillDeviceV2 extends Device {
 				if (device.operation_mode !== undefined) {
 					const jobs = [
 						this.setCapabilityValue('measure_temperature', device.ambient_temperature),
-						this.setCapabilityValue('target_temperature', device.set_temperature < 4 ? 4 : device.set_temperature),
+						this.setCapabilityValue('target_temperature', device.set_temperature < 4 ? this.lastSetTemperature : device.set_temperature),
 						this.setCapabilityValue('mill_onoff', device.switched_on),
 						this.setCapabilityValue('onoff', device.operation_mode !== 'OFF')
 					];
+
+					this.lastSetTemperature = device.set_temperature > 4 ? device.set_temperature : this.lastSetTemperature;
 
 					if (this.hasCapability('measure_power')) {
 						const totalPowerUsage = device.current_power;
