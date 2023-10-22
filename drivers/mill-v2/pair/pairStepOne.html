@@ -1,0 +1,61 @@
+<form class="homey-form">
+	<fieldset class="homey-form-fieldset">
+		<legend class="homey-form-legend">Hvilket API vil du bruke? (Kun gen. 3 enheter)</legend>
+		<div class="homey-form-group">
+			<fieldset class="homey-form-radio-set">
+				<legend class="homey-form-radio-set-title">Velg mellom lokal API og Cloud API
+				</legend>
+				<label class="homey-form-radio">
+					<input class="homey-form-radio-input" type="radio" name="selectAPI" value="cloud" />
+					<span class="homey-form-radio-checkmark"></span>
+					<span class="homey-form-radio-text">Cloud API</span>
+				</label>
+				<label class="homey-form-radio">
+					<input class="homey-form-radio-input" type="radio" name="selectAPI" value="local" />
+					<span class="homey-form-radio-checkmark"></span>
+					<span class="homey-form-radio-text">Lokal API</span>
+				</label>
+			</fieldset>
+		</div>
+	</fieldset>
+</form>
+<form class="homey-form" id="localAPIForm" style="display: none; margin-top: 25px;">
+	<fieldset class="homey-form-fieldset">
+		<legend class="homey-form-legend">Skriv inn IP-adresse til Mill-ovnen for lokal API</legend>
+		<div class="homey-form-group">
+			<label class="homey-form-label" for="target">IP-adresse</label>
+			<input class="homey-form-input" id="target" type="text" value="" />
+		</div>
+		<div class="homey-form-group">
+			<button class="homey-button-primary-full" id="testConnection">Test tilkobling</button>
+		</div>
+	</fieldset>
+</form>
+<script type="application/javascript">
+	Homey.setTitle(Homey.__("Mill Heating"));
+
+	$('input[type=radio][name=selectAPI]').change(function () {
+		if (this.value == 'cloud') {
+			$('#localAPIForm').hide();
+		} else if (this.value == 'local') {
+			$('#localAPIForm').show();
+		}
+	});
+
+	$('#testConnection').on('click', function (e) {
+		e.preventDefault();
+		
+		console.log("Testing connection to " + $('#target').val());
+		Homey.emit('pingLocalDevice', $('#target').val()).then(function (result) {
+			console.log(result);
+			if (result.error) {
+				console.log("Connection failed.");
+				return Homey.alert("Tilkobling feilet. Sjekk IP-adressen og prøv igjen.");
+			} else {
+				console.log("Connection successful.");
+				Homey.alert("Tilkobling vellykket!");
+				return Homey.nextView();
+			}
+		});
+	});
+</script>

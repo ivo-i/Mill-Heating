@@ -1,0 +1,25 @@
+<header class="homey-header">
+	<h1 class="homey-title">
+		Mill Heating
+	</h1>
+	<p class="homey-subtitle">
+		Sjekker om bruker er logget inn...
+	</p>
+</header>
+<script type="application/javascript">
+	Homey.showLoadingOverlay();
+	Homey.setTitle(Homey.__("Mill Heating"));
+	Homey.setSubtitle(Homey.__("Sjekker om bruker er logget inn..."));
+
+	Homey.emit('startPairing').then(function (result) {
+		Homey.hideLoadingOverlay();
+		console.log(result);
+		if (result == false) {
+			console.log("User is not logged in. Redirecting to login.");
+			return Homey.showView('login');
+		} else {
+			console.log("User is logged in. Redirecting to startPairing.");
+			return Homey.showView('pairStepOne');
+		}
+	});
+</script>

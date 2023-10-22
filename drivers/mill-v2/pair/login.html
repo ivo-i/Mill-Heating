@@ -1,0 +1,61 @@
+<form class="homey-form" id="loginForm" style="display: none;">
+	<fieldset class="homey-form-fieldset">
+		<legend class="homey-form-legend">Login data</legend>
+
+		<div class="homey-form-group">
+			<label class="homey-form-label" for="username">Epost-adresse/Telefonnummer (Inkl. landskode (+47))</label>
+			<input class="homey-form-input" id="username" type="text" value="" />
+		</div>
+		<div class="homey-form-group">
+			<label class="homey-form-label" for="password">Password</label>
+			<input class="homey-form-input" id="password" type="password" value="" />
+		</div>
+		<div class="homey-form-group">
+			<button class="homey-button homey-button-primary" id="loginButton" type="button">Login</button>
+	</fieldset>
+</form>
+<script type="application/javascript">
+	Homey.setTitle(Homey.__("Mill Heating"));
+	Homey.showLoadingOverlay();
+
+	Homey.emit('getUserInfo').then(function (result) {
+		Homey.hideLoadingOverlay();
+		console.log(result);
+		if (result.error) {
+			console.log("User does not have login information stored in settings. Requesting login information.");
+			return $('#loginForm').show();
+		} else {
+			console.log("User has login information stored in settings. Logging in.");
+			Homey.emit('login', result).then(function (result) {
+				console.log(result);
+				if (result.error) {
+					console.log('Login failed.');
+					return Homey.setNavigationClose();
+				} else {
+					console.log("Login successful. Redirecting to startPairing.");
+					return Homey.showView('pairStepOne');
+				}
+			});
+		}
+	});
+
+	$('#loginButton').click(function () {
+		Homey.showLoadingOverlay();
+		var loginData = {
+			username: $('#username').val(),
+			password: $('#password').val()
+		};
+		Homey.emit('login', loginData).then(function (result) {
+			Homey.hideLoadingOverlay();
+			console.log(result);
+			if (result.error) {
+				console.log('Login failed.');
+				return Homey.setNavigationClose();
+			} else {
+				console.log("Login successful. Redirecting to startPairing.");
+				return Homey.showView('pairStepOne');
+			}
+		});
+	});
+</script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
