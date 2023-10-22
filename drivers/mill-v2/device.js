@@ -57,8 +57,8 @@ class MillDeviceV2 extends Device {
 			});
 
 		this.homey.setInterval(() => {
-			this.updatePowerUsage();
-		}, 300 * 1000);
+			this.refreshMillService();
+		}, 10 * 1000);
 
 		this.refreshTimeout = null;
 		this.refreshState();
