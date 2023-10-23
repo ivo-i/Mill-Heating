@@ -128,11 +128,11 @@ class MillDeviceV2 extends Device {
 					}
 
 					return Promise.all(jobs).catch((err) => {
-						this.homey.app.dError(`[${this.getName()}] Error caught while refreshing state`, err);
+						this.homey.app.dError(`[${this.getName()}] Error caught while refreshing state`, err.message);
 					});
 				}
 			}).catch((err) => {
-				this.homey.app.dError(`[${this.getName()}] Error caught while refreshing state`, err);
+				this.homey.app.dError(`[${this.getName()}] Error caught while refreshing state`, err.message);
 			});
 	}
 

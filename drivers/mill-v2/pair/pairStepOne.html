@@ -31,12 +31,14 @@
 		</div>
 	</fieldset>
 </form>
+<button class="homey-button homey-button-primary" id="nextButton" style="display: none;">Neste</button>
 <script type="application/javascript">
 	Homey.setTitle(Homey.__("Mill Heating"));
 
 	$('input[type=radio][name=selectAPI]').change(function () {
 		if (this.value == 'cloud') {
 			$('#localAPIForm').hide();
+			$('#nextButton').show();
 		} else if (this.value == 'local') {
 			$('#localAPIForm').show();
 		}
@@ -57,5 +59,11 @@
 				return Homey.nextView();
 			}
 		});
+	});
+
+	$('#nextButton').on('click', function (e) {
+		e.preventDefault();
+		
+		return Homey.nextView();
 	});
 </script>

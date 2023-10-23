@@ -1,7 +1,8 @@
 'use strict';
 
 const { Driver } = require('homey');
-const MillLocalAPI = require('../../lib/millLocal');
+const millLocal = require('../../lib/millLocal');
+const millCloud = require('../../lib/millCloud');
 
 class MillDriverV2 extends Driver {
 	async onInit() {
@@ -38,7 +39,7 @@ class MillDriverV2 extends Driver {
 		});
 
 		await session.setHandler('pingLocalDevice', async (data) => {
-			this.millLocal = new MillLocalAPI(data);
+			this.millLocal = new millLocal(data);
 
 			const result = await this.millLocal.pingLocalDevice(data);
 			console.log('result:', result);
@@ -54,6 +55,21 @@ class MillDriverV2 extends Driver {
 				return true;
 			} else {
 				return { error: 'Ping failed' };
+			}
+		});
+
+		await session.setHandler('getCloudDevices', async (data) => {
+			this.millCloud = new millCloud();
+
+			const house = await this.millCloud.listHomes();
+			const houseId = house.ownHouses[0].id;
+
+			const devices = await this.millCloud.listDevices(houseId);
+			console.log('devices:', devices);
+			if (devices) {
+				return devices;
+			} else {
+				return { error: 'No devices found' };
 			}
 		});
 		
