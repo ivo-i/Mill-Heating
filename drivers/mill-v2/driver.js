@@ -59,10 +59,12 @@ class MillDriverV2 extends Driver {
 		});
 
 		await session.setHandler('getCloudDevices', async (data) => {
-			this.millCloud = new millCloud();
+			this.millCloud = new millCloud(this.homey.app);
 
 			const house = await this.millCloud.listHomes();
+			console.log('house:', house);
 			const houseId = house.ownHouses[0].id;
+			console.log('houseId:', houseId);
 
 			const devices = await this.millCloud.listDevices(houseId);
 			console.log('devices:', devices);

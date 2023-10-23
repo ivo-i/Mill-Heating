@@ -586,10 +586,7 @@
           "id": "login"
         },
         {
-          "id": "pairStepOne",
-          "navigation": {
-            "prev": "startPairing"
-          }
+          "id": "pairStepOne"
         },
         {
           "id": "list_devices",

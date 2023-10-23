@@ -2,7 +2,8 @@
 
 const { Device } = require('homey');
 const Room = require('../../lib/models');
-const MillLocalAPI = require('../../lib/millLocal');
+const millLocal = require('../../lib/millLocal');
+const millCloud = require('../../lib/millCloud');
 
 class MillDeviceV2 extends Device {
 	async onInit() {
@@ -12,9 +13,9 @@ class MillDeviceV2 extends Device {
 		this.deviceData = {};
 
 		if (this.getData().api === 'local') {
-			this.millApi = new MillLocalAPI(this.getData().ip);
+			this.millApi = new millLocal(this.getData().ip);
 		} else {
-			this.millApi = this.homey.app.getMillApi();
+			this.millApi = new millCloud(this.homey.app);
 		}
 
 		const operationMode = await this.millApi.getOperationMode();

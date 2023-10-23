@@ -63,7 +63,10 @@
 
 	$('#nextButton').on('click', function (e) {
 		e.preventDefault();
-		
-		return Homey.nextView();
+		Homey.emit('getCloudDevices').then(function (result) {
+			console.log(result);
+		});
+
+		//return Homey.nextView();
 	});
 </script>
