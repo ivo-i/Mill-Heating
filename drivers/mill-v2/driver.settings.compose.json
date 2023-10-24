@@ -1,0 +1,16 @@
+[
+  {
+    "id": "apiVersion",
+    "type": "label",
+    "label": { "en": "API Version", "no": "API Versjon" },
+    "value": "Cloud",
+    "hint": { "en": "The API version device is using.", "no": "API versjonen enheten bruker." }
+  },
+  {
+    "id": "ipAddress",
+    "type": "label",
+    "label": { "en": "IP Address", "no": "IP Adresse" },
+    "value": "192.168.1.1",
+    "hint": { "en": "The IP address of the device.", "no": "IP adressen til enheten." }
+  }
+]

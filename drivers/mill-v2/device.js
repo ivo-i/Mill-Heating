@@ -10,6 +10,8 @@ class MillDeviceV2 extends Device {
 		this.homey.app.dDebug(`[${this.getName()}] (${this.deviceId}) initialized`);
 
 		this.deviceId = this.getData().id;
+		this.apiVersion = this.getData().api;
+		this.deviceSettings = this.getSettings();
 		this.deviceData = {};
 
 		if (this.getData().api === 'local') {
@@ -98,7 +100,7 @@ class MillDeviceV2 extends Device {
 	async refreshMillService() {
 		return this.millApi.getControlStatus()
 			.then(async (device) => {
-				this.log(`[${this.getName()}] Mill state refreshed`, {
+				/*this.log(`[${this.getName()}] Mill state refreshed`, {
 					ambTemp: device.ambient_temperature,
 					hudmidity: device.humidity,
 					currentPower: device.current_power,
@@ -108,7 +110,7 @@ class MillDeviceV2 extends Device {
 					cloudConnected: device.connected_to_cloud,
 					operationMode: device.operation_mode,
 					status: device.status,
-				});
+				});*/
 
 				this.deviceData = device;
 

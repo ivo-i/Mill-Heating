@@ -8,7 +8,6 @@
     "measure_temperature",
     "target_temperature",
     "mill_onoff",
-    "mill_mode",
     "measure_power"
   ],
   "capabilitiesOptions": {

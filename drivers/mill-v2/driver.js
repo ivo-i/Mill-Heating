@@ -44,7 +44,7 @@ class MillDriverV2 extends Driver {
 			const result = await this.millLocal.pingLocalDevice(data);
 			console.log('result:', result);
 			if (result.success === true) {
-				this.device = {
+				const device = {
 					name: result.data.name,
 					data: {
 						ip: data,
@@ -52,6 +52,8 @@ class MillDriverV2 extends Driver {
 						api: 'local'
 					}
 				};
+				this.devices.push(device);
+				
 				return true;
 			} else {
 				return { error: 'Ping failed' };
@@ -69,25 +71,22 @@ class MillDriverV2 extends Driver {
 			const devices = await this.millCloud.listDevices(houseId);
 			console.log('devices:', devices);
 			if (devices) {
-				return devices;
+				return devices.length;
 			} else {
 				return { error: 'No devices found' };
 			}
 		});
-		
+
 		session.setHandler("list_devices", async () => {
 			return await this.onPairListDevices(session);
 		});
 	}
 
 	async onPairListDevices() {
-		const devices = [];
-		const device = {
-			name: this.device.name,
-			data: this.device.data,
-		};
+		this.devices = [];
+		console.log('this.devices:', this.devices);
 
-		devices.push(device);
+		this.devices.push(device);
 		return devices;
 	}
 }
