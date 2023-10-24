@@ -2,11 +2,12 @@
 
 const { Device } = require('homey');
 const Room = require('./../../lib/models');
+const millCloud = require('./../../lib/millCloud');
 
 class MillDevice extends Device {
   async onInit() {
     this.deviceId = this.getData().id;
-    this.millApi = this.homey.app.getMillApi();
+    this.millApi = new millCloud(this.homey.app);
     this.room = this.millApi.listDevices(this.deviceId);
     this.room = new Room(this.room);
 

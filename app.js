@@ -1,11 +1,13 @@
 'use strict';
 
 const Homey = require('homey');
-const Mill = require('./lib/mill');
+const millLocal = require('./lib/millLocal');
+const millCloud = require('./lib/millCloud');
 
 class MillApp extends Homey.App {
   async onInit() {
-    this.millApi = new Mill(this);
+    this.millCloud = new millCloud(this);
+    this.millLocal = new millLocal(this);
     this.user = null;
     this.isAuthenticated = false;
     this.isAuthenticating = false;
@@ -61,7 +63,7 @@ class MillApp extends Homey.App {
     if (username && password && !this.isAuthenticating) {
       try {
         this.isAuthenticating = true;
-        this.user = await this.millApi.login(username, password) || null;
+        this.user = await this.millCloud.login(username, password) || null;
         this.isAuthenticated = true;
         this.dDebug('Mill authenticated');
         return true;
@@ -90,7 +92,7 @@ class MillApp extends Homey.App {
   }
 
   getMillApi() {
-    return this.millApi;
+    return this.millCloud;
   }
 
   async dLog(severity, message, data) {

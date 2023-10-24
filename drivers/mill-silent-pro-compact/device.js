@@ -1,11 +1,12 @@
 'use strict';
 
 const { Device } = require('homey');
+const millCloud = require('../../lib/millCloud');
 
 class MillSilentProCompact extends Device {
   async onInit() {
     this.deviceId = this.getData().id;
-    this.millApi = this.homey.app.getMillApi();
+    this.millApi = new millCloud(this.homey.app);
     this.device = this.millApi.getDevice(this.deviceId);
 
     this.log(`[${this.getName()}] ${this.getClass()} (${this.deviceId}) initialized`);

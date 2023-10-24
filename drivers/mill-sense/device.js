@@ -1,11 +1,12 @@
 'use strict';
 
 const { Device } = require('homey');
+const millCloud = require('../../lib/millCloud');
 
 class MillSense extends Device {
   async onInit() {
     this.deviceId = this.getData().id;
-    this.millApi = this.homey.app.getMillApi();
+    this.millApi = new millCloud(this.homey.app);
     this.device = this.millApi.getDevice(this.deviceId);
 
     this.log(`[${this.getName()}] ${this.getClass()} (${this.deviceId}) initialized`);
@@ -25,10 +26,10 @@ class MillSense extends Device {
     }
     if (!this.hasCapability('measure_battery')) {
       await this.addCapability('measure_battery');
-    }    
+    }
     if (!this.hasCapability('alarm_temperature')) {
       await this.addCapability('alarm_temperature');
-    }   
+    }
     if (!this.hasCapability('alarm_humidity')) {
       await this.addCapability('alarm_humidity');
     }
@@ -87,7 +88,7 @@ class MillSense extends Device {
   }
 
   async refreshMillService() {
-    const millApi = this.homey.app.getMillApi();
+    const millApi = new millCloud(this.homey.app);
     return millApi.getDevice(this.getData().id)
       .then(async (device) => {
         this.log(`[${this.getName()}] Mill state refreshed`, {
@@ -98,7 +99,7 @@ class MillSense extends Device {
           battery: device.lastMetrics.batteryPercentage,
         });
 
-        if ( device.lastMetrics.chargingStatus == 2 ) {
+        if (device.lastMetrics.chargingStatus == 2) {
           await this.setCapabilityValue('alarm_charging_status', true);
           await this.setCapabilityValue('measure_temperature', 0);
           await this.setCapabilityValue('measure_humidity', 0);
@@ -123,16 +124,16 @@ class MillSense extends Device {
           await this.setCapabilityValue('alarm_charging_status', false);
 
           if ((device.lastMetrics.temperature != 0 &&
-              device.lastMetrics.temperature <= 5 ) ||
-              device.lastMetrics.temperature >= 35 ) {
+            device.lastMetrics.temperature <= 5) ||
+            device.lastMetrics.temperature >= 35) {
             await this.setCapabilityValue('alarm_temperature', true);
           } else {
             await this.setCapabilityValue('alarm_temperature', false);
           }
 
           if ((device.lastMetrics.humidity > 0 &&
-              device.lastMetrics.humidity <= device.deviceSettings.desired.ens210_ranges.humidity_red_low ) ||
-              device.lastMetrics.humidity >= device.deviceSettings.desired.ens210_ranges.humidity_red_high ) {
+            device.lastMetrics.humidity <= device.deviceSettings.desired.ens210_ranges.humidity_red_low) ||
+            device.lastMetrics.humidity >= device.deviceSettings.desired.ens210_ranges.humidity_red_high) {
             await this.setCapabilityValue('alarm_humidity', true);
           } else {
             await this.setCapabilityValue('alarm_humidity', false);
@@ -155,7 +156,7 @@ class MillSense extends Device {
           } else {
             await this.setCapabilityValue('alarm_battery', false);
           }
-        } 
+        }
       }).catch((err) => {
         this.homey.app.dError('Error caught while refreshing state', err);
       });

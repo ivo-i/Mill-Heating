@@ -7,6 +7,7 @@ const millCloud = require('../../lib/millCloud');
 class MillDriverV2 extends Driver {
 	async onInit() {
 		this.device = {};
+		this.devices = [];
 	}
 
 	async onPair(session) {
@@ -28,13 +29,18 @@ class MillDriverV2 extends Driver {
 		});
 
 		await session.setHandler('login', async (data) => {
-			const result = await this.homey.app.authenticate(data.username, data.password);
-			if (result === true) {
-				await this.homey.settings.set('username', data.username);
-				await this.homey.settings.set('password', data.password);
-				return { success: true };
+			const user = await this.homey.app.getUser();
+			if (!user) {
+				const result = await this.homey.app.authenticate(data.username, data.password);
+				if (result === true) {
+					await this.homey.settings.set('username', data.username);
+					await this.homey.settings.set('password', data.password);
+					return { success: true };
+				} else {
+					return { error: 'Login failed' };
+				}
 			} else {
-				return { error: 'Login failed' };
+				return { success: true };
 			}
 		});
 
@@ -44,16 +50,29 @@ class MillDriverV2 extends Driver {
 			const result = await this.millLocal.pingLocalDevice(data);
 			console.log('result:', result);
 			if (result.success === true) {
+				const deviceType = result.data.name.toLowerCase().includes('socket') ? 'Sockets' : 'Heaters';
 				const device = {
 					name: result.data.name,
 					data: {
-						ip: data,
-						mac: result.data.mac,
-						api: 'local'
+						id: result.data.mac,
+						name: device.name,
+						deviceType: deviceType,
+						macAddress: result.data.mac,
+						ipAddress: data,
+						apiVersion: 'local',
+						houseId: 'Not applicable',
+						homeName: 'Not applicable',
+					},
+					settings: {
+						deviceType: deviceType,
+						macAddress: result.data.mac,
+						ipAddress: data,
+						houseId: 'Not applicable',
+						apiVersion: 'local',
 					}
 				};
 				this.devices.push(device);
-				
+
 				return true;
 			} else {
 				return { error: 'Ping failed' };
@@ -64,17 +83,39 @@ class MillDriverV2 extends Driver {
 			this.millCloud = new millCloud(this.homey.app);
 
 			const house = await this.millCloud.listHomes();
-			console.log('house:', house);
 			const houseId = house.ownHouses[0].id;
-			console.log('houseId:', houseId);
+			const houseName = house.ownHouses[0].name;
 
-			const devices = await this.millCloud.listDevices(houseId);
-			console.log('devices:', devices);
-			if (devices) {
-				return devices.length;
-			} else {
-				return { error: 'No devices found' };
+			const rooms = await this.millCloud.listDevices(houseId);
+			for (const room of rooms) {
+				for (const device of room.devices) {
+					const deviceType = device.deviceType.parentType.name;
+					const deviceData = {
+						name: device.customName,
+						data: {
+							id: device.deviceId,
+							name: device.customName,
+							deviceType: deviceType,
+							macAddress: device.macAddress,
+							ipAddress: 'Not applicable',
+							apiVersion: 'cloud',
+							houseId: houseId,
+							homeName: houseName,
+						},
+						settings: {
+							deviceType: deviceType,
+							macAddress: device.macAddress,
+							ipAddress: 'Not applicable',
+							houseId: houseId,
+							apiVersion: 'cloud',
+						}
+					};
+					this.devices.push(deviceData);
+
+					return deviceData.length;
+				}
 			}
+			return { error: 'No devices found' };
 		});
 
 		session.setHandler("list_devices", async () => {
@@ -83,11 +124,7 @@ class MillDriverV2 extends Driver {
 	}
 
 	async onPairListDevices() {
-		this.devices = [];
-		console.log('this.devices:', this.devices);
-
-		this.devices.push(device);
-		return devices;
+		return this.devices;
 	}
 }
 

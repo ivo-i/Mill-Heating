@@ -1,6 +1,7 @@
 'use strict';
 
 const { Driver } = require('homey');
+const millCloud = require('../../lib/millCloud');
 
 class MillDriver extends Driver {
   async onInit() {
@@ -21,7 +22,7 @@ class MillDriver extends Driver {
       });
     } else {
       this.homey.app.dDebug('Pairing');
-      const millApi = this.homey.app.getMillApi();
+      const millApi = new millCloud(this.homey.app);
       const homes = await millApi.listHomes();
       this.homey.app.dDebug(`Found following homes: ${homes.ownHouses.map(home => `${home.name} (${home.id})`).join(', ')}`);
 

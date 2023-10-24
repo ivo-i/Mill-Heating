@@ -2,34 +2,20 @@
 
 const Room = require('./models');
 const axios = require('axios');
-const millAPI = require('./millAPI');
-const homey = require('homey');
 
-class MillCloud extends millAPI {
+class Mill {
 	constructor(app) {
-		super(app);
-
-		if (MillCloud.instance) {
-			return MillCloud.instance;
-		}
-
-		MillCloud.instance = this;
-
 		this.authEndpoint = 'https://api.millnorwaycloud.com';
 		this.endpoint = 'https://api.millnorwaycloud.com';
 		this.user = null;
 		this.auth = {};
 		this.nonce = 'AQcDfGrE34DfGdsV';
 		this.timeZoneNum = '+02:00';
-		this.isRefreshing = false;
-		this.pendingRequests = [];
 
 		this.app = app;
-	}
 
-	async ping() {
-		console.log(this.app.isConnected());
-		return this.app.isConnected();
+		this.isRefreshing = false;
+		this.pendingRequests = [];
 	}
 
 	async login(username, password) {
@@ -121,7 +107,7 @@ class MillCloud extends millAPI {
 			this.app.dDebug('Access token refreshed');
 		} catch (error) {
 			if (error.response && error.response.status === 401) {
-				this.app.dError('Refresh token expired. Reconnecting to Mill.');
+				this.app.dError('Refresh token expired', error);
 				return await this.app.connectToMill().catch((error) => {
 					this.app.dError('Failed to reconnect to Mill', error);
 					throw new Error('Failed to reconnect to Mill', error);
@@ -217,7 +203,22 @@ class MillCloud extends millAPI {
 		return this.request(`houses`);
 	}
 
-	async listDevices(homeId) {
+	// returns a list of rooms in a house
+	async listRooms(homeId) {
+		return this.request(`houses/${homeId}/rooms`);
+	}
+
+	// returns a list of devices in a room
+	async listDevices(roomId) {
+		const room = await this.request(`rooms/${roomId}/devices`);
+		if (!Room.validateRoom(room)) {
+			throw new Error(`Invalid response from Mill API: ${JSON.stringify(room)}`);
+		}
+
+		return new Room(room);
+	}
+
+	async listAllDevices(homeId) {
 		return this.request(`houses/${homeId}/devices`);
 	}
 
@@ -229,53 +230,13 @@ class MillCloud extends millAPI {
 		return this.request(`devices/${deviceId}/data`);
 	}
 
-	async getControlStatus(deviceId) {
-		let response = await this.request(`devices/${deviceId}/data`);
-		response = {
-			ambient_temperature: response.lastMetrics.temperatureAmbient,
-			humidity: response.lastMetrics.humidity,
-			current_power: response.lastMetrics.currentPower,
-			raw_ambient_temperature: response.lastMetrics.temperature,
-			set_temperature: response.deviceSettings.reported.temperature_last_set,
-			switched_on: response.lastMetrics.powerStatus === 1 ? true : false,
-			connected_to_cloud: true,
-			operation_mode: response.deviceSettings.reported.operation_mode,
-		}
-	}
-
-	async setTemperature(deviceId, temperature, deviceType = 'Heaters') {
+	async changeRoomTemperature(roomId, tempSettings) {
 		const body = {
-			"deviceType": deviceType,
-			"enabled": true,
-			"settings": {
-				"temperature_normal": temperature
-			}
+			roomComfortTemperature: tempSettings.roomComfortTemperature,
+			roomSleepTemperature: tempSettings.roomSleepTemperature,
+			roomAwayTemperature: tempSettings.roomAwayTemperature
 		};
-		return this.request(`devices/${deviceId}/settings`, body, 'post');
-	}
-
-	async getOperationMode(deviceId) {
-		const response = await this.request(`devices/${deviceId}/data`);
-		return { mode: response.deviceSettings.reported.operation_mode };
-	}
-
-	async setOperationMode(mode, deviceId, deviceType = 'Heaters') {
-		switch (mode) {
-			case 'Control individually':
-				mode = 'control_individually';
-				break;
-			default:
-				mode = 'control_individually';
-				break;
-		}
-		const body = {
-			"deviceType": deviceType,
-			"enabled": true,
-			"settings": {
-				"operation_mode": mode
-			}
-		};
-		return this.request(`devices/${deviceId}/settings`, body, 'patch');
+		return this.request(`rooms/${roomId}/temperature`, body, 'post');
 	}
 
 	async changeRoomMode(roomId, mode) {
@@ -373,4 +334,4 @@ class MillCloud extends millAPI {
 	}
 }
 
-module.exports = MillCloud;
+module.exports = Mill;

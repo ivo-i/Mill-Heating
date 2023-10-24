@@ -31,7 +31,7 @@
 		</div>
 	</fieldset>
 </form>
-<button class="homey-button homey-button-primary" id="nextButton" style="display: none;">Neste</button>
+<button class="homey-button-primary-full" id="nextButton" style="display: none; margin-top: 25px;">Neste</button>
 <script type="application/javascript">
 	Homey.setTitle(Homey.__("Mill Heating"));
 
@@ -41,12 +41,13 @@
 			$('#nextButton').show();
 		} else if (this.value == 'local') {
 			$('#localAPIForm').show();
+			$('#nextButton').hide();
 		}
 	});
 
 	$('#testConnection').on('click', function (e) {
 		e.preventDefault();
-		
+
 		console.log("Testing connection to " + $('#target').val());
 		Homey.emit('pingLocalDevice', $('#target').val()).then(function (result) {
 			console.log(result);
@@ -65,8 +66,12 @@
 		e.preventDefault();
 		Homey.emit('getCloudDevices').then(function (result) {
 			console.log(result);
+			if (result => 1) {
+				return Homey.nextView();
+			} else {
+				Homey.setNavigationClose();
+				return Homey.alert("Fant ingen Mill-enheter i Cloud API. Sjekk at du har lagt til enheter i Mill-appen.");
+			}
 		});
-
-		//return Homey.nextView();
 	});
 </script>

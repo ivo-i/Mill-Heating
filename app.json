@@ -566,7 +566,6 @@
         "measure_temperature",
         "target_temperature",
         "mill_onoff",
-        "mill_mode",
         "measure_power"
       ],
       "capabilitiesOptions": {
@@ -603,33 +602,69 @@
       ],
       "settings": [
         {
-          "type": "group",
+          "id": "apiVersion",
+          "type": "label",
           "label": {
-            "en": "Settings",
-            "no": "Innstillinger",
-            "nl": "Instellingen"
+            "en": "API Version",
+            "no": "API Versjon"
           },
-          "children": [
-            {
-              "id": "energy_consumption",
-              "type": "number",
-              "label": {
-                "en": "Power (W)",
-                "no": "Energi (W)",
-                "nl": "Energie (W)"
-              },
-              "value": 1200,
-              "min": 100,
-              "max": 3600,
-              "units": {
-                "en": "Watt"
-              },
-              "hint": {
-                "en": "Max. power in watt that the heater uses when switched on. E.g. for the NE1200WIFI this will be 1200",
-                "no": "Maksimum energi når ovnen er påslått. F.eks. 1200 for AV1200WIFI/NE1200WIFI."
-              }
-            }
-          ]
+          "value": "Cloud",
+          "hint": {
+            "en": "The API version device is using.",
+            "no": "API versjonen enheten bruker."
+          }
+        },
+        {
+          "id": "deviceType",
+          "type": "label",
+          "label": {
+            "en": "Device Type",
+            "no": "Enhetstype"
+          },
+          "value": "Heaters",
+          "hint": {
+            "en": "The device type.",
+            "no": "Enhetstype"
+          }
+        },
+        {
+          "id": "macAddress",
+          "type": "label",
+          "label": {
+            "en": "MAC Address",
+            "no": "MAC Adresse"
+          },
+          "value": "00:00:00:00:00:00",
+          "hint": {
+            "en": "The MAC address of the device.",
+            "no": "MAC adressen til enheten."
+          }
+        },
+        {
+          "id": "ipAddress",
+          "type": "label",
+          "label": {
+            "en": "IP Address",
+            "no": "IP Adresse"
+          },
+          "value": "192.168.1.1",
+          "hint": {
+            "en": "The IP address of the device.",
+            "no": "IP adressen til enheten."
+          }
+        },
+        {
+          "id": "houseId",
+          "type": "label",
+          "label": {
+            "en": "House ID",
+            "no": "Hus ID"
+          },
+          "value": "0",
+          "hint": {
+            "en": "The house ID of the device.",
+            "no": "Hus ID til enheten."
+          }
         }
       ],
       "id": "mill-v2"
