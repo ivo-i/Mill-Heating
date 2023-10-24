@@ -30,12 +30,20 @@
 			<button class="homey-button-primary-full" id="testConnection">Test tilkobling</button>
 		</div>
 	</fieldset>
+	<fieldset class="homey-form-fieldset" id="errorField" style="display: none;">
+		<p id="conFailed" style="display: none;">Tilkobling feilet. Sjekk IP-adressen og prøv igjen.</p>
+		<p id="cloudError" style="display: none;">Tilkobling vellykket!</p>
+	</fieldset>
 </form>
 <button class="homey-button-primary-full" id="nextButton" style="display: none; margin-top: 25px;">Neste</button>
 <script type="application/javascript">
 	Homey.setTitle(Homey.__("Mill Heating"));
 
 	$('input[type=radio][name=selectAPI]').change(function () {
+		$('#errorField').hide();
+		$('#conFailed').hide();
+		$('#cloudError').hide();
+
 		if (this.value == 'cloud') {
 			$('#localAPIForm').hide();
 			$('#nextButton').show();
@@ -47,16 +55,22 @@
 
 	$('#testConnection').on('click', function (e) {
 		e.preventDefault();
+		$('#errorField').hide();
+		$('#conFailed').hide();
+		$('#cloudError').hide();
 
 		console.log("Testing connection to " + $('#target').val());
 		Homey.emit('pingLocalDevice', $('#target').val()).then(function (result) {
-			console.log(result);
+			//console.log(result);
 			if (result.error) {
 				console.log("Connection failed.");
+				$('#cloudError').hide();
+				$('#errorField').show();
+				$('#conFailed').show();
 				return Homey.alert("Tilkobling feilet. Sjekk IP-adressen og prøv igjen.");
 			} else {
 				console.log("Connection successful.");
-				Homey.alert("Tilkobling vellykket!");
+				//Homey.alert("Tilkobling vellykket!");
 				return Homey.nextView();
 			}
 		});
@@ -70,6 +84,9 @@
 				return Homey.nextView();
 			} else {
 				Homey.setNavigationClose();
+				$('#errorField').show();
+				$('#cloudError').show();
+				$('#conFailed').hide();
 				return Homey.alert("Fant ingen Mill-enheter i Cloud API. Sjekk at du har lagt til enheter i Mill-appen.");
 			}
 		});

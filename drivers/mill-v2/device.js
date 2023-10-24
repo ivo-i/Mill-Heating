@@ -20,9 +20,10 @@ class MillDeviceV2 extends Device {
 			username: await this.homey.settings.get('username') || null,
 			password: await this.homey.settings.get('password') || null,
 		};
+		this.lastLoggedTime = null;
 
 		if (this.getData().apiVersion === 'local') {
-			this.millApi = new millLocal(this.getData().ip);
+			this.millApi = new millLocal(this.ipAddress);
 			this.deviceInstance = this.ipAddress;
 		} else {
 			this.millApi = new millCloud(this.homey.app);
@@ -98,17 +99,36 @@ class MillDeviceV2 extends Device {
 	async refreshMillService() {
 		return this.millApi.getControlStatus(this.deviceInstance)
 			.then(async (device) => {
-				this.log(`[${this.getName()}] Mill state refreshed`, {
-					ambTemp: device.ambient_temperature,
-					hudmidity: device.humidity,
-					currentPower: device.current_power,
-					rawAmbTemp: device.raw_ambient_temperature,
-					setTemp: device.set_temperature,
-					switchedOn: device.switched_on,
-					cloudConnected: device.connected_to_cloud,
-					operationMode: device.operation_mode,
-					status: device.status,
-				});
+				const currentTime = new Date().getTime();
+				if (this.deviceType === 'cloud') {
+					this.log(`[${this.getName()}] Mill state refreshed`, {
+						ambTemp: device.ambient_temperature,
+						hudmidity: device.humidity,
+						currentPower: device.current_power,
+						rawAmbTemp: device.raw_ambient_temperature,
+						setTemp: device.set_temperature,
+						switchedOn: device.switched_on,
+						cloudConnected: device.connected_to_cloud,
+						operationMode: device.operation_mode,
+						status: device.status,
+					});
+				} else {
+					// Logg kun en gang per 10 minutter (600000 ms)
+					if (!this.lastLoggedTime || currentTime - this.lastLoggedTime >= 600000) {
+						this.log(`[${this.getName()}] Mill state refreshed`, {
+							ambTemp: device.ambient_temperature,
+							hudmidity: device.humidity,
+							currentPower: device.current_power,
+							rawAmbTemp: device.raw_ambient_temperature,
+							setTemp: device.set_temperature,
+							switchedOn: device.switched_on,
+							cloudConnected: device.connected_to_cloud,
+							operationMode: device.operation_mode,
+							status: device.status,
+						});
+						this.lastLoggedTime = currentTime;
+					}
+				}
 
 				this.deviceData = device;
 

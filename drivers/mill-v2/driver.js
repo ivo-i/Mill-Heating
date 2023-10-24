@@ -54,10 +54,10 @@ class MillDriverV2 extends Driver {
 				const device = {
 					name: result.data.name,
 					data: {
-						id: result.data.mac,
-						name: device.name,
+						id: result.data.mac_address,
+						name: result.data.name,
 						deviceType: deviceType,
-						macAddress: result.data.mac,
+						macAddress: result.data.mac_address,
 						ipAddress: data,
 						apiVersion: 'local',
 						houseId: 'Not applicable',
@@ -65,7 +65,7 @@ class MillDriverV2 extends Driver {
 					},
 					settings: {
 						deviceType: deviceType,
-						macAddress: result.data.mac,
+						macAddress: result.data.mac_address,
 						ipAddress: data,
 						houseId: 'Not applicable',
 						apiVersion: 'local',
@@ -124,6 +124,7 @@ class MillDriverV2 extends Driver {
 	}
 
 	async onPairListDevices() {
+		this.homey.app.dDebug('Devices ready to be added:', this.devices);
 		return this.devices;
 	}
 }
