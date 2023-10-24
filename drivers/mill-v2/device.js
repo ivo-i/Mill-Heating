@@ -23,6 +23,7 @@ class MillDeviceV2 extends Device {
 		const operationMode = await this.millApi.getOperationMode();
 		if (operationMode.mode !== 'Control individually') {
 			this.log(`[${this.getName()}] Mill is not in Control individually mode. Changing now...`);
+
 			await this.millApi.setOperationMode('Control individually').then((result) => {
 				this.log(`[${this.getName()}] Mill is now in Control individually mode`, {
 					response: result,
@@ -30,18 +31,6 @@ class MillDeviceV2 extends Device {
 			}).catch((err) => {
 				this.homey.app.dError(`[${this.getName()}] Error caught while changing operation mode`, err);
 			});
-		}
-
-		// Add new capailities for devices that don't have them yet
-		if (!this.getCapabilities().includes('onoff')) {
-			this.addCapability('onoff').catch(this.error);
-		}
-		if (!this.getCapabilities().includes('measure_power')) {
-			this.addCapability('measure_power').catch(this.error);
-		}
-		// Remove old capabilities that are not used on the local API
-		if (this.hasCapability('mill_mode')) {
-			this.removeCapability('mill_mode').catch(this.error);
 		}
 
 		// capabilities
