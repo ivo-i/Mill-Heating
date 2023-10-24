@@ -195,7 +195,7 @@ class MillDeviceV2 extends Device {
 
 	async onCapabilityOnOff(value, opts) {
 		let mode = value ? 'Control individually' : 'Off';
-		this.millApi.setOperationMode(mode).then(() => {
+		this.millApi.setOperationMode(mode, this.deviceInstance, this.deviceType).then(() => {
 			this.log(`onCapabilityOnOff(${value}) done`);
 			this.homey.app.dDebug(`[${this.getName()}] Changed mode to ${mode}.`);
 			this.scheduleRefresh(5);
