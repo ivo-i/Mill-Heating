@@ -30,7 +30,6 @@ class MillDeviceV2 extends Device {
 		}
 
 		const operationMode = await this.millApi.getOperationMode(this.deviceInstance);
-		console.log('operationMode:', operationMode.mode);
 		if (operationMode.mode !== 'Control individually' && operationMode.mode !== 'control_individually') {
 			this.log(`[${this.getName()}] Mill ${this.getName()} is not in Control individually mode. Changing now...`);
 
@@ -83,7 +82,6 @@ class MillDeviceV2 extends Device {
 			}
 		} catch (e) {
 			this.homey.app.dError('Error caught while refreshing state', e);
-			console.error(e);
 		} finally {
 			if (this.refreshTimeout === null) {
 				this.scheduleRefresh();
@@ -98,7 +96,7 @@ class MillDeviceV2 extends Device {
 	}
 
 	async refreshMillService() {
-		return this.millApi.getControlStatus()
+		return this.millApi.getControlStatus(this.deviceInstance)
 			.then(async (device) => {
 				this.log(`[${this.getName()}] Mill state refreshed`, {
 					ambTemp: device.ambient_temperature,
@@ -164,7 +162,7 @@ class MillDeviceV2 extends Device {
 			this.homey.app.dDebug(`onCapabilityTargetTemperature(${value}=>${temp})`);
 		}
 
-		this.millApi.setTemperature('Normal', temp)
+		this.millApi.setTemperature(temp, this.deviceInstance, this.deviceType)
 			.then(() => {
 				this.log(`onCapabilityTargetTemperature(${temp}) done`);
 				this.homey.app.dDebug(`[${this.getName()}] Changed temp to ${temp}.`);
@@ -176,7 +174,6 @@ class MillDeviceV2 extends Device {
 	}
 
 	async onCapabilityOnOff(value, opts) {
-		console.log()
 		let mode = value ? 'Control individually' : 'Off';
 		this.millApi.setOperationMode(mode).then(() => {
 			this.log(`onCapabilityOnOff(${value}) done`);
