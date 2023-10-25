@@ -46,6 +46,46 @@ class MillSense extends Device {
       await this.addCapability('alarm_charging_status');
     }
 
+    const capabilities = this.getCapabilities();
+    const expectedOrder = [
+      'measure_temperature',
+      'alarm_temperature',
+      'measure_humidity',
+      'alarm_humidity',
+      'measure_co2',
+      'alarm_co2',
+      'measure_tvoc',
+      'alarm_tvoc',
+      'measure_battery',
+      'alarm_battery',
+      'alarm_charging_status',
+    ];
+
+    let j = 0;
+    const isInOrder = capabilities.every((item, i) => {
+      while (j < expectedOrder.length && expectedOrder[j] !== item) {
+        j++;
+      }
+      return j < expectedOrder.length;
+    });
+
+    if (!isInOrder) {
+      this.homey.app.dDebug(`Capabilities for ${this.getName()} are not in the correct order. Reordering...`, 'Mill Sense');
+      for (const capability of capabilities) {
+        if (this.hasCapability(capability)) {
+          await this.removeCapability(capability);
+        }
+      }
+      for (const capability of expectedOrder) {
+        if (!this.hasCapability(capability)) {
+          await this.addCapability(capability);
+        }
+      }
+      this.homey.app.dDebug(`Capabilities for ${this.getName()} are now in the correct order`, 'Mill Sense');
+    } else {
+      this.homey.app.dDebug(`Capabilities for ${this.getName()} are in the correct order`, 'Mill Sense');
+    }
+
     this.refreshTimeout = null;
     this.millApi = null;
     this.refreshState();
