@@ -206,10 +206,10 @@ class MillDeviceV2 extends Device {
 		}
 
 		this.millApi.setTemperature(temp, this.deviceInstance, this.deviceType)
-			.then(() => {
+			.then(async () => {
 				this.log(`onCapabilityTargetTemperature(${temp}) done`);
 				this.homey.app.dDebug(`[${this.getName()}] Changed temp to ${temp}.`);
-				this.scheduleRefresh(5);
+				await this.scheduleRefresh(5);
 			}).catch((err) => {
 				this.log(`onCapabilityTargetTemperature(${temp}) error`);
 				this.homey.app.dError(`[${this.getName()}] Change temp to ${temp} resulted in error`, err);
@@ -218,14 +218,15 @@ class MillDeviceV2 extends Device {
 
 	async onCapabilityOnOff(value, opts) {
 		let mode = value ? 'Control individually' : 'Off';
-		this.millApi.setOperationMode(mode, this.deviceInstance, this.deviceType).then(() => {
-			this.log(`onCapabilityOnOff(${value}) done`);
-			this.homey.app.dDebug(`[${this.getName()}] Changed mode to ${mode}.`);
-			this.scheduleRefresh(5);
-		}).catch((err) => {
-			this.log(`onCapabilityOnOff(${value}) error`);
-			this.homey.app.dError(`[${this.getName()}] Change mode to ${mode} resulted in error`, err);
-		});
+		this.millApi.setOperationMode(mode, this.deviceInstance, this.deviceType)
+			.then(async () => {
+				this.log(`onCapabilityOnOff(${value}) done`);
+				this.homey.app.dDebug(`[${this.getName()}] Changed mode to ${mode}.`);
+				await this.scheduleRefresh(5);
+			}).catch((err) => {
+				this.log(`onCapabilityOnOff(${value}) error`);
+				this.homey.app.dError(`[${this.getName()}] Change mode to ${mode} resulted in error`, err);
+			});
 	}
 }
 
