@@ -125,7 +125,7 @@ class MillDriverV2 extends Driver {
 
 			const devices = await this.MillCloud.listIndependentDevices(houseId, 'heatersAndSockets');
 			console.log('devices:', devices);
-			for (const device of devices) {
+			for (const device of devices.items) {
 				console.log('device:', device);
 				const deviceType = device.deviceType.parentType.name;
 				const deviceData = {
