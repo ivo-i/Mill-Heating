@@ -19,6 +19,8 @@ class MillDeviceV2 extends Device {
 			password: await this.homey.settings.get('password') || null,
 		};
 		this.lastLoggedTime = null;
+		this.lastLoggedTime2 = null;
+		this.lastLoggedTime3 = null;
 
 		if (this.getData().apiVersion === 'local') {
 			this.millApi = new MillLocal(this.ipAddress);
@@ -69,9 +71,9 @@ class MillDeviceV2 extends Device {
 			this.homey.app.dDebug(`[${this.getName()}] Refreshing state`);
 		} else {
 			// Logg kun en gang per 10 minutter (600000 ms)
-			if (!this.lastLoggedTime || currentTime - this.lastLoggedTime >= 600000) {
+			if (!this.lastLoggedTime2 || currentTime - this.lastLoggedTime2 >= 600000) {
 				this.homey.app.dDebug(`[${this.getName()}] Refreshing state`);
-				this.lastLoggedTime = currentTime;
+				this.lastLoggedTime2 = currentTime;
 			}
 		}
 
@@ -111,9 +113,9 @@ class MillDeviceV2 extends Device {
 			this.homey.app.dDebug(`[${this.getName()}] Next refresh in ${refreshInterval} seconds`);
 		} else {
 			// Logg kun en gang per 10 minutter (600000 ms)
-			if (!this.lastLoggedTime || currentTime - this.lastLoggedTime >= 600000) {
+			if (!this.lastLoggedTime3 || currentTime - this.lastLoggedTime3 >= 600000) {
 				this.homey.app.dDebug(`[${this.getName()}] Next refresh in ${refreshInterval} seconds`);
-				this.lastLoggedTime = currentTime;
+				this.lastLoggedTime3 = currentTime;
 			}
 		}
 	}
