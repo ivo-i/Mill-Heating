@@ -8,6 +8,8 @@ class MillDriverV2 extends Driver {
 	async onInit() {
 		this.device = {};
 		this.devices = [];
+		
+		this.MillCloud = new MillCloud(this.homey.app);
 	}
 
 	async onPair(session) {
@@ -80,8 +82,6 @@ class MillDriverV2 extends Driver {
 		});
 
 		await session.setHandler('getCloudDevices', async (data) => {
-			this.MillCloud = new MillCloud(this.homey.app);
-
 			const house = await this.MillCloud.listHomes();
 			const houseId = house.ownHouses[0].id;
 			const houseName = house.ownHouses[0].name;
@@ -119,14 +119,14 @@ class MillDriverV2 extends Driver {
 		});
 
 		await session.setHandler('getIndependentCloudDevices', async (data) => {
-			this.MillCloud = new MillCloud(this.homey.app);
-
 			const house = await this.MillCloud.listHomes();
 			const houseId = house.ownHouses[0].id;
 			const houseName = house.ownHouses[0].name;
 
 			const devices = await this.MillCloud.listIndependentDevices(houseId, 'heatersAndSockets');
-			for (const device of devices.items) {
+			console.log('devices:', devices);
+			for (const device of devices) {
+				console.log('device:', device);
 				const deviceType = device.deviceType.parentType.name;
 				const deviceData = {
 					name: device.customName,
@@ -149,6 +149,7 @@ class MillDriverV2 extends Driver {
 					}
 				};
 				this.devices.push(deviceData);
+				console.log('this.devices:', this.devices);
 
 				return deviceData.length;
 			}
