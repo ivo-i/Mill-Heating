@@ -121,7 +121,6 @@ class MillDeviceV2 extends Device {
 	async refreshMillService() {
 		return this.millApi.getControlStatus(this.deviceInstance)
 			.then(async (device) => {
-				const currentTime = new Date().getTime();
 				if (this.deviceType === 'cloud') {
 					this.homey.app.dDebug(`[${this.getName()}] Mill state refreshed`, {
 						ambTemp: device.ambient_temperature,
@@ -136,6 +135,7 @@ class MillDeviceV2 extends Device {
 					});
 				} else {
 					// Logg kun en gang per 10 minutter (600000 ms)
+					const currentTime = new Date().getTime();
 					if (!this.lastLoggedTime || currentTime - this.lastLoggedTime >= 600000) {
 						this.homey.app.dDebug(`[${this.getName()}] Mill state refreshed`, {
 							ambTemp: device.ambient_temperature,
