@@ -1038,6 +1038,16 @@
       ],
       "getable": true,
       "setable": true
+    },
+    "mill_temperature": {
+      "type": "number",
+      "uiComponent": "sensor",
+      "icon": "/drivers/mill-sense/assets/tvoc.svg",
+      "title": "TVOC",
+      "units": "°C",
+      "getable": true,
+      "setable": false,
+      "insights": true
     }
   }
 }
