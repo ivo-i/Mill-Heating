@@ -189,7 +189,7 @@ class MillDeviceV2 extends Device {
 				this.scheduleRefresh(5);
 			}).catch((err) => {
 				this.log(`onCapabilityTargetTemperature(${temp}) error`);
-				this.homey.app.dError(`[${this.getName()}] Change temp to ${temp} resultet in error`, err);
+				this.homey.app.dError(`[${this.getName()}] Change temp to ${temp} resulted in error`, err);
 			});
 	}
 
@@ -201,7 +201,7 @@ class MillDeviceV2 extends Device {
 			this.scheduleRefresh(5);
 		}).catch((err) => {
 			this.log(`onCapabilityOnOff(${value}) error`);
-			this.homey.app.dError(`[${this.getName()}] Change mode to ${mode} resultet in error`, err);
+			this.homey.app.dError(`[${this.getName()}] Change mode to ${mode} resulted in error`, err);
 		});
 	}
 }
