@@ -1,13 +1,11 @@
 'use strict';
 
 const Homey = require('homey');
-const millLocal = require('./lib/millLocal');
 const millCloud = require('./lib/millCloud');
 
 class MillApp extends Homey.App {
   async onInit() {
     this.millCloud = new millCloud(this);
-    this.millLocal = new millLocal(this);
     this.user = null;
     this.isAuthenticated = false;
     this.isAuthenticating = false;

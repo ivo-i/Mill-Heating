@@ -28,19 +28,6 @@ class MillDeviceV2 extends Device {
 			this.deviceInstance = this.deviceId;
 		}
 
-		/*const operationMode = await this.millApi.getOperationMode(this.deviceInstance);
-		if (operationMode.mode !== 'Control individually' && operationMode.mode !== 'control_individually') {
-			this.log(`[${this.getName()}] Mill ${this.getName()} is not in Control individually mode. Changing now...`);
-
-			await this.millApi.setOperationMode('Control individually', this.deviceInstance, this.deviceType).then((result) => {
-				this.log(`[${this.getName()}] Mill ${this.getName()} is now in Control individually mode`, {
-					response: result,
-				});
-			}).catch((err) => {
-				this.homey.app.dError(`[${this.getName()}] Error caught while changing operation mode`, err);
-			});
-		}*/
-
 		// capabilities
 		this.registerCapabilityListener('target_temperature', this.onCapabilityTargetTemperature.bind(this));
 		this.registerCapabilityListener('onoff', this.onCapabilityOnOff.bind(this));
@@ -58,20 +45,19 @@ class MillDeviceV2 extends Device {
 		this.refreshState();
 
 		this.millApi.on('operationMode', async (mode) => {
-			console.log('operationMode', mode);
-			/*this.log(`[${this.getName()}] Mill ${this.getName()} changed operation mode to ${mode}`);
+			this.homey.app.dDebug(`[${this.getName()}] changed operation mode to ${mode}.`);
 
-			this.log(`[${this.getName()}] Mill ${this.getName()} is not in Control individually mode. Changing now...`);
+			if (mode !== 'Control individually' && mode !== 'control_individually') {
+				this.homey.app.dDebug(`[${this.getName()}] is no longer in "Control individually" mode. Changing now...`);
 
-			if (operationMode !== 'Control individually' && operationMode !== 'control_individually') {
 				await this.millApi.setOperationMode('Control individually', this.deviceInstance, this.deviceType).then((result) => {
-					this.log(`[${this.getName()}] Mill ${this.getName()} is now in Control individually mode`, {
+					this.homey.app.dDebug(`[${this.getName()}] Mill ${this.getName()} is now in Control individually mode`, {
 						response: result,
 					});
 				}).catch((err) => {
 					this.homey.app.dError(`[${this.getName()}] Error caught while changing operation mode`, err);
 				});
-			}*/
+			}
 		});
 
 		this.homey.app.dDebug(`[${this.getName()}] (${this.deviceId}) initialized`);
@@ -80,11 +66,11 @@ class MillDeviceV2 extends Device {
 	async refreshState() {
 		const currentTime = new Date().getTime();
 		if (this.deviceType === 'cloud') {
-			this.log(`[${this.getName()}] Refreshing state`);
+			this.homey.app.dDebug(`[${this.getName()}] Refreshing state`);
 		} else {
 			// Logg kun en gang per 10 minutter (600000 ms)
 			if (!this.lastLoggedTime || currentTime - this.lastLoggedTime >= 600000) {
-				this.log(`[${this.getName()}] Refreshing state`);
+				this.homey.app.dDebug(`[${this.getName()}] Refreshing state`);
 				this.lastLoggedTime = currentTime;
 			}
 		}
@@ -99,7 +85,7 @@ class MillDeviceV2 extends Device {
 				await this.refreshMillService();
 				this.setAvailable();
 			} else {
-				this.log(`[${this.getName()}] Mill not connected`);
+				this.homey.app.dDebug(`[${this.getName()}] Mill not connected`);
 				this.setUnavailable();
 				await this.millApi.login(this.loginData.username, this.loginData.password).then(() => {
 					this.scheduleRefresh(10);
@@ -122,11 +108,11 @@ class MillDeviceV2 extends Device {
 
 		const currentTime = new Date().getTime();
 		if (this.deviceType === 'cloud') {
-			this.log(`[${this.getName()}] Next refresh in ${refreshInterval} seconds`);
+			this.homey.app.dDebug(`[${this.getName()}] Next refresh in ${refreshInterval} seconds`);
 		} else {
 			// Logg kun en gang per 10 minutter (600000 ms)
 			if (!this.lastLoggedTime || currentTime - this.lastLoggedTime >= 600000) {
-				this.log(`[${this.getName()}] Next refresh in ${refreshInterval} seconds`);
+				this.homey.app.dDebug(`[${this.getName()}] Next refresh in ${refreshInterval} seconds`);
 				this.lastLoggedTime = currentTime;
 			}
 		}
@@ -137,7 +123,7 @@ class MillDeviceV2 extends Device {
 			.then(async (device) => {
 				const currentTime = new Date().getTime();
 				if (this.deviceType === 'cloud') {
-					this.log(`[${this.getName()}] Mill state refreshed`, {
+					this.homey.app.dDebug(`[${this.getName()}] Mill state refreshed`, {
 						ambTemp: device.ambient_temperature,
 						hudmidity: device.humidity,
 						currentPower: device.current_power,
@@ -151,7 +137,7 @@ class MillDeviceV2 extends Device {
 				} else {
 					// Logg kun en gang per 10 minutter (600000 ms)
 					if (!this.lastLoggedTime || currentTime - this.lastLoggedTime >= 600000) {
-						this.log(`[${this.getName()}] Mill state refreshed`, {
+						this.homey.app.dDebug(`[${this.getName()}] Mill state refreshed`, {
 							ambTemp: device.ambient_temperature,
 							hudmidity: device.humidity,
 							currentPower: device.current_power,
@@ -181,7 +167,7 @@ class MillDeviceV2 extends Device {
 
 					if (this.hasCapability('measure_power')) {
 						const totalPowerUsage = device.current_power;
-						//this.log(`Total power usage for ${this.getName()} ${totalPowerUsage}w`);
+						//this.homey.app.dDebug(`Total power usage for ${this.getName()} ${totalPowerUsage}w`);
 						jobs.push(await this.setCapabilityValue('measure_power', device.operation_mode !== 'OFF' ? totalPowerUsage : 0));
 					}
 

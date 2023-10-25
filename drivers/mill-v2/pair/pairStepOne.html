@@ -78,24 +78,30 @@
 
 	$('#nextButton').on('click', function (e) {
 		e.preventDefault();
-		Homey.emit('getCloudDevices').then(function (result) {
+		Homey.emit('getCloudDevices').then(async function (result) {
 			console.log(result);
-			if (!result.error) {
-				return Homey.nextView();
+			if (result.error) {
+				await getCloudDevices();
 			} else {
-				Homey.emit('getIndependentCloudDevices').then(function (result) {
-					console.log(result);
-					if (!result.error) {
-						return Homey.nextView();
-					} else {
-						Homey.setNavigationClose();
-						$('#errorField').show();
-						$('#cloudError').show();
-						$('#conFailed').hide();
-						return Homey.alert("Fant ingen Mill-enheter i Cloud API. Sjekk at du har lagt til enheter i Mill-appen.");
-					}
-				});
+				return Homey.nextView();
 			}
 		});
 	});
+
+	async function getCloudDevices() {
+		return new Promise((resolve, reject) => {
+			Homey.emit('getIndependentCloudDevices').then(function (response) {
+				console.log(response);
+				if (response.error) {
+					Homey.setNavigationClose();
+					$('#errorField').show();
+					$('#cloudError').show();
+					$('#conFailed').hide();
+					return Homey.alert("Fant ingen Mill-enheter i Cloud API. Sjekk at du har lagt til enheter i Mill-appen.");
+				} else {
+					return Homey.nextView();
+				}
+			});
+		});
+	}
 </script>

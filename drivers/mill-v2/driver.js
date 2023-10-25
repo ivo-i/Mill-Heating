@@ -8,7 +8,7 @@ class MillDriverV2 extends Driver {
 	async onInit() {
 		this.device = {};
 		this.devices = [];
-		
+
 		this.MillCloud = new MillCloud(this.homey.app);
 	}
 
@@ -48,6 +48,7 @@ class MillDriverV2 extends Driver {
 
 		await session.setHandler('pingLocalDevice', async (data) => {
 			this.MillLocal = new MillLocal(data);
+			this.devices = [];
 
 			const result = await this.MillLocal.pingLocalDevice(data);
 			console.log('result:', result);
@@ -82,6 +83,8 @@ class MillDriverV2 extends Driver {
 		});
 
 		await session.setHandler('getCloudDevices', async (data) => {
+			this.devices = [];
+
 			const house = await this.MillCloud.listHomes();
 			const houseId = house.ownHouses[0].id;
 			const houseName = house.ownHouses[0].name;
@@ -112,21 +115,23 @@ class MillDriverV2 extends Driver {
 					};
 					this.devices.push(deviceData);
 
-					return deviceData.length;
+					return { success: true, devices: this.devices.length }
 				}
 			}
 			return { error: 'No devices found' };
 		});
 
 		await session.setHandler('getIndependentCloudDevices', async (data) => {
+			this.devices = [];
+
 			const house = await this.MillCloud.listHomes();
 			const houseId = house.ownHouses[0].id;
 			const houseName = house.ownHouses[0].name;
 
 			const devices = await this.MillCloud.listIndependentDevices(houseId, 'heatersAndSockets');
-			console.log('devices:', devices);
+			//console.log('devices:', devices);
 			for (const device of devices.items) {
-				console.log('device:', device);
+				//console.log('device:', device);
 				const deviceType = device.deviceType.parentType.name;
 				const deviceData = {
 					name: device.customName,
@@ -149,9 +154,9 @@ class MillDriverV2 extends Driver {
 					}
 				};
 				this.devices.push(deviceData);
-				console.log('this.devices:', this.devices);
+				//console.log('this.devices:', this.devices);
 
-				return deviceData.length;
+				return { success: true, devices: this.devices.length }
 			}
 			return { error: 'No devices found' };
 		});
