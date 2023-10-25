@@ -1,12 +1,12 @@
 'use strict';
 
 const { Device } = require('homey');
-const millCloud = require('../../lib/millCloud');
+const MillCloud = require('../../lib/millCloud');
 
 class MillSense extends Device {
   async onInit() {
     this.deviceId = this.getData().id;
-    this.millApi = new millCloud(this.homey.app);
+    this.millApi = new MillCloud(this.homey.app);
     this.device = this.millApi.getDevice(this.deviceId);
 
     this.log(`[${this.getName()}] ${this.getClass()} (${this.deviceId}) initialized`);
@@ -70,7 +70,7 @@ class MillSense extends Device {
     });
 
     if (!isInOrder) {
-      this.homey.app.dDebug(`Capabilities for ${this.getName()} are not in the correct order. Reordering...`, 'Mill Sense');
+      this.homey.app.dDebug(`Capabilities for ${this.getName()} are not in the correct order. Reordering...`);
       for (const capability of capabilities) {
         if (this.hasCapability(capability)) {
           await this.removeCapability(capability);
@@ -81,13 +81,12 @@ class MillSense extends Device {
           await this.addCapability(capability);
         }
       }
-      this.homey.app.dDebug(`Capabilities for ${this.getName()} are now in the correct order`, 'Mill Sense');
+      this.homey.app.dDebug(`Capabilities for ${this.getName()} are now in the correct order`);
     } else {
-      this.homey.app.dDebug(`Capabilities for ${this.getName()} are in the correct order`, 'Mill Sense');
+      this.homey.app.dDebug(`Capabilities for ${this.getName()} are in the correct order`);
     }
 
     this.refreshTimeout = null;
-    this.millApi = null;
     this.refreshState();
   }
 
@@ -128,8 +127,7 @@ class MillSense extends Device {
   }
 
   async refreshMillService() {
-    const millApi = new millCloud(this.homey.app);
-    return millApi.getDevice(this.getData().id)
+    return this.millApi.getDevice(this.deviceId)
       .then(async (device) => {
         this.log(`[${this.getName()}] Mill state refreshed`, {
           temperature: device.lastMetrics.temperature,

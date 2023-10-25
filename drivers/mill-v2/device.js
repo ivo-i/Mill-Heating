@@ -2,8 +2,8 @@
 
 const { Device } = require('homey');
 const Room = require('../../lib/models');
-const millLocal = require('../../lib/millLocal');
-const millCloud = require('../../lib/millCloud');
+const MillLocal = require('../../lib/millLocal');
+const MillCloud = require('../../lib/millCloud');
 
 class MillDeviceV2 extends Device {
 	async onInit() {
@@ -21,14 +21,14 @@ class MillDeviceV2 extends Device {
 		this.lastLoggedTime = null;
 
 		if (this.getData().apiVersion === 'local') {
-			this.millApi = new millLocal(this.ipAddress);
+			this.millApi = new MillLocal(this.ipAddress);
 			this.deviceInstance = this.ipAddress;
 		} else {
-			this.millApi = new millCloud(this.homey.app);
+			this.millApi = new MillCloud(this.homey.app);
 			this.deviceInstance = this.deviceId;
 		}
 
-		const operationMode = await this.millApi.getOperationMode(this.deviceInstance);
+		/*const operationMode = await this.millApi.getOperationMode(this.deviceInstance);
 		if (operationMode.mode !== 'Control individually' && operationMode.mode !== 'control_individually') {
 			this.log(`[${this.getName()}] Mill ${this.getName()} is not in Control individually mode. Changing now...`);
 
@@ -39,7 +39,7 @@ class MillDeviceV2 extends Device {
 			}).catch((err) => {
 				this.homey.app.dError(`[${this.getName()}] Error caught while changing operation mode`, err);
 			});
-		}
+		}*/
 
 		// capabilities
 		this.registerCapabilityListener('target_temperature', this.onCapabilityTargetTemperature.bind(this));
@@ -56,6 +56,23 @@ class MillDeviceV2 extends Device {
 
 		this.refreshTimeout = null;
 		this.refreshState();
+
+		this.millApi.on('operationMode', async (mode) => {
+			console.log('operationMode', mode);
+			/*this.log(`[${this.getName()}] Mill ${this.getName()} changed operation mode to ${mode}`);
+
+			this.log(`[${this.getName()}] Mill ${this.getName()} is not in Control individually mode. Changing now...`);
+
+			if (operationMode !== 'Control individually' && operationMode !== 'control_individually') {
+				await this.millApi.setOperationMode('Control individually', this.deviceInstance, this.deviceType).then((result) => {
+					this.log(`[${this.getName()}] Mill ${this.getName()} is now in Control individually mode`, {
+						response: result,
+					});
+				}).catch((err) => {
+					this.homey.app.dError(`[${this.getName()}] Error caught while changing operation mode`, err);
+				});
+			}*/
+		});
 
 		this.homey.app.dDebug(`[${this.getName()}] (${this.deviceId}) initialized`);
 	}

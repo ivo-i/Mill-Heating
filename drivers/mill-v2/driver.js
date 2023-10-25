@@ -1,8 +1,8 @@
 'use strict';
 
 const { Driver } = require('homey');
-const millLocal = require('../../lib/millLocal');
-const millCloud = require('../../lib/millCloud');
+const MillLocal = require('../../lib/millLocal');
+const MillCloud = require('../../lib/millCloud');
 
 class MillDriverV2 extends Driver {
 	async onInit() {
@@ -45,9 +45,9 @@ class MillDriverV2 extends Driver {
 		});
 
 		await session.setHandler('pingLocalDevice', async (data) => {
-			this.millLocal = new millLocal(data);
+			this.MillLocal = new MillLocal(data);
 
-			const result = await this.millLocal.pingLocalDevice(data);
+			const result = await this.MillLocal.pingLocalDevice(data);
 			console.log('result:', result);
 			if (result.success === true) {
 				const deviceType = result.data.name.toLowerCase().includes('socket') ? 'Sockets' : 'Heaters';
@@ -80,13 +80,13 @@ class MillDriverV2 extends Driver {
 		});
 
 		await session.setHandler('getCloudDevices', async (data) => {
-			this.millCloud = new millCloud(this.homey.app);
+			this.MillCloud = new MillCloud(this.homey.app);
 
-			const house = await this.millCloud.listHomes();
+			const house = await this.MillCloud.listHomes();
 			const houseId = house.ownHouses[0].id;
 			const houseName = house.ownHouses[0].name;
 
-			const rooms = await this.millCloud.listDevices(houseId);
+			const rooms = await this.MillCloud.listDevices(houseId);
 			for (const room of rooms) {
 				for (const device of room.devices) {
 					const deviceType = device.deviceType.parentType.name;
