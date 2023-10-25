@@ -8,8 +8,6 @@ const millCloud = require('../../lib/millCloud');
 class MillDeviceV2 extends Device {
 	async onInit() {
 		this.deviceId = this.getData().id;
-		this.homey.app.dDebug(`[${this.getName()}] (${this.deviceId}) initialized`);
-
 		this.apiVersion = this.getData().apiVersion;
 		this.ipAddress = this.getData().ipAddress;
 		this.deviceType = this.getData().deviceType;
@@ -58,10 +56,21 @@ class MillDeviceV2 extends Device {
 
 		this.refreshTimeout = null;
 		this.refreshState();
+
+		this.homey.app.dDebug(`[${this.getName()}] (${this.deviceId}) initialized`);
 	}
 
 	async refreshState() {
-		this.log(`[${this.getName()}] Refreshing state`);
+		const currentTime = new Date().getTime();
+		if (this.deviceType === 'cloud') {
+			this.log(`[${this.getName()}] Refreshing state`);
+		} else {
+			// Logg kun en gang per 10 minutter (600000 ms)
+			if (!this.lastLoggedTime || currentTime - this.lastLoggedTime >= 600000) {
+				this.log(`[${this.getName()}] Refreshing state`);
+				this.lastLoggedTime = currentTime;
+			}
+		}
 
 		if (this.refreshTimeout) {
 			this.homey.clearTimeout(this.refreshTimeout);
@@ -93,7 +102,17 @@ class MillDeviceV2 extends Device {
 	async scheduleRefresh(interval) {
 		const refreshInterval = interval || this.apiVersion == 'cloud' ? await this.homey.settings.get('interval') : 1;
 		this.refreshTimeout = this.homey.setTimeout(this.refreshState.bind(this), refreshInterval * 1000);
-		this.log(`[${this.getName()}] Next refresh in ${refreshInterval} seconds`);
+
+		const currentTime = new Date().getTime();
+		if (this.deviceType === 'cloud') {
+			this.log(`[${this.getName()}] Next refresh in ${refreshInterval} seconds`);
+		} else {
+			// Logg kun en gang per 10 minutter (600000 ms)
+			if (!this.lastLoggedTime || currentTime - this.lastLoggedTime >= 600000) {
+				this.log(`[${this.getName()}] Next refresh in ${refreshInterval} seconds`);
+				this.lastLoggedTime = currentTime;
+			}
+		}
 	}
 
 	async refreshMillService() {
@@ -123,6 +142,7 @@ class MillDeviceV2 extends Device {
 							setTemp: device.set_temperature,
 							switchedOn: device.switched_on,
 							cloudConnected: device.connected_to_cloud,
+							controlSignal: device.control_signal,
 							operationMode: device.operation_mode,
 							status: device.status,
 						});
@@ -136,7 +156,7 @@ class MillDeviceV2 extends Device {
 					const jobs = [
 						this.setCapabilityValue('measure_temperature', device.ambient_temperature),
 						this.setCapabilityValue('target_temperature', device.set_temperature < 4 ? this.lastSetTemperature : device.set_temperature),
-						this.setCapabilityValue('mill_onoff', device.operation_mode !== 'OFF' && device.set_temperature > device.ambient_temperature),
+						this.setCapabilityValue('mill_onoff', device.operation_mode !== 'OFF' && device.control_signal > 0),
 						this.setCapabilityValue('onoff', device.operation_mode !== 'OFF')
 					];
 
