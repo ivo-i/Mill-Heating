@@ -118,6 +118,43 @@ class MillDriverV2 extends Driver {
 			return { error: 'No devices found' };
 		});
 
+		await session.setHandler('getIndependentCloudDevices', async (data) => {
+			this.MillCloud = new MillCloud(this.homey.app);
+
+			const house = await this.MillCloud.listHomes();
+			const houseId = house.ownHouses[0].id;
+			const houseName = house.ownHouses[0].name;
+
+			const devices = await this.MillCloud.listIndependentDevices(houseId, 'heatersAndSockets');
+			for (const device of devices.items) {
+				const deviceType = device.deviceType.parentType.name;
+				const deviceData = {
+					name: device.customName,
+					data: {
+						id: device.deviceId,
+						name: device.customName,
+						deviceType: deviceType,
+						macAddress: device.macAddress,
+						ipAddress: 'Not applicable',
+						apiVersion: 'cloud',
+						houseId: houseId,
+						homeName: houseName,
+					},
+					settings: {
+						deviceType: deviceType,
+						macAddress: device.macAddress,
+						ipAddress: 'Not applicable',
+						houseId: houseId,
+						apiVersion: 'cloud',
+					}
+				};
+				this.devices.push(deviceData);
+
+				return deviceData.length;
+			}
+			return { error: 'No devices found' };
+		});
+
 		session.setHandler("list_devices", async () => {
 			return await this.onPairListDevices(session);
 		});

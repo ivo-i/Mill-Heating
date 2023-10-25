@@ -80,14 +80,21 @@
 		e.preventDefault();
 		Homey.emit('getCloudDevices').then(function (result) {
 			console.log(result);
-			if (result => 1) {
+			if (!result.error) {
 				return Homey.nextView();
 			} else {
-				Homey.setNavigationClose();
-				$('#errorField').show();
-				$('#cloudError').show();
-				$('#conFailed').hide();
-				return Homey.alert("Fant ingen Mill-enheter i Cloud API. Sjekk at du har lagt til enheter i Mill-appen.");
+				Homey.emit('getIndependentCloudDevices').then(function (result) {
+					console.log(result);
+					if (!result.error) {
+						return Homey.nextView();
+					} else {
+						Homey.setNavigationClose();
+						$('#errorField').show();
+						$('#cloudError').show();
+						$('#conFailed').hide();
+						return Homey.alert("Fant ingen Mill-enheter i Cloud API. Sjekk at du har lagt til enheter i Mill-appen.");
+					}
+				});
 			}
 		});
 	});
