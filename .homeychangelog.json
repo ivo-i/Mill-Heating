@@ -67,5 +67,8 @@
   },
   "2.4.0": {
     "en": "Added a replacement driver for the Mill heaters, supporting both local and cloud api communication. Meaning you're not dependant on an active Internet connection to let Homey control your heaters. Try this new driver by adding your Mill heaters with the new Mill v2 driver. Please report any and all issues or errors you may encounter. The new driver will be a permanent replacement of the old v1 driver, when all bugs and errors are fixed."
+  },
+  "2.4.1": {
+    "en": "Fixed an issue with pairing Mill heaters with the old driver after the API logic changed. Also forgot to mention that in release v2.4.0, support for Mill Silent Pro Compact was added."
   }
 }
