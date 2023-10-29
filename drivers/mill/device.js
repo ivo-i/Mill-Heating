@@ -7,7 +7,8 @@ const millCloud = require('./../../lib/millCloud');
 class MillDevice extends Device {
   async onInit() {
     this.deviceId = this.getData().id;
-    this.millApi = new millCloud(this.homey.app);
+    //this.millApi = new millCloud(this.homey.app);
+    this.millApi = this.homey.app.getMillApi();
     this.room = this.millApi.listDevices(this.deviceId);
     this.room = new Room(this.room);
 
