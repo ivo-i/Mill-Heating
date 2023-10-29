@@ -16,7 +16,7 @@ class MillDriverV2 extends Driver {
 		await session.setHandler('startPairing', async (data) => {
 			this.homey.app.dDebug('Pairing started. Checking if user is logged in...');
 			const connected = await this.homey.app.isConnected();
-			//console.log('connected:', connected);
+			this.homey.app.dDebug(connected ? 'User is logged in, continuing...' : 'User is not logged in, logging in...');
 			return connected;
 		});
 
@@ -51,7 +51,7 @@ class MillDriverV2 extends Driver {
 			this.devices = [];
 
 			const result = await this.MillLocal.pingLocalDevice(data);
-			console.log('result:', result);
+			//console.log('result:', result);
 			if (result.success === true) {
 				const deviceType = result.data.name.toLowerCase().includes('socket') ? 'Sockets' : 'Heaters';
 				const device = {

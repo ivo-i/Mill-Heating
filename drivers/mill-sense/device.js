@@ -1,24 +1,13 @@
 'use strict';
 
 const { Device } = require('homey');
-const millApi = require('./../../lib/mill');
+const millCloud = require('../../lib/millCloud');
 
 class MillSense extends Device {
   async onInit() {
     this.deviceId = this.getData().id;
-    this.millApi = new millApi(this.homey.app);
+    this.millApi = new millCloud(this.homey.app);
     this.device = this.millApi.getDevice(this.deviceId);
-
-    this.user = null;
-    this.isAuthenticated = false;
-    this.isAuthenticating = false;
-
-    await this.connectToMill().then(() => {
-      this.homey.app.dDebug('Connected to Mill');
-    }).catch((err) => {
-      this.homey.app.dError('Error caught while connecting to Mill', err);
-      return err;
-    });
 
     this.log(`[${this.getName()}] ${this.getClass()} (${this.deviceId}) initialized`);
 
@@ -101,42 +90,6 @@ class MillSense extends Device {
     this.refreshState();
   }
 
-  async connectToMill() {
-    const username = await this.homey.settings.get('username');
-    const password = await this.homey.settings.get('password');
-
-    if (!username || !password) {
-      this.homey.app.dError('No username or password set');
-      throw new Error('No username or password set');
-    }
-
-    return this.authenticate(username, password);
-  }
-
-  async authenticate(username, password) {
-    if (username && password && !this.isAuthenticating) {
-      try {
-        this.isAuthenticating = true;
-        this.user = await this.millApi.login(username, password) || null;
-        this.isAuthenticated = true;
-        this.homey.app.dDebug('Mill authenticated');
-        return true;
-      } catch (e) {
-        this.homey.app.dError('Error authenticating', e);
-        this.isAuthenticated = false;
-        this.user = null;
-        return false;
-      } finally {
-        this.isAuthenticating = false;
-      }
-    }
-    return false;
-  }
-
-  isConnected() {
-    return this.isAuthenticated;
-  }
-
   async refreshState() {
     this.log(`[${this.getName()}] Refreshing state`);
 
@@ -146,13 +99,13 @@ class MillSense extends Device {
     }
 
     try {
-      if (this.isConnected()) {
+      if (this.homey.app.isConnected()) {
         await this.refreshMillService();
         this.setAvailable();
       } else {
         this.log(`[${this.getName()}] Mill not connected`);
         this.setUnavailable();
-        await this.connectToMill().then(() => {
+        await this.homey.app.connectToMill().then(() => {
           this.scheduleRefresh(5);
         }).catch((err) => {
           this.homey.app.dError('Error caught while refreshing state', err);

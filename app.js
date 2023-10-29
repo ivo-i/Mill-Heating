@@ -90,7 +90,7 @@ class MillApp extends Homey.App {
   }
 
   getMillApi() {
-    return this.millApi;
+    return this.millCloud;
   }
 
   async dLog(severity, message, data) {
