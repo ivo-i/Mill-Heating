@@ -8,7 +8,7 @@ class MillDevice extends Device {
   async onInit() {
     this.deviceId = this.getData().id;
     this.millApi = new millCloud(this.homey.app);
-    this.room = this.millApi.listDevices(this.deviceId);
+    this.room = this.millApi.listRoomDevices(this.deviceId);
     this.room = new Room(this.room);
 
     this.user = null;
@@ -101,7 +101,7 @@ class MillDevice extends Device {
   }
 
   async refreshMillService() {
-    return this.millApi.listDevices(this.getData().id)
+    return this.millApi.listRoomDevices(this.getData().id)
       .then(async (room) => {
         this.log(`[${this.getName()}] Mill state refreshed`, {
           comfortTemp: room.roomComfortTemperature,
@@ -174,7 +174,7 @@ class MillDevice extends Device {
   }
 
   async updatePowerUsage() {
-    const room = await this.millApi.listDevices(this.getData().id);
+    const room = await this.millApi.listRoomDevices(this.getData().id);
     this.room = new Room(room);
 
     if (!this.room.roomHeatStatus) {
