@@ -6,7 +6,8 @@ const MillCloud = require('../../lib/millCloud');
 class MillSense extends Device {
   async onInit() {
     this.deviceId = this.getData().id;
-    this.millApi = new MillCloud(this.homey.app);
+    //this.millApi = new MillCloud(this.homey.app);
+    this.millApi = this.homey.app.getMillApi();
     this.device = this.millApi.getDevice(this.deviceId);
 
     this.log(`[${this.getName()}] ${this.getClass()} (${this.deviceId}) initialized`);
