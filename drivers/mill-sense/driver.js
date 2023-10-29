@@ -15,7 +15,7 @@ class MillSenseDriver extends Driver {
       return this.onPairListDevices();
     } else {
       this.homey.app.dDebug('Pairing');
-      const millApi = new millCloud(this.homey.app);
+      const millApi = this.homey.app.getMillApi();
       const homes = await millApi.listHomes();
       this.homey.app.dDebug(`Found following homes: ${homes.ownHouses.map(home => `${home.name} (${home.id})`).join(', ')}`);
       this.homey.app.dDebug(`Found following shared homes: ${homes.sharedHouses.map(home => `${home.house.name} (${home.house.id})`).join(', ')}`);
