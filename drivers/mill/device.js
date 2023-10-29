@@ -2,15 +2,25 @@
 
 const { Device } = require('homey');
 const Room = require('./../../lib/models');
-const millCloud = require('./../../lib/millCloud');
+const millApi = require('./../../lib/mill');
 
 class MillDevice extends Device {
   async onInit() {
     this.deviceId = this.getData().id;
-    //this.millApi = new millCloud(this.homey.app);
-    this.millApi = this.homey.app.getMillApi();
+    this.millApi = new millApi(this.homey.app);
     this.room = this.millApi.listDevices(this.deviceId);
     this.room = new Room(this.room);
+
+    this.user = null;
+    this.isAuthenticated = false;
+    this.isAuthenticating = false;
+
+    await this.connectToMill().then(() => {
+      this.homey.app.dDebug('Connected to Mill');
+    }).catch((err) => {
+      this.homey.app.dError('Error caught while connecting to Mill', err);
+      return err;
+    });
 
     this.log(`[${this.getName()}] ${this.getClass()} (${this.deviceId}) initialized`);
 
@@ -62,6 +72,42 @@ class MillDevice extends Device {
     this.refreshState();
   }
 
+  async connectToMill() {
+    const username = await this.homey.settings.get('username');
+    const password = await this.homey.settings.get('password');
+
+    if (!username || !password) {
+      this.homey.app.dError('No username or password set');
+      throw new Error('No username or password set');
+    }
+
+    return this.authenticate(username, password);
+  }
+
+  async authenticate(username, password) {
+    if (username && password && !this.isAuthenticating) {
+      try {
+        this.isAuthenticating = true;
+        this.user = await this.millApi.login(username, password) || null;
+        this.isAuthenticated = true;
+        this.homey.app.dDebug('Mill authenticated');
+        return true;
+      } catch (e) {
+        this.homey.app.dError('Error authenticating', e);
+        this.isAuthenticated = false;
+        this.user = null;
+        return false;
+      } finally {
+        this.isAuthenticating = false;
+      }
+    }
+    return false;
+  }
+
+  isConnected() {
+    return this.isAuthenticated;
+  }
+
   async refreshState() {
     this.log(`[${this.getName()}] Refreshing state`);
 
@@ -71,13 +117,13 @@ class MillDevice extends Device {
     }
 
     try {
-      if (this.homey.app.isConnected()) {
+      if (this.isConnected()) {
         await this.refreshMillService();
         this.setAvailable();
       } else {
         this.log(`[${this.getName()}] Mill not connected`);
         this.setUnavailable();
-        await this.homey.app.connectToMill().then(() => {
+        await this.connectToMill().then(() => {
           this.scheduleRefresh(10);
         }).catch((err) => {
           this.homey.app.dError('Error caught while refreshing state', err);
@@ -99,9 +145,7 @@ class MillDevice extends Device {
   }
 
   async refreshMillService() {
-    const millApi = this.homey.app.getMillApi();
-
-    return millApi.listDevices(this.getData().id)
+    return this.millApi.listDevices(this.getData().id)
       .then(async (room) => {
         this.log(`[${this.getName()}] Mill state refreshed`, {
           comfortTemp: room.roomComfortTemperature,
@@ -174,8 +218,7 @@ class MillDevice extends Device {
   }
 
   async updatePowerUsage() {
-    const millApi = this.homey.app.getMillApi();
-    const room = await millApi.listDevices(this.getData().id);
+    const room = await this.millApi.listDevices(this.getData().id);
     this.room = new Room(room);
 
     if (!this.room.roomHeatStatus) {
@@ -225,7 +268,6 @@ class MillDevice extends Device {
       await this.setCapabilityValue('target_temperature', temp);
       this.homey.app.dDebug(`onCapabilityTargetTemperature(${value}=>${temp})`);
     }
-    const millApi = this.homey.app.getMillApi();
 
     if (this.room.modeName === 'Weekly_program') {
       this.room.roomComfortTemperature = temp;
@@ -239,7 +281,7 @@ class MillDevice extends Device {
       this.room.vacationTemperature = temp;
     }
 
-    millApi.changeRoomTemperature(this.deviceId, this.room)
+    this.millApi.changeRoomTemperature(this.deviceId, this.room)
       .then(() => {
         this.log(`onCapabilityTargetTemperature(${temp}) done`);
         this.homey.app.dDebug(`[${this.getName()}] Changed temp to ${temp}: mode: ${this.room.modeName}/${this.room.roomProgramName}, comfortTemp: ${this.room.roomComfortTemperature}, awayTemp: ${this.room.roomAwayTemperature}, avgTemp: ${this.room.averageTemperature}, sleepTemp: ${this.room.roomSleepTemperature}`);
@@ -252,7 +294,6 @@ class MillDevice extends Device {
 
   async setThermostatMode(value) {
     return new Promise(async (resolve, reject) => {
-      const millApi = this.homey.app.getMillApi();
       this.room.modeName = value;
       const jobs = [];
       if (value !== 'off') {
@@ -281,7 +322,7 @@ class MillDevice extends Device {
           jobs.push(await this.setCapabilityValue('target_temperature', this.room.vacationTemperature));
         }
       }
-      jobs.push(millApi.changeRoomMode(this.deviceId, value.toLowerCase()));
+      jobs.push(this.millApi.changeRoomMode(this.deviceId, value.toLowerCase()));
 
       Promise.all(jobs).then(() => {
         this.homey.app.dDebug(`[${this.getName()}] Changed mode to ${value}: mode: ${value}/${this.room.roomProgramName}, comfortTemp: ${this.room.roomComfortTemperature}, awayTemp: ${this.room.roomAwayTemperature}, avgTemp: ${this.room.averageTemperature}, sleepTemp: ${this.room.roomSleepTemperature}`);

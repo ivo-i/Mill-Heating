@@ -2,12 +2,10 @@
 
 const Homey = require('homey');
 const millCloud = require('./lib/millCloud');
-const millApi = require('./lib/mill');
 
 class MillApp extends Homey.App {
   async onInit() {
     this.millCloud = new millCloud(this);
-    this.millApi = new millApi(this);
     this.user = null;
     this.isAuthenticated = false;
     this.isAuthenticating = false;
