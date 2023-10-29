@@ -70,5 +70,8 @@
   },
   "2.4.1": {
     "en": "Fixed an issue with pairing Mill heaters with the old driver after the API logic changed. Also forgot to mention that in release v2.4.0, support for Mill Silent Pro Compact was added."
+  },
+  "2.4.2": {
+    "en": "Fixed an issue where the old Mill driver wouldn't work after the new Mill v2 driver was implemented. This should now be fully resolved. Both drivers now use the same new Mill API instance I created for the v2 driver."
   }
 }
