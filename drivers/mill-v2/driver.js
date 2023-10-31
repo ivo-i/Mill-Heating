@@ -85,40 +85,46 @@ class MillDriverV2 extends Driver {
 		await session.setHandler('getCloudDevices', async (data) => {
 			this.devices = [];
 
-			const house = await this.MillCloud.listHomes();
-			const houseId = house.ownHouses[0].id;
-			const houseName = house.ownHouses[0].name;
+			const houses = await this.MillCloud.listHomes();
 
-			const rooms = await this.MillCloud.listDevices(houseId);
-			for (const room of rooms) {
-				for (const device of room.devices) {
-					const deviceType = device.deviceType.parentType.name;
-					const deviceData = {
-						name: device.customName,
-						data: {
-							id: device.deviceId,
+			for (const house of houses.ownHouses) {
+				const houseId = house.id;
+				const houseName = house.name;
+
+				const rooms = await this.MillCloud.listDevices(houseId);
+				for (const room of rooms) {
+					for (const device of room.devices) {
+						const deviceType = device.deviceType.parentType.name;
+						const deviceData = {
 							name: device.customName,
-							deviceType: deviceType,
-							macAddress: device.macAddress,
-							ipAddress: 'Not applicable',
-							apiVersion: 'cloud',
-							houseId: houseId,
-							homeName: houseName,
-						},
-						settings: {
-							deviceType: deviceType,
-							macAddress: device.macAddress,
-							ipAddress: 'Not applicable',
-							houseId: houseId,
-							apiVersion: 'cloud',
-						}
-					};
-					this.devices.push(deviceData);
-
-					return { success: true, devices: this.devices.length }
+							data: {
+								id: device.deviceId,
+								name: device.customName,
+								deviceType: deviceType,
+								macAddress: device.macAddress,
+								ipAddress: 'Not applicable',
+								apiVersion: 'cloud',
+								houseId: houseId,
+								homeName: houseName,
+							},
+							settings: {
+								deviceType: deviceType,
+								macAddress: device.macAddress,
+								ipAddress: 'Not applicable',
+								houseId: houseId,
+								apiVersion: 'cloud',
+							}
+						};
+						this.devices.push(deviceData);
+					}
 				}
 			}
-			return { error: 'No devices found' };
+
+			if (this.devices.length > 0) {
+				return { success: true, devices: this.devices };
+			} else {
+				return { error: 'No devices found' };
+			}
 		});
 
 		await session.setHandler('getIndependentCloudDevices', async (data) => {
