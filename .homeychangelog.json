@@ -73,5 +73,8 @@
   },
   "2.4.2": {
     "en": "Fixed an issue where the old Mill driver wouldn't work after the new Mill v2 driver was implemented. This should now be fully resolved. Both drivers now use the same new Mill API instance I created for the v2 driver."
+  },
+  "2.4.3": {
+    "en": "The Mill v2 driver will now list all your devices, across all houses and shared houses"
   }
 }
