@@ -30,12 +30,6 @@ class MillDeviceV2 extends Device {
 			this.deviceInstance = this.deviceId;
 		}
 
-		await this.homey.arp.getMAC(this.ipAddress).then((mac) => {
-			console.log(`[${this.getName()}] MAC address: ${mac}`);
-		}).catch((err) => {
-			this.homey.app.dError(`[${this.getName()}] Error caught while getting MAC address`, err);
-		});
-
 		// capabilities
 		this.registerCapabilityListener('target_temperature', this.onCapabilityTargetTemperature.bind(this));
 		this.registerCapabilityListener('onoff', this.onCapabilityOnOff.bind(this));
@@ -140,6 +134,7 @@ class MillDeviceV2 extends Device {
 						cloudConnected: device.connected_to_cloud,
 						operationMode: device.operation_mode,
 						status: device.status,
+						controlSource: device.control_source,
 					});
 				} else {
 					// Logg kun en gang per 10 minutter (600000 ms)
