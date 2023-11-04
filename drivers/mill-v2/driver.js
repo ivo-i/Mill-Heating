@@ -86,14 +86,18 @@ class MillDriverV2 extends Driver {
 			this.devices = [];
 
 			const houses = await this.MillCloud.listHomes();
+			this.log('houses:', houses);
 
-			for (const house of [...houses.ownHouses, ...houses.sharedHouses]) {
+			for (const house of [...houses.ownHouses, ...houses.sharedHouses.map(h => h.house)]) {
 				const houseId = house.id;
 				const houseName = house.name;
+				this.log('houseName:', houseName);
 
 				const rooms = await this.MillCloud.listDevices(houseId);
 				for (const room of rooms) {
+					this.log('room:', room);
 					for (const device of room.devices) {
+						this.log('device:', device);
 						const deviceType = device.deviceType.parentType.name;
 						const deviceData = {
 							name: device.customName,
@@ -132,7 +136,7 @@ class MillDriverV2 extends Driver {
 
 			const houses = await this.MillCloud.listHomes();
 
-			for (const house of [...houses.ownHouses, ...houses.sharedHouses]) {
+			for (const house of [...houses.ownHouses, ...houses.sharedHouses.map(h => h.house)]) {
 				const houseId = house.id;
 				const houseName = house.name;
 
