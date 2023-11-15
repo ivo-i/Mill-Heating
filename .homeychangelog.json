@@ -76,5 +76,8 @@
   },
   "2.4.3": {
     "en": "The Mill v2 driver will now list all your devices, across all houses and shared houses"
+  },
+  "2.4.4": {
+    "en": "Improved error handling. Also fixed a bug where the device would become unavailable because of a http 400 error."
   }
 }
