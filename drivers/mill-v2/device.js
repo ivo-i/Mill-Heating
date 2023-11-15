@@ -78,7 +78,8 @@ class MillDeviceV2 extends Device {
 
         this.millApi.on('connectionEstablished', async () => {
             this.homey.app.dDebug(`[${this.getName()}] Mill connection established/restored. Refreshing state...`);
-            return await this.setAvailable();
+            await this.setAvailable();
+            return await this.scheduleRefresh();
         });
 
         this.homey.app.dDebug(`[${this.getName()}] (${this.deviceId}) initialized`);
