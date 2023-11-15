@@ -166,7 +166,7 @@ class MillDeviceV2 extends Device {
 						this.setCapabilityValue('onoff', device.operation_mode !== 'OFF')
 					];
 
-					this.lastSetTemperature = device.set_temperature > 4 ? device.set_temperature : this.lastSetTemperature;
+					this.lastSetTemperature = device.set_temperature > 4 ? device.set_temperature : this.lastSetTemperature || 21;
 
 					if (this.hasCapability('measure_power')) {
 						const totalPowerUsage = device.current_power;

@@ -55,7 +55,7 @@ class MillDevice extends Device {
         return args.device.setThermostatMode(args.mill_mode);
       });
 
-    this.homey.setInterval(() => {
+    this.powerUsageInterval = this.homey.setInterval(() => {
       this.updatePowerUsage();
     }, 300 * 1000);
 
@@ -206,6 +206,7 @@ class MillDevice extends Device {
 
   async onDeleted() {
     clearTimeout(this.refreshTimeout);
+    clearTimeout(this.powerUsageInterval);
     this.homey.app.dDebug('Device deleted', this.getState());
   }
 
