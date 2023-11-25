@@ -85,6 +85,7 @@
       }
     ]
   },
+  "support": "mailto:mill@coderax.dev?subject=Mill%20Heating%20-%20Homey%20app",
   "flow": {
     "triggers": [
       {
