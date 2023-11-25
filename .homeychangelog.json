@@ -82,5 +82,8 @@
   },
   "2.4.5": {
     "en": "Fixed an issue where local devices wouldn't refresh after it's become available again after connection loss."
+  },
+  "2.4.6": {
+    "en": "Added support email, and homepage to metadata"
   }
 }
