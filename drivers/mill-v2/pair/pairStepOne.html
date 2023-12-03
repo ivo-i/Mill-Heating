@@ -93,19 +93,19 @@
 
     $('#autoscan').on('click', function (e) {
             e.preventDefault();
-            Homey.emit('autoscan', $('#gateway').val()).then(function (result) {
-                Homey.showLoadingOverlay();
+            Homey.showLoadingOverlay();
+            Homey.emit('autoscan', $('#gateway').val()).then(async function (result) {
                 //console.log(result);
                 if (result.error) {
                     console.log("Connection failed.");
-                    Homey.hideLoadingOverlay();
+                    await Homey.hideLoadingOverlay();
                     $('#cloudError').hide();
                     $('#errorField').show();
                     $('#conFailed').show();
                     return Homey.alert("Autoscan feilet. Sjekk at du har lagt til enheter i Mill-appen.");
                 } else {
                     console.log("Connection successful.");
-                    Homey.hideLoadingOverlay();
+                    await Homey.hideLoadingOverlay();
                     //Homey.alert("Tilkobling vellykket!");
                     return Homey.nextView();
                 }
