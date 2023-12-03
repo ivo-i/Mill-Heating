@@ -88,8 +88,6 @@ class MillDriverV2 extends Driver {
 
             console.log('Starting autoscan...');
             const result = await this.MillLocal.autoScan(data);
-            console.log(data);
-            console.log('result:', result);
             if (result.success === true) {
                 const deviceType = result.data.name.toLowerCase().includes('socket') ? 'Sockets' : 'Heaters';
                 const device = {
@@ -99,7 +97,7 @@ class MillDriverV2 extends Driver {
                         name: result.data.name,
                         deviceType: deviceType,
                         macAddress: result.data.mac_address,
-                        ipAddress: data,
+                        ipAddress: result.data.ip_address,
                         apiVersion: 'local',
                         houseId: 'Not applicable',
                         homeName: 'Not applicable',

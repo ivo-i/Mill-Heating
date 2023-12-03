@@ -35,11 +35,11 @@
     <fieldset class="homey-form-fieldset">
         <legend class="homey-form-legend">Autoscan</legend>
         <div class="homey-form-group">
-            <label class="homey-form-label" for="gateway">Gateway adresse</label>
+            <label class="homey-form-label" for="gateway">Gateway adresse <small style="color: red;">(Ofte
+                    <b>192.168.xxx.xxx</b> eller <b>10.xxx.xxx.xxx</b>)</small></label>
             <input class="homey-form-input" id="gateway" type="text" value="" />
             <p style="margin-top: 5px;">Autoscan vil automatisk legge til alle Mill-enheter som er tilkoblet samme
-                nettverk som Homey. Dette er kun mulig med
-                lokalt API.</p>
+                nettverk som Homey. Dette er kun mulig med lokalt API. (Dette kan ta en stund. Vær tålmodig, og ikke lukk paringsvinduet før autoscan er ferdig.)</p>
             <div class="homey-form-group">
                 <button class="homey-button-primary-full" id="autoscan">Autoscan</button>
             </div>
@@ -91,6 +91,27 @@
         });
     });
 
+    $('#autoscan').on('click', function (e) {
+            e.preventDefault();
+            Homey.emit('autoscan', $('#gateway').val()).then(function (result) {
+                Homey.showLoadingOverlay();
+                //console.log(result);
+                if (result.error) {
+                    console.log("Connection failed.");
+                    Homey.hideLoadingOverlay();
+                    $('#cloudError').hide();
+                    $('#errorField').show();
+                    $('#conFailed').show();
+                    return Homey.alert("Autoscan feilet. Sjekk at du har lagt til enheter i Mill-appen.");
+                } else {
+                    console.log("Connection successful.");
+                    Homey.hideLoadingOverlay();
+                    //Homey.alert("Tilkobling vellykket!");
+                    return Homey.nextView();
+                }
+            });
+        });
+
     $('#nextButton').on('click', function (e) {
         e.preventDefault();
         Homey.emit('getCloudDevices').then(async function (result) {
@@ -99,18 +120,6 @@
                 await getCloudDevices();
             } else {
                 return Homey.nextView();
-            }
-        });
-    });
-
-    $('#autoscan').on('click', function (e) {
-        e.preventDefault();
-        Homey.emit('autoscan', $('#gateway').val()).then(function (result) {
-            console.log(result);
-            if (result.error) {
-                return Homey.alert("Autoscan feilet. Sjekk at du har lagt til enheter i Mill-appen.");
-            } else {
-                return Homey.alert("Autoscan vellykket!");
             }
         });
     });
