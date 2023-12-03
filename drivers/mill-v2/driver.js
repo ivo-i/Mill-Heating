@@ -82,6 +82,44 @@ class MillDriverV2 extends Driver {
 			}
 		});
 
+        await session.setHandler('autoscan', async (data) => {
+            this.MillLocal = new MillLocal(data);
+            this.devices = [];
+
+            console.log('Starting autoscan...');
+            const result = await this.MillLocal.autoScan(data);
+            console.log(data);
+            console.log('result:', result);
+            if (result.success === true) {
+                const deviceType = result.data.name.toLowerCase().includes('socket') ? 'Sockets' : 'Heaters';
+                const device = {
+                    name: result.data.name,
+                    data: {
+                        id: result.data.mac_address,
+                        name: result.data.name,
+                        deviceType: deviceType,
+                        macAddress: result.data.mac_address,
+                        ipAddress: data,
+                        apiVersion: 'local',
+                        houseId: 'Not applicable',
+                        homeName: 'Not applicable',
+                    },
+                    settings: {
+                        deviceType: deviceType,
+                        macAddress: result.data.mac_address,
+                        ipAddress: data,
+                        houseId: 'Not applicable',
+                        apiVersion: 'local',
+                    }
+                };
+                this.devices.push(device);
+
+                return true;
+            } else {
+                return { error: 'Autoscan failed' };
+            }
+        });
+
 		await session.setHandler('getCloudDevices', async (data) => {
 			this.devices = [];
 
