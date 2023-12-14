@@ -78,9 +78,10 @@
     "local"
   ],
   "contributors": {
-    "developers": [
+    "developers": [],
+    "translators": [
       {
-        "name": "Glenn S. Pedersen"
+        "name": "ChatGPT"
       }
     ]
   },
