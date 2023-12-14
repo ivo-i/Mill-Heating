@@ -1,51 +1,34 @@
-🎉🔥Get warm and have fun with our updated app, "Mill Heating"! Thanks to the brilliant work by Glenn S. Pedersen 👏💻, we've forged this app to work with Homey apps SDK 3 and support for the new and improved Homey Pro 2023.🚀🏠
+🚀🏠 Welcome to the updated Mill Heating app, perfectly tailored for the new Homey Pro 2023 and the Homey apps SDK 3. Dive into the world of convenient and smart heating control right from your Homey!
 
-We're diving deep into the warmth sphere and support all your Mill WiFi heaters, in theory though 😉💨🔥. Our fantastic, warmth-loving community have tested and confirmed the following models work perfectly:
+🎉 Our app now proudly supports all Mill WiFi heaters, including the latest additions like Mill Sense Air and Mill Silent Pro Compact. Get ready to experience seamless thermostat control like never before! 🌡️
 
-AV600WIFI 🌡️
-AV800LWIFI 🌡️
-AV1000LWIFI 🌡️
-AV1200WIFI 🌡️
-NE600WIFI 🌡️
-NE1200WIFI 🌡️
-We're giving you all the thermostat control you've ever dreamed of, and a bit more! 🎛️⏱️😎
+Key Features:
+- 🎚️ Full thermostat control for a custom heating experience.
+- 📱 Simple and intuitive setup: Just enter your Mill credentials in the Settings.
+- 🌍 Three modes for ultimate comfort: Comfort 😌, Sleep 🌙, and Away 🏖️.
+- 🔄 Automatic mode adjustments based on your pre-set preferences in the Mill app.
+- 🦸‍♂️ Handy actions like setting thermostat mode directly from Homey.
 
-What can you trigger? 🎯
+Device Compatibility:
+- All Mill WiFi Heaters and Sockets
+- Mill Sense Air
+- Mill Silent Pro Compact
 
-Thermostat mode has changed
-Thermostat mode has changed to <mode>
-What are the conditions? 🤔
+Enhanced Control with Two Drivers:
+1. Mill Driver:
+   - Ideal for standard, room-based control.
+   - Groups multiple heaters in a single room for unified control in Homey.
+   - Retains preset programs from the Mill app for a straightforward setup.
 
-Thermostat is/isn't heating
-Thermostat mode is/isn't <mode>
-What actions can you take? 🦸‍♂️
+2. Mill v2 Driver:
+   - Offers individual device control.
+   - Each heater appears separately in Homey for precise adjustments.
+   - Full control with Homey, overriding preset programs in the Mill app.
+   - Faster response and more reliable control with Local API support.
 
-Set thermostat mode
-To use the app 📱, open Settings and enter your Mill credentials before attempting to add any heaters. Then enter the heater device settings to set the power usage.
+Additional Information:
+- 🎯 Customize thermostat triggers for personalized heating schedules.
+- ⚙️ Easy device settings adjustment for power usage to match your heater model.
+- 📈 Now supports Energy (re-pairing required for devices added before version 1.0.6).
 
-Mill service comes with three comfy modes: Comfort 😌, Sleep 🌙, and Away 🏖️.
-
-Upon mode change, the temperature will adjust to the set temperature of that mode. Adjusting the temperature changes the set point for that mode.
-
-If you select the mode "Program", Mill service will take control and adjust the mode throughout the day according to the program you set up in the Mill app. The device will then change to the current thermostat mode.
-
-Pro-tip: If you want Homey to have complete control, make sure to turn on "Control Device Individually" in the Mill app. If not, the Mill app might override Homey. 😱🔧
-
-Now we also support Energy (requires re-pairing if device was added prior to version 1.0.6). Set power consumption in device settings to match the heater model.
-
-We speak your language! 🌍💬 Supported languages:
-
-English
-Norwegian
-Dutch
-
-Privacy ⛔🕵️‍♂️
-We're using Sentry.io to log exceptions and errors. By installing this app, you accept that the app may send error logs to Sentry. No personal or device information, like email, passwords, Homey identification etc., is ever sent, only logs regarding the error if that occurred.
-
-Disclaimer ⚖️
-Use this app at your own risk. The app has been developed using the same APIs and interfaces used by the official Mill app, but there is a chance that API calls can have unexpected consequences for which nobody but you are responsible.
-
-Thanks to 🙏
-Stan Diers from the Noun Project for the Heat icon.
-
-And now, let's take control over the temperature! 🔥🤘🔥
+🤘 Take the reins of your home's temperature with the Mill Heating app for Homey Pro – your smart solution for a cozy and comfortable environment! 🔥🔥🔥
