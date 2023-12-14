@@ -85,5 +85,8 @@
   },
   "2.4.6": {
     "en": "Added support email, and homepage to metadata"
+  },
+  "2.4.7": {
+    "en": "Updated app description and tagline"
   }
 }
