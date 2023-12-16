@@ -15,11 +15,16 @@
                     <span class="homey-form-radio-checkmark"></span>
                     <span class="homey-form-radio-text">Lokal API (Kun Gen 3 enheter)</span>
                 </label>
+                <label class="homey-form-radio">
+                    <input class="homey-form-radio-input" type="radio" name="selectAPI" value="local2" />
+                    <span class="homey-form-radio-checkmark"></span>
+                    <span class="homey-form-radio-text">Lokal API (Kun Gen 3 enheter)</span>
+                </label>
             </fieldset>
         </div>
     </fieldset>
 </form>
-<form class="homey-form" id="localAPIForm" style="display: none; margin-top: 50px;">
+<!--<form class="homey-form" id="localAPIForm" style="display: none; margin-top: 50px;">
     <fieldset class="homey-form-fieldset">
         <legend class="homey-form-legend">Skriv inn IP-adresse til Mill-ovnen for lokal API</legend>
         <div class="homey-form-group">
@@ -39,10 +44,54 @@
                     <b>192.168.xxx.xxx</b> eller <b>10.xxx.xxx.xxx</b>)</small></label>
             <input class="homey-form-input" id="gateway" type="text" value="" />
             <p style="margin-top: 5px;">Autoscan vil automatisk legge til alle Mill-enheter som er tilkoblet samme
-                nettverk som Homey. Dette er kun mulig med lokalt API. (Dette kan ta en stund. Vær tålmodig, og ikke lukk paringsvinduet før autoscan er ferdig.)</p>
+                nettverk som Homey. Dette er kun mulig med lokalt API. Dette kan ta en stund. Vær tålmodig, og ikke lukk
+                paringsvinduet før autoscan er ferdig. Du vil ikke få noen indikasjoner/meldinger før autoscan er
+                ferdig.</p>
             <div class="homey-form-group">
                 <button class="homey-button-primary-full" id="autoscan">Autoscan</button>
             </div>
+        </div>
+    </fieldset>
+    <fieldset class="homey-form-fieldset" id="errorField" style="display: none;">
+        <p id="conFailed" style="display: none;">Tilkobling feilet. Sjekk IP-adressen og prøv igjen.</p>
+        <p id="cloudError" style="display: none;">Tilkobling vellykket!</p>
+    </fieldset>
+</form>-->
+<form class="homey-form" id="localAPIForm" style="display: none; margin-top: 50px;">
+    <fieldset class="homey-form-fieldset">
+        <legend class="homey-form-legend">Autoscan</legend>
+        <div class="homey-form-group">
+            <p>Velg en vanlig gateway adresse eller spesifiser en annen:</p>
+            <label class="homey-form-radio">
+                <input class="homey-form-radio-input" type="radio" name="gateway" value="192.168.1.1">
+                <span class="homey-form-radio-checkmark"></span>
+                <span class="homey-form-radio-text">192.168.1.1</span>
+            </label>
+            <label class="homey-form-radio">
+                <input class="homey-form-radio-input" type="radio" name="gateway" value="192.168.0.1">
+                <span class="homey-form-radio-checkmark"></span>
+                <span class="homey-form-radio-text">192.168.0.1</span>
+            </label>
+            <label class="homey-form-radio">
+                <input class="homey-form-radio-input" type="radio" name="gateway" value="10.1.1.1">
+                <span class="homey-form-radio-checkmark"></span>
+                <span class="homey-form-radio-text">10.1.1.1</span>
+            </label>
+            <label class="homey-form-radio">
+                <input class="homey-form-radio-input" type="radio" name="gateway" value="other">
+                <span class="homey-form-radio-checkmark"></span>
+                <span class="homey-form-radio-text">Annen</span>
+            </label>
+            <input class="homey-form-input" id="gateway" type="text" value=""
+                style="display: none; margin-top: 5px;" />
+        </div>
+        <p style="margin-top: 5px;">Autoscan vil automatisk prøve å legge til alle Mill-enheter som er tilkoblet samme
+            nettverk
+            som Homey. Dette er kun mulig med lokalt API. Dette kan ta en stund. Vær tålmodig, og ikke lukk
+            paringsvinduet før autoscan er ferdig. Du vil ikke få noen indikasjoner/meldinger før autoscan er ferdig.
+        </p>
+        <div class="homey-form-group">
+            <button class="homey-button-primary-full" id="autoscan">Autoscan</button>
         </div>
     </fieldset>
     <fieldset class="homey-form-fieldset" id="errorField" style="display: none;">
@@ -66,6 +115,10 @@
             $('#localAPIForm').show();
             $('#nextButton').hide();
         }
+    });
+
+    $('input[type=radio][name="gateway"]').change(function () {
+        $('#gateway').toggle($('input[type=radio][name="gateway"]:checked').val() === 'other');
     });
 
     $('#testConnection').on('click', function (e) {
@@ -92,25 +145,26 @@
     });
 
     $('#autoscan').on('click', function (e) {
-            e.preventDefault();
-            Homey.showLoadingOverlay();
-            Homey.emit('autoscan', $('#gateway').val()).then(async function (result) {
-                //console.log(result);
-                if (result.error) {
-                    console.log("Connection failed.");
-                    await Homey.hideLoadingOverlay();
-                    $('#cloudError').hide();
-                    $('#errorField').show();
-                    $('#conFailed').show();
-                    return Homey.alert("Autoscan feilet. Sjekk at du har lagt til enheter i Mill-appen.");
-                } else {
-                    console.log("Connection successful.");
-                    await Homey.hideLoadingOverlay();
-                    //Homey.alert("Tilkobling vellykket!");
-                    return Homey.nextView();
-                }
-            });
+        e.preventDefault();
+        Homey.showLoadingOverlay();
+        console.log("Testing connection to " + $('#gateway').val());
+        Homey.emit('autoscan', $('#gateway').val()).then(async function (result) {
+            //console.log(result);
+            if (result.error) {
+                console.log("Connection failed.");
+                await Homey.hideLoadingOverlay();
+                $('#cloudError').hide();
+                $('#errorField').show();
+                $('#conFailed').show();
+                return Homey.alert("Autoscan feilet. Sjekk at du har lagt til enheter i Mill-appen.");
+            } else {
+                console.log("Connection successful.");
+                await Homey.hideLoadingOverlay();
+                //Homey.alert("Tilkobling vellykket!");
+                return Homey.nextView();
+            }
         });
+    });
 
     $('#nextButton').on('click', function (e) {
         e.preventDefault();
