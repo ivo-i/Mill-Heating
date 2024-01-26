@@ -644,7 +644,7 @@
         },
         {
           "id": "ipAddress",
-          "type": "label",
+          "type": "text",
           "label": {
             "en": "IP Address",
             "no": "IP Adresse"

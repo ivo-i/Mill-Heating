@@ -1,52 +1,67 @@
 [
-  {
-    "id": "apiVersion",
-    "type": "label",
-    "label": { "en": "API Version", "no": "API Versjon" },
-    "value": "Cloud",
-    "hint": {
-      "en": "The API version device is using.",
-      "no": "API versjonen enheten bruker."
-    }
-  },
-  {
-    "id": "deviceType",
-    "type": "label",
-    "label": { "en": "Device Type", "no": "Enhetstype" },
-    "value": "Heaters",
-    "hint": {
-      "en": "The device type.",
-      "no": "Enhetstype"
-    }
-  },
-  {
-    "id": "macAddress",
-    "type": "label",
-    "label": { "en": "MAC Address", "no": "MAC Adresse" },
-    "value": "00:00:00:00:00:00",
-    "hint": {
-      "en": "The MAC address of the device.",
-      "no": "MAC adressen til enheten."
-    }
-  },
-  {
-    "id": "ipAddress",
-    "type": "label",
-    "label": { "en": "IP Address", "no": "IP Adresse" },
-    "value": "192.168.1.1",
-    "hint": {
-      "en": "The IP address of the device.",
-      "no": "IP adressen til enheten."
-    }
-  },
-  {
-    "id": "houseId",
-    "type": "label",
-    "label": { "en": "House ID", "no": "Hus ID" },
-    "value": "0",
-    "hint": {
-      "en": "The house ID of the device.",
-      "no": "Hus ID til enheten."
-    }
-  }
+	{
+		"id": "apiVersion",
+		"type": "label",
+		"label": {
+			"en": "API Version",
+			"no": "API Versjon"
+		},
+		"value": "Cloud",
+		"hint": {
+			"en": "The API version device is using.",
+			"no": "API versjonen enheten bruker."
+		}
+	},
+	{
+		"id": "deviceType",
+		"type": "label",
+		"label": {
+			"en": "Device Type",
+			"no": "Enhetstype"
+		},
+		"value": "Heaters",
+		"hint": {
+			"en": "The device type.",
+			"no": "Enhetstype"
+		}
+	},
+	{
+		"id": "macAddress",
+		"type": "label",
+		"label": {
+			"en": "MAC Address",
+			"no": "MAC Adresse"
+		},
+		"value": "00:00:00:00:00:00",
+		"hint": {
+			"en": "The MAC address of the device.",
+			"no": "MAC adressen til enheten."
+		}
+	},
+	{
+		"id": "ipAddress",
+		"type": "text",
+		"label": {
+			"en": "IP Address",
+			"no": "IP Adresse"
+		},
+		"value": "192.168.1.1",
+		"hint": {
+			"en": "The IP address of the device.",
+			"no": "IP adressen til enheten."
+		}
+	},
+	{
+		"id": "houseId",
+		"type": "label",
+		"label": {
+			"en": "House ID",
+			"no": "Hus ID"
+		},
+		"value": "0",
+		"hint": {
+			"en": "The house ID of the device.",
+			"no": "Hus ID til enheten."
+		}
+	}
 ]
