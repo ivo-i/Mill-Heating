@@ -78,7 +78,11 @@
     "local"
   ],
   "contributors": {
-    "developers": [],
+    "developers": [
+      {
+        "name": "omBratteng"
+      }
+    ],
     "translators": [
       {
         "name": "ChatGPT"

@@ -211,7 +211,7 @@ class MillSense extends Device {
 
   async onSettings(oldSettings, newSettings, changedKeys) {
     this.log('onSettings', oldSettings, newSettings, changedKeys);
-    if (changedKeys.includes('username') && changedKeys.includes('password')) {
+    if (changedKeys && changedKeys.includes('username') && changedKeys.includes('password')) {
       this.homey.app.dDebug('Username and password changed');
       this.connectToMill();
     }
