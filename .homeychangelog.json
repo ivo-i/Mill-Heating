@@ -91,5 +91,8 @@
   },
   "2.4.8": {
     "en": "Replaced the TVOC icon with a new one"
+  },
+  "2.4.9": {
+    "en": "Added a check to prevent null/undefined errors"
   }
 }
