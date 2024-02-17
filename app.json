@@ -127,6 +127,11 @@
           "no": "Termostatmodus har endret seg til",
           "nl": "Thermostaat modus is gewijzigd naar"
         },
+        "titleFormatted": {
+          "en": "Thermostat mode has changed to [[mill_mode]]",
+          "no": "Termostatmodus har endret seg til [[mill_mode]]",
+          "nl": "Thermostaat modus is gewijzigd naar [[mill_mode]]"
+        },
         "args": [
           {
             "type": "device",
@@ -224,6 +229,11 @@
           "no": "Termostatmodus !{{er|er ikke}}",
           "nl": "Thermostaat mode !{{is|is niet}}"
         },
+        "titleFormatted": {
+          "en": "Thermostat mode !{{is|isn't}} [[mill_mode]]",
+          "no": "Termostatmodus !{{er|er ikke}} [[mill_mode]]",
+          "nl": "Thermostaat mode !{{is|is niet}} [[mill_mode]]"
+        },
         "args": [
           {
             "type": "device",
@@ -286,6 +296,11 @@
           "en": "Set thermostat mode",
           "no": "Sett modus",
           "nl": "Stel modus in"
+        },
+        "titleFormatted": {
+          "en": "Set thermostat mode to [[mill_mode]]",
+          "no": "Sett modus til [[mill_mode]]",
+          "nl": "Stel modus in naar [[mill_mode]]"
         },
         "args": [
           {

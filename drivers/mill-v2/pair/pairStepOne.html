@@ -1,197 +1,222 @@
-<form class="homey-form">
-    <fieldset class="homey-form-fieldset">
-        <legend class="homey-form-legend">Hvilket API vil du bruke?</legend>
-        <div class="homey-form-group">
-            <fieldset class="homey-form-radio-set">
-                <legend class="homey-form-radio-set-title">Velg mellom lokal API og Cloud API
-                </legend>
-                <label class="homey-form-radio">
-                    <input class="homey-form-radio-input" type="radio" name="selectAPI" value="cloud" />
-                    <span class="homey-form-radio-checkmark"></span>
-                    <span class="homey-form-radio-text">Cloud API</span>
-                </label>
-                <label class="homey-form-radio">
-                    <input class="homey-form-radio-input" type="radio" name="selectAPI" value="local" />
-                    <span class="homey-form-radio-checkmark"></span>
-                    <span class="homey-form-radio-text">Lokal API (Kun Gen 3 enheter)</span>
-                </label>
-                <label class="homey-form-radio">
-                    <input class="homey-form-radio-input" type="radio" name="selectAPI" value="local2" />
-                    <span class="homey-form-radio-checkmark"></span>
-                    <span class="homey-form-radio-text">Lokal API (Kun Gen 3 enheter)</span>
-                </label>
-            </fieldset>
-        </div>
-    </fieldset>
+<form class="homey-form" id="pairStepOneForm">
+	<fieldset class="homey-form-fieldset">
+		<legend class="homey-form-legend">Hvilket API vil du bruke?</legend>
+		<div class="homey-form-group">
+			<fieldset class="homey-form-radio-set">
+				<legend class="homey-form-radio-set-title">Velg mellom lokal API og Cloud API
+				</legend>
+				<label class="homey-form-radio">
+					<input class="homey-form-radio-input" type="radio" name="selectAPI" value="cloud" />
+					<span class="homey-form-radio-checkmark"></span>
+					<span class="homey-form-radio-text">Cloud API</span>
+				</label>
+				<label class="homey-form-radio">
+					<input class="homey-form-radio-input" type="radio" name="selectAPI" value="local" />
+					<span class="homey-form-radio-checkmark"></span>
+					<span class="homey-form-radio-text">Lokal API (Kun Gen 3 enheter)</span>
+				</label>
+				<label class="homey-form-radio">
+					<input class="homey-form-radio-input" type="radio" name="selectAPI" value="local2" />
+					<span class="homey-form-radio-checkmark"></span>
+					<span class="homey-form-radio-text">Lokal API (Kun Gen 3 enheter)</span>
+				</label>
+			</fieldset>
+		</div>
+	</fieldset>
 </form>
-<!--<form class="homey-form" id="localAPIForm" style="display: none; margin-top: 50px;">
-    <fieldset class="homey-form-fieldset">
-        <legend class="homey-form-legend">Skriv inn IP-adresse til Mill-ovnen for lokal API</legend>
-        <div class="homey-form-group">
-            <label class="homey-form-label" for="target">IP-adresse</label>
-            <input class="homey-form-input" id="target" type="text" value="" />
-            <p style="margin-top: 5px;"><b style="color: red;">MERK! </b>Du bør sette fast IP til Mill-ovnene dine hvis
-                du skal bruke lokalt API, for å slippe å måtte legge inn ovnene på nytt.</p>
-        </div>
-        <div class="homey-form-group">
-            <button class="homey-button-primary-full" id="testConnection">Test tilkobling</button>
-        </div>
-    </fieldset>
-    <fieldset class="homey-form-fieldset">
-        <legend class="homey-form-legend">Autoscan</legend>
-        <div class="homey-form-group">
-            <label class="homey-form-label" for="gateway">Gateway adresse <small style="color: red;">(Ofte
-                    <b>192.168.xxx.xxx</b> eller <b>10.xxx.xxx.xxx</b>)</small></label>
-            <input class="homey-form-input" id="gateway" type="text" value="" />
-            <p style="margin-top: 5px;">Autoscan vil automatisk legge til alle Mill-enheter som er tilkoblet samme
-                nettverk som Homey. Dette er kun mulig med lokalt API. Dette kan ta en stund. Vær tålmodig, og ikke lukk
-                paringsvinduet før autoscan er ferdig. Du vil ikke få noen indikasjoner/meldinger før autoscan er
-                ferdig.</p>
-            <div class="homey-form-group">
-                <button class="homey-button-primary-full" id="autoscan">Autoscan</button>
-            </div>
-        </div>
-    </fieldset>
-    <fieldset class="homey-form-fieldset" id="errorField" style="display: none;">
-        <p id="conFailed" style="display: none;">Tilkobling feilet. Sjekk IP-adressen og prøv igjen.</p>
-        <p id="cloudError" style="display: none;">Tilkobling vellykket!</p>
-    </fieldset>
-</form>-->
+<form class="homey-form" id="localAPIFormManual" style="display: none; margin-top: 50px;">
+	<fieldset class="homey-form-fieldset">
+		<legend class="homey-form-legend">Skriv inn IP-adresse til Mill-ovnen for lokal API</legend>
+		<div class="homey-form-group">
+			<label class="homey-form-label" for="target">IP-adresse</label>
+			<input class="homey-form-input" id="target" type="text" value="" />
+			<p style="margin-top: 5px;"><b style="color: red;">MERK! </b>Du bør sette fast IP til Mill-ovnene dine hvis
+				du skal bruke lokalt API, for å slippe å måtte legge inn ovnene på nytt.</p>
+		</div>
+		<div class="homey-form-group">
+			<button class="homey-button-primary-full" id="testConnection">Test tilkobling</button>
+		</div>
+	</fieldset>
+	<fieldset class="homey-form-fieldset" id="errorField" style="display: none;">
+		<p id="conFailed" style="display: none;">Tilkobling feilet. Sjekk IP-adressen og prøv igjen.</p>
+		<p id="cloudError" style="display: none;">Tilkobling vellykket!</p>
+	</fieldset>
+</form>
 <form class="homey-form" id="localAPIForm" style="display: none; margin-top: 50px;">
-    <fieldset class="homey-form-fieldset">
-        <legend class="homey-form-legend">Autoscan</legend>
-        <div class="homey-form-group">
-            <p>Velg en vanlig gateway adresse eller spesifiser en annen:</p>
-            <label class="homey-form-radio">
-                <input class="homey-form-radio-input" type="radio" name="gateway" value="192.168.1.1">
-                <span class="homey-form-radio-checkmark"></span>
-                <span class="homey-form-radio-text">192.168.1.1</span>
-            </label>
-            <label class="homey-form-radio">
-                <input class="homey-form-radio-input" type="radio" name="gateway" value="192.168.0.1">
-                <span class="homey-form-radio-checkmark"></span>
-                <span class="homey-form-radio-text">192.168.0.1</span>
-            </label>
-            <label class="homey-form-radio">
-                <input class="homey-form-radio-input" type="radio" name="gateway" value="10.1.1.1">
-                <span class="homey-form-radio-checkmark"></span>
-                <span class="homey-form-radio-text">10.1.1.1</span>
-            </label>
-            <label class="homey-form-radio">
-                <input class="homey-form-radio-input" type="radio" name="gateway" value="other">
-                <span class="homey-form-radio-checkmark"></span>
-                <span class="homey-form-radio-text">Annen</span>
-            </label>
-            <input class="homey-form-input" id="gateway" type="text" value=""
-                style="display: none; margin-top: 5px;" />
-        </div>
-        <p style="margin-top: 5px;">Autoscan vil automatisk prøve å legge til alle Mill-enheter som er tilkoblet samme
-            nettverk
-            som Homey. Dette er kun mulig med lokalt API. Dette kan ta en stund. Vær tålmodig, og ikke lukk
-            paringsvinduet før autoscan er ferdig. Du vil ikke få noen indikasjoner/meldinger før autoscan er ferdig.
-        </p>
-        <div class="homey-form-group">
-            <button class="homey-button-primary-full" id="autoscan">Autoscan</button>
-        </div>
-    </fieldset>
-    <fieldset class="homey-form-fieldset" id="errorField" style="display: none;">
-        <p id="conFailed" style="display: none;">Tilkobling feilet. Sjekk IP-adressen og prøv igjen.</p>
-        <p id="cloudError" style="display: none;">Tilkobling vellykket!</p>
-    </fieldset>
+	<fieldset class="homey-form-fieldset">
+		<legend class="homey-form-legend">Autoscan</legend>
+		<div class="homey-form-group">
+			<p>Velg en vanlig gateway adresse eller spesifiser en annen:</p>
+			<label class="homey-form-radio">
+				<input class="homey-form-radio-input" type="radio" name="gateway" value="192.168.1.1">
+				<span class="homey-form-radio-checkmark"></span>
+				<span class="homey-form-radio-text">192.168.1.1</span>
+			</label>
+			<label class="homey-form-radio">
+				<input class="homey-form-radio-input" type="radio" name="gateway" value="192.168.0.1">
+				<span class="homey-form-radio-checkmark"></span>
+				<span class="homey-form-radio-text">192.168.0.1</span>
+			</label>
+			<label class="homey-form-radio">
+				<input class="homey-form-radio-input" type="radio" name="gateway" value="10.1.1.1">
+				<span class="homey-form-radio-checkmark"></span>
+				<span class="homey-form-radio-text">10.1.1.1</span>
+			</label>
+			<label class="homey-form-radio">
+				<input class="homey-form-radio-input" type="radio" name="gateway" value="other">
+				<span class="homey-form-radio-checkmark"></span>
+				<span class="homey-form-radio-text">Annen</span>
+			</label>
+			<input class="homey-form-input" id="gateway" type="text" value="" style="display: none; margin-top: 5px;" />
+			<input class="homey-form-input" id="gatewayAddress" type="text" value="" style="display: none;" />
+		</div>
+		<p style="margin-top: 5px;">Autoscan vil automatisk prøve å legge til alle Mill-enheter som er tilkoblet samme
+			nettverk
+			som Homey. Dette er kun mulig med lokalt API. Dette kan ta en stund. Vær tålmodig, og ikke lukk
+			paringsvinduet før autoscan er ferdig. Du vil ikke få noen indikasjoner/meldinger før autoscan er ferdig.
+		</p>
+		<div class="homey-form-group">
+			<button class="homey-button-primary-full" id="autoscan">Autoscan</button>
+		</div>
+	</fieldset>
+	<fieldset class="homey-form-fieldset" id="errorField" style="display: none;">
+		<p id="conFailed" style="display: none;">Tilkobling feilet. Sjekk IP-adressen og prøv igjen.</p>
+		<p id="cloudError" style="display: none;">Tilkobling vellykket!</p>
+	</fieldset>
 </form>
+<fieldset class="homey-form-fieldset" id="autoScanMessage" style="display: block;">
+	<div id="autoscanMessages"></div>
+</fieldset>
 <button class="homey-button-primary-full" id="nextButton" style="display: none; margin-top: 25px;">Neste</button>
 <script type="application/javascript">
-    Homey.setTitle(Homey.__("Mill Heating"));
+	Homey.setTitle(Homey.__("Mill Heating"));
 
-    $('input[type=radio][name=selectAPI]').change(function () {
-        $('#errorField').hide();
-        $('#conFailed').hide();
-        $('#cloudError').hide();
+	$('input[type=radio][name=selectAPI]').change(function() {
+		$('#errorField').hide();
+		$('#conFailed').hide();
+		$('#cloudError').hide();
 
-        if (this.value == 'cloud') {
-            $('#localAPIForm').hide();
-            $('#nextButton').show();
-        } else if (this.value == 'local') {
-            $('#localAPIForm').show();
-            $('#nextButton').hide();
-        }
-    });
+		if (this.value == 'cloud') {
+			$('#localAPIForm').hide();
+			$('#localAPIFormManual').hide();
+			$('#nextButton').show();
+		} else if (this.value == 'local') {
+			$('#localAPIForm').show();
+			$('#localAPIFormManual').hide();
+			$('#nextButton').hide();
+		} else if (this.value == 'local2') {
+			$('#localAPIFormManual').show();
+			$('#localAPIForm').hide();
+			$('#nextButton').hide();
+		}
+	});
 
-    $('input[type=radio][name="gateway"]').change(function () {
-        $('#gateway').toggle($('input[type=radio][name="gateway"]:checked').val() === 'other');
-    });
+	$('input[type=radio][name="gateway"]').change(function() {
+		$('#gateway').toggle($('input[type=radio][name="gateway"]:checked').val() === 'other');
+		$('#gatewayAddress').val($('input[type=radio][name="gateway"]:checked').val());
+	});
 
-    $('#testConnection').on('click', function (e) {
-        e.preventDefault();
-        $('#errorField').hide();
-        $('#conFailed').hide();
-        $('#cloudError').hide();
+	$('#testConnection').on('click', function(e) {
+		e.preventDefault();
+		$('#errorField').hide();
+		$('#conFailed').hide();
+		$('#cloudError').hide();
 
-        console.log("Testing connection to " + $('#target').val());
-        Homey.emit('pingLocalDevice', $('#target').val()).then(function (result) {
-            //console.log(result);
-            if (result.error) {
-                console.log("Connection failed.");
-                $('#cloudError').hide();
-                $('#errorField').show();
-                $('#conFailed').show();
-                return Homey.alert("Tilkobling feilet. Sjekk IP-adressen og prøv igjen.");
-            } else {
-                console.log("Connection successful.");
-                //Homey.alert("Tilkobling vellykket!");
-                return Homey.nextView();
-            }
-        });
-    });
+		const target = $('#target').val();
+		console.log("Testing connection to " + target);
+		Homey.emit('pingLocalDevice', target).then(function(result) {
+			//console.log(result);
+			if (result.error) {
+				console.log("Connection failed.");
+				$('#cloudError').hide();
+				$('#errorField').show();
+				$('#conFailed').show();
+				return Homey.alert("Tilkobling feilet. Sjekk IP-adressen og prøv igjen.");
+			} else {
+				console.log("Connection successful.");
+				//Homey.alert("Tilkobling vellykket!");
+				return Homey.nextView();
+			}
+		});
+	});
 
-    $('#autoscan').on('click', function (e) {
-        e.preventDefault();
-        Homey.showLoadingOverlay();
-        console.log("Testing connection to " + $('#gateway').val());
-        Homey.emit('autoscan', $('#gateway').val()).then(async function (result) {
-            //console.log(result);
-            if (result.error) {
-                console.log("Connection failed.");
-                await Homey.hideLoadingOverlay();
-                $('#cloudError').hide();
-                $('#errorField').show();
-                $('#conFailed').show();
-                return Homey.alert("Autoscan feilet. Sjekk at du har lagt til enheter i Mill-appen.");
-            } else {
-                console.log("Connection successful.");
-                await Homey.hideLoadingOverlay();
-                //Homey.alert("Tilkobling vellykket!");
-                return Homey.nextView();
-            }
-        });
-    });
+	$('#autoscan').on('click', function(e) {
+		e.preventDefault();
+		//Homey.showLoadingOverlay();
+		const target = $('#gatewayAddress').val() || $('#gateway').val();
+		console.log("Testing connection to gateway " + target + ", including subnets.");
+		$('#autoScanMessage').show();
+		Homey.setTitle(Homey.__({
+			"en": "Autoscan in progress...",
+			"no": "Autoscan pågår..."
+		}));
+		Homey.setSubtitle(Homey.__({
+			"en": "Trying to discover Mill devices...",
+			"no": "Prøver å finne Mill-enheter..."
+		}));
+		$('#pairStepOneForm').hide();
+		$('#nextButton').hide();
+		$('#localAPIForm').hide();
+		$('#localAPIFormManual').hide();
+		Homey.emit('autoscan', target).then(async function(result) {
+			//console.log(result);
+			if (result.error) {
+				console.log("Connection failed.");
+				await Homey.hideLoadingOverlay();
+				$('#cloudError').hide();
+				$('#errorField').show();
+				$('#conFailed').show();
+				return Homey.alert("Autoscan feilet. Sjekk at du har lagt til enheter i Mill-appen.");
+			} else {
+				console.log("Connection successful.");
+				await Homey.hideLoadingOverlay();
+				//Homey.alert("Tilkobling vellykket!");
+				return Homey.nextView();
+			}
+		});
+	});
 
-    $('#nextButton').on('click', function (e) {
-        e.preventDefault();
-        Homey.emit('getCloudDevices').then(async function (result) {
-            console.log(result);
-            if (result.error) {
-                await getCloudDevices();
-            } else {
-                return Homey.nextView();
-            }
-        });
-    });
+	Homey.on('autoscanMessage', function(data) {
+		if (data.ip && data.status) {
+            const escapedIp = data.ip.replace(/\./g, '');
+			if (data.status === 'checking') {
+				$('#autoscanMessages').prepend(`<p>${data.message} <img id="${escapedIp}" src="../assets/loading.svg" style="width: 20px; vertical-align: sub;" /></p>`);
+			}
+			if (data.status === 'found') {
+				$('#' + escapedIp).attr('src', '../assets/check.svg');
+			}
+			if (data.status === 'not found') {
+				$('#' + escapedIp).attr('src', '../assets/x.svg');
+			}
+		}
+	});
 
-    async function getCloudDevices() {
-        return new Promise((resolve, reject) => {
-            Homey.emit('getIndependentCloudDevices').then(function (response) {
-                console.log(response);
-                if (response.error) {
-                    Homey.setNavigationClose();
-                    $('#errorField').show();
-                    $('#cloudError').show();
-                    $('#conFailed').hide();
-                    return Homey.alert("Fant ingen Mill-enheter i Cloud API. Sjekk at du har lagt til enheter i Mill-appen.");
-                } else {
-                    return Homey.nextView();
-                }
-            });
-        });
-    }
+	$('#nextButton').on('click', function(e) {
+		e.preventDefault();
+		Homey.emit('getCloudDevices').then(async function(result) {
+			console.log(result);
+			if (result.error) {
+				await getCloudDevices();
+			} else {
+				return Homey.nextView();
+			}
+		});
+	});
+
+	async function getCloudDevices() {
+		return new Promise((resolve, reject) => {
+			Homey.emit('getIndependentCloudDevices').then(function(response) {
+				console.log(response);
+				if (response.error) {
+					Homey.setNavigationClose();
+					$('#errorField').show();
+					$('#cloudError').show();
+					$('#conFailed').hide();
+					return Homey.alert("Fant ingen Mill-enheter i Cloud API. Sjekk at du har lagt til enheter i Mill-appen.");
+				} else {
+					return Homey.nextView();
+				}
+			});
+		});
+	}
 </script>

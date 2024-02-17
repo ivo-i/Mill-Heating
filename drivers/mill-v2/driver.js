@@ -86,8 +86,15 @@ class MillDriverV2 extends Driver {
             this.MillLocal = new MillLocal(data);
             this.devices = [];
 
-            console.log('Starting autoscan...');
-            const result = await this.MillLocal.autoScan(data);
+            this.homey.app.dDebug('Starting autoscan...');
+            const result = await this.MillLocal.autoScan(data, async (info) => {
+                if (info.error) {
+                    this.homey.app.dError('Autoscan error:', info.error);
+                } else {
+                    //this.homey.app.dDebug('Autoscan message:', message);
+                    await session.emit('autoscanMessage', info);
+                }
+            });
             if (result.success === true) {
                 for (const device of result.data) {
                     const deviceType = device.name.toLowerCase().includes('socket') ? 'Sockets' : 'Heaters';
@@ -106,14 +113,14 @@ class MillDriverV2 extends Driver {
                         settings: {
                             deviceType: deviceType,
                             macAddress: device.mac_address,
-                            ipAddress: data,
+                            ipAddress: device.ip_address,
                             houseId: 'Not applicable',
                             apiVersion: 'local',
                         }
                     };
                     this.devices.push(deviceObj);
-                    console.log('this.devices:', this.devices);
                 }
+                console.log('this.devices:', this.devices);
 
                 return true;
             } else {

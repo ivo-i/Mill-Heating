@@ -1,198 +1,213 @@
 {
-  "triggers": [
-    {
-      "id": "mill_mode_changed",
-      "title": {
-        "en": "Thermostat mode has changed",
-        "no": "Termostatmodus har endret seg",
-        "nl": "Modus van de thermostaat is gewijzigd"
-      },
-      "args": [],
-      "tokens": [
+    "triggers": [
         {
-          "name": "mill_mode",
-          "type": "string",
-          "title": {
-            "en": "Mode",
-            "no": "Modus",
-            "nl": "Modus"
-          },
-          "example": "Comfort"
-        }
-      ]
-    },
-    {
-      "id": "mill_mode_changed_to",
-      "title": {
-        "en": "Thermostat mode has changed to",
-        "no": "Termostatmodus har endret seg til",
-        "nl": "Thermostaat modus is gewijzigd naar"
-      },
-      "args": [
+            "id": "mill_mode_changed",
+            "title": {
+                "en": "Thermostat mode has changed",
+                "no": "Termostatmodus har endret seg",
+                "nl": "Modus van de thermostaat is gewijzigd"
+            },
+            "args": [],
+            "tokens": [
+                {
+                    "name": "mill_mode",
+                    "type": "string",
+                    "title": {
+                        "en": "Mode",
+                        "no": "Modus",
+                        "nl": "Modus"
+                    },
+                    "example": "Comfort"
+                }
+            ]
+        },
         {
-          "type": "dropdown",
-          "name": "mill_mode",
-          "values": [
-            {
-              "id": "Comfort",
-              "label": {
-                "en": "Comfort",
-                "no": "Komfort",
-                "nl": "Comfort"
-              }
+            "id": "mill_mode_changed_to",
+            "title": {
+                "en": "Thermostat mode has changed to",
+                "no": "Termostatmodus har endret seg til",
+                "nl": "Thermostaat modus is gewijzigd naar"
             },
-            {
-              "id": "Sleep",
-              "label": {
-                "en": "Sleep",
-                "no": "Sover",
-                "nl": "Slapen"
-              }
+            "titleFormatted": {
+                "en": "Thermostat mode has changed to [[mill_mode]]",
+                "no": "Termostatmodus har endret seg til [[mill_mode]]",
+                "nl": "Thermostaat modus is gewijzigd naar [[mill_mode]]"
             },
-            {
-              "id": "Away",
-              "label": {
-                "en": "Away",
-                "no": "Borte",
-                "nl": "Weg"
-              }
-            },
-            {
-              "id": "Off",
-              "label": {
-                "en": "Off",
-                "no": "Av",
-                "nl": "Uit"
-              }
-            }
-          ]
+            "args": [
+                {
+                    "type": "dropdown",
+                    "name": "mill_mode",
+                    "values": [
+                        {
+                            "id": "Comfort",
+                            "label": {
+                                "en": "Comfort",
+                                "no": "Komfort",
+                                "nl": "Comfort"
+                            }
+                        },
+                        {
+                            "id": "Sleep",
+                            "label": {
+                                "en": "Sleep",
+                                "no": "Sover",
+                                "nl": "Slapen"
+                            }
+                        },
+                        {
+                            "id": "Away",
+                            "label": {
+                                "en": "Away",
+                                "no": "Borte",
+                                "nl": "Weg"
+                            }
+                        },
+                        {
+                            "id": "Off",
+                            "label": {
+                                "en": "Off",
+                                "no": "Av",
+                                "nl": "Uit"
+                            }
+                        }
+                    ]
+                }
+            ]
         }
-      ]
-    }
-  ],
-  "conditions": [
-    {
-      "id": "mill_is_heating",
-      "title": {
-        "en": "!{{Is|Isn't}} heating",
-        "no": "Varmer!{{ |ikke}}",
-        "nl": "Verwarmt!{{ |niet}}"
-      },
-      "args": []
-    },
-    {
-      "id": "mill_mode_matching",
-      "title": {
-        "en": "Thermostat mode !{{is|isn't}}",
-        "no": "Termostatmodus !{{er|er ikke}}",
-        "nl": "Thermostaat mode !{{is|is niet}}"
-      },
-      "args": [
+    ],
+    "conditions": [
         {
-          "type": "dropdown",
-          "name": "mill_mode",
-          "values": [
-            {
-              "id": "Weekly_program",
-              "label": {
-                "en": "Program",
-                "no": "Program",
-                "nl": "Programma"
-              }
+            "id": "mill_is_heating",
+            "title": {
+                "en": "!{{Is|Isn't}} heating",
+                "no": "Varmer!{{ |ikke}}",
+                "nl": "Verwarmt!{{ |niet}}"
             },
-            {
-              "id": "Comfort",
-              "label": {
-                "en": "Comfort",
-                "no": "Komfort",
-                "nl": "Comfort"
-              }
-            },
-            {
-              "id": "Sleep",
-              "label": {
-                "en": "Sleep",
-                "no": "Sover",
-                "nl": "Slapen"
-              }
-            },
-            {
-              "id": "Away",
-              "label": {
-                "en": "Away",
-                "no": "Borte",
-                "nl": "Weg"
-              }
-            },
-            {
-              "id": "Off",
-              "label": {
-                "en": "Off",
-                "no": "Av",
-                "nl": "Uit"
-              }
-            }
-          ]
-        }
-      ]
-    }
-  ],
-  "actions": [
-    {
-      "id": "mill_set_mode",
-      "title": {
-        "en": "Set thermostat mode",
-        "no": "Sett modus",
-        "nl": "Stel modus in"
-      },
-      "args": [
+            "args": []
+        },
         {
-          "type": "dropdown",
-          "name": "mill_mode",
-          "values": [
-            {
-              "id": "Weekly_program",
-              "label": {
-                "en": "Program",
-                "no": "Program",
-                "nl": "Programma"
-              }
+            "id": "mill_mode_matching",
+            "title": {
+                "en": "Thermostat mode !{{is|isn't}}",
+                "no": "Termostatmodus !{{er|er ikke}}",
+                "nl": "Thermostaat mode !{{is|is niet}}"
             },
-            {
-              "id": "Comfort",
-              "label": {
-                "en": "Comfort",
-                "no": "Komfort",
-                "nl": "Comfort"
-              }
+            "titleFormatted": {
+                "en": "Thermostat mode !{{is|isn't}} [[mill_mode]]",
+                "no": "Termostatmodus !{{er|er ikke}} [[mill_mode]]",
+                "nl": "Thermostaat mode !{{is|is niet}} [[mill_mode]]"
             },
-            {
-              "id": "Sleep",
-              "label": {
-                "en": "Sleep",
-                "no": "Sover",
-                "nl": "Slapen"
-              }
-            },
-            {
-              "id": "Away",
-              "label": {
-                "en": "Away",
-                "no": "Borte",
-                "nl": "Weg"
-              }
-            },
-            {
-              "id": "Off",
-              "label": {
-                "en": "Off",
-                "no": "Av",
-                "nl": "Uit"
-              }
-            }
-          ]
+            "args": [
+                {
+                    "type": "dropdown",
+                    "name": "mill_mode",
+                    "values": [
+                        {
+                            "id": "Weekly_program",
+                            "label": {
+                                "en": "Program",
+                                "no": "Program",
+                                "nl": "Programma"
+                            }
+                        },
+                        {
+                            "id": "Comfort",
+                            "label": {
+                                "en": "Comfort",
+                                "no": "Komfort",
+                                "nl": "Comfort"
+                            }
+                        },
+                        {
+                            "id": "Sleep",
+                            "label": {
+                                "en": "Sleep",
+                                "no": "Sover",
+                                "nl": "Slapen"
+                            }
+                        },
+                        {
+                            "id": "Away",
+                            "label": {
+                                "en": "Away",
+                                "no": "Borte",
+                                "nl": "Weg"
+                            }
+                        },
+                        {
+                            "id": "Off",
+                            "label": {
+                                "en": "Off",
+                                "no": "Av",
+                                "nl": "Uit"
+                            }
+                        }
+                    ]
+                }
+            ]
         }
-      ]
-    }
-  ]
+    ],
+    "actions": [
+        {
+            "id": "mill_set_mode",
+            "title": {
+                "en": "Set thermostat mode",
+                "no": "Sett modus",
+                "nl": "Stel modus in"
+            },
+            "titleFormatted": {
+                "en": "Set thermostat mode to [[mill_mode]]",
+                "no": "Sett modus til [[mill_mode]]",
+                "nl": "Stel modus in naar [[mill_mode]]"
+            },
+            "args": [
+                {
+                    "type": "dropdown",
+                    "name": "mill_mode",
+                    "values": [
+                        {
+                            "id": "Weekly_program",
+                            "label": {
+                                "en": "Program",
+                                "no": "Program",
+                                "nl": "Programma"
+                            }
+                        },
+                        {
+                            "id": "Comfort",
+                            "label": {
+                                "en": "Comfort",
+                                "no": "Komfort",
+                                "nl": "Comfort"
+                            }
+                        },
+                        {
+                            "id": "Sleep",
+                            "label": {
+                                "en": "Sleep",
+                                "no": "Sover",
+                                "nl": "Slapen"
+                            }
+                        },
+                        {
+                            "id": "Away",
+                            "label": {
+                                "en": "Away",
+                                "no": "Borte",
+                                "nl": "Weg"
+                            }
+                        },
+                        {
+                            "id": "Off",
+                            "label": {
+                                "en": "Off",
+                                "no": "Av",
+                                "nl": "Uit"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
 }
