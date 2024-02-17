@@ -95,6 +95,7 @@ class MillDriverV2 extends Driver {
                     await session.emit('autoscanMessage', info);
                 }
             });
+            console.log('result:', result);
             if (result.success === true) {
                 for (const device of result.data) {
                     const deviceType = device.name.toLowerCase().includes('socket') ? 'Sockets' : 'Heaters';

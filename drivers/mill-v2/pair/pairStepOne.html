@@ -178,12 +178,21 @@
 
 	Homey.on('autoscanMessage', function(data) {
 		if (data.ip && data.status) {
-            const escapedIp = data.ip.replace(/\./g, '');
+			const escapedIp = data.ip.replace(/\./g, '');
 			if (data.status === 'checking') {
 				$('#autoscanMessages').prepend(`<p>${data.message} <img id="${escapedIp}" src="../assets/loading.svg" style="width: 20px; vertical-align: sub;" /></p>`);
 			}
 			if (data.status === 'found') {
 				$('#' + escapedIp).attr('src', '../assets/check.svg');
+				if (data.data && data.data !== null) {
+					data = {
+						name,
+						ip: data.ip,
+						mac_address,
+						status,
+					}
+					$('#autoscanMessages').append(`<p><b><code>${JSON.stringify(data, null, 1)}</code></b></p>`);
+				}
 			}
 			if (data.status === 'not found') {
 				$('#' + escapedIp).attr('src', '../assets/x.svg');
