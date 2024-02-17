@@ -159,7 +159,7 @@
 		$('#localAPIForm').hide();
 		$('#localAPIFormManual').hide();
 		Homey.emit('autoscan', target).then(async function(result) {
-			//console.log(result);
+			console.log(result);
 			if (result.error) {
 				console.log("Connection failed.");
 				await Homey.hideLoadingOverlay();
@@ -169,7 +169,7 @@
 				return Homey.alert("Autoscan feilet. Sjekk at du har lagt til enheter i Mill-appen.");
 			} else {
 				console.log("Connection successful.");
-				await Homey.hideLoadingOverlay();
+				//await Homey.hideLoadingOverlay();
 				//Homey.alert("Tilkobling vellykket!");
 				return Homey.nextView();
 			}

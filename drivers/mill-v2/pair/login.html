@@ -20,14 +20,14 @@
 
 	Homey.emit('getUserInfo').then(function (result) {
 		Homey.hideLoadingOverlay();
-		console.log(result);
+		//console.log(result);
 		if (result.error) {
 			console.log("User does not have login information stored in settings. Requesting login information.");
 			return $('#loginForm').show();
 		} else {
 			console.log("User has login information stored in settings. Logging in.");
 			Homey.emit('login', result).then(function (result) {
-				console.log(result);
+				//console.log(result);
 				if (result.error) {
 					console.log('Login failed.');
 					return Homey.setNavigationClose();
@@ -47,7 +47,7 @@
 		};
 		Homey.emit('login', loginData).then(function (result) {
 			Homey.hideLoadingOverlay();
-			console.log(result);
+			//console.log(result);
 			if (result.error) {
 				console.log('Login failed.');
 				return Homey.setNavigationClose();
