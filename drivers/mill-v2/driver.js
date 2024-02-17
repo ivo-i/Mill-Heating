@@ -94,39 +94,43 @@ class MillDriverV2 extends Driver {
                     //this.homey.app.dDebug('Autoscan message:', message);
                     await session.emit('autoscanMessage', info);
                 }
+            }).then(result => {
+                if (result.success) {
+                    this.homey.app.dDebug('Autoscan completed successfully:', result.data);
+                    for (const device of result.data) {
+                        const deviceType = device.name.toLowerCase().includes('socket') ? 'Sockets' : 'Heaters';
+                        const deviceObj = {
+                            name: device.name,
+                            data: {
+                                id: device.mac_address,
+                                name: device.name,
+                                deviceType: deviceType,
+                                macAddress: device.mac_address,
+                                ipAddress: device.ip_address,
+                                apiVersion: 'local',
+                                houseId: 'Not applicable',
+                                homeName: 'Not applicable',
+                            },
+                            settings: {
+                                deviceType: deviceType,
+                                macAddress: device.mac_address,
+                                ipAddress: device.ip_address,
+                                houseId: 'Not applicable',
+                                apiVersion: 'local',
+                            }
+                        };
+                        this.devices.push(deviceObj);
+                    }
+                    console.log('this.devices:', this.devices);
+
+                    return { success: true, devices: this.devices.length };
+                } else {
+                    console.error('Autoscan failed:', result.message);
+                }
+            }).catch(error => {
+                console.error('Autoscan encountered an error:', error);
             });
             console.log('result:', result);
-            if (result.success === true) {
-                for (const device of result.data) {
-                    const deviceType = device.name.toLowerCase().includes('socket') ? 'Sockets' : 'Heaters';
-                    const deviceObj = {
-                        name: device.name,
-                        data: {
-                            id: device.mac_address,
-                            name: device.name,
-                            deviceType: deviceType,
-                            macAddress: device.mac_address,
-                            ipAddress: device.ip_address,
-                            apiVersion: 'local',
-                            houseId: 'Not applicable',
-                            homeName: 'Not applicable',
-                        },
-                        settings: {
-                            deviceType: deviceType,
-                            macAddress: device.mac_address,
-                            ipAddress: device.ip_address,
-                            houseId: 'Not applicable',
-                            apiVersion: 'local',
-                        }
-                    };
-                    this.devices.push(deviceObj);
-                }
-                console.log('this.devices:', this.devices);
-
-                return { success: true, devices: this.devices.length };
-            } else {
-                return { error: 'Autoscan failed' };
-            }
         });
 
         await session.setHandler('getCloudDevices', async (data) => {
@@ -172,7 +176,7 @@ class MillDriverV2 extends Driver {
             }
 
             if (this.devices.length > 0) {
-                return { success: true, devices: this.devices };
+                return await session.nextView();
             } else {
                 return { error: 'No devices found' };
             }

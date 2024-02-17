@@ -142,7 +142,6 @@
 
 	$('#autoscan').on('click', function(e) {
 		e.preventDefault();
-		//Homey.showLoadingOverlay();
 		const target = $('#gatewayAddress').val() || $('#gateway').val();
 		console.log("Testing connection to gateway " + target + ", including subnets.");
 		$('#autoScanMessage').show();
@@ -162,14 +161,12 @@
 			console.log(result);
 			if (result.error) {
 				console.log("Connection failed.");
-				await Homey.hideLoadingOverlay();
 				$('#cloudError').hide();
 				$('#errorField').show();
 				$('#conFailed').show();
 				return Homey.alert("Autoscan feilet. Sjekk at du har lagt til enheter i Mill-appen.");
 			} else {
 				console.log("Connection successful.");
-				//await Homey.hideLoadingOverlay();
 				//Homey.alert("Tilkobling vellykket!");
 				return Homey.nextView();
 			}
