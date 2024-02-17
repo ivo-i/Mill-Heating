@@ -48,7 +48,7 @@
 		<div class="homey-form-group">
 			<p>Velg en vanlig gateway adresse eller spesifiser en annen:</p>
 			<label class="homey-form-radio">
-				<input class="homey-form-radio-input" type="radio" name="gateway" value="192.168.1.1">
+				<input class="homey-form-radio-input" type="radio" name="gateway" value="192.168.1.1" checked>
 				<span class="homey-form-radio-checkmark"></span>
 				<span class="homey-form-radio-text">192.168.1.1</span>
 			</label>
@@ -68,7 +68,7 @@
 				<span class="homey-form-radio-text">Annen</span>
 			</label>
 			<input class="homey-form-input" id="gateway" type="text" value="" style="display: none; margin-top: 5px;" />
-			<input class="homey-form-input" id="gatewayAddress" type="text" value="" style="display: none;" />
+			<input class="homey-form-input" id="gatewayAddress" type="text" value="192.168.1.1" style="display: none;" />
 		</div>
 		<p style="margin-top: 5px;">Autoscan vil automatisk prøve å legge til alle Mill-enheter som er tilkoblet samme
 			nettverk
@@ -102,7 +102,6 @@
 			$('#nextButton').show();
 		} else if (this.value == 'local') {
 			$('#localAPIForm').show();
-            $('input[type=radio][name="gateway"]').first().prop('checked', true);
 			$('#localAPIFormManual').hide();
 			$('#nextButton').hide();
 		} else if (this.value == 'local2') {

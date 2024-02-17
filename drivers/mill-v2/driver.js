@@ -123,7 +123,7 @@ class MillDriverV2 extends Driver {
                 }
                 console.log('this.devices:', this.devices);
 
-                return true;
+                return { success: true, devices: this.devices.length };
             } else {
                 return { error: 'Autoscan failed' };
             }
