@@ -184,14 +184,14 @@
 			}
 			if (data.status === 'found') {
 				$('#' + escapedIp).attr('src', '../assets/check.svg');
-				if (data.data && data.data !== null) {
+				if (data.data) {
 					data = {
-						name,
+						name: data.data.name,
 						ip: data.ip,
-						mac_address,
-						status,
+						mac_address: data.data.mac_address,
+						status: data.data.status
 					}
-					$('#autoscanMessages').append(`<p><b><code>${JSON.stringify(data, null, 1)}</code></b></p>`);
+					$('#' + escapedIp).append(`<p><b><code>${JSON.stringify(data, null, 1)}</code></b></p>`);
 				}
 			}
 			if (data.status === 'not found') {
