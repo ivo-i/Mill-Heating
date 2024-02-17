@@ -102,6 +102,7 @@
 			$('#nextButton').show();
 		} else if (this.value == 'local') {
 			$('#localAPIForm').show();
+            $('input[type=radio][name="gateway"]').first().prop('checked', true);
 			$('#localAPIFormManual').hide();
 			$('#nextButton').hide();
 		} else if (this.value == 'local2') {
