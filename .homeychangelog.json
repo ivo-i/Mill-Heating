@@ -94,5 +94,8 @@
   },
   "2.4.9": {
     "en": "Added a check to prevent null/undefined errors"
+  },
+  "2.4.10": {
+    "en": "Fixed the autoscan feature in the pairing process. Also fixed some bugs, causing you not to be able to add the heater IP address manually."
   }
 }
