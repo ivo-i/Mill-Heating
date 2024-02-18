@@ -94,7 +94,7 @@ class MillDriverV2 extends Driver {
                     //this.homey.app.dDebug('Autoscan message:', message);
                     await session.emit('autoscanMessage', info);
                 }
-            }).then(result => {
+            }).then(async result => {
                 if (result.success) {
                     this.homey.app.dDebug('Autoscan completed successfully:', result.data);
                     for (const device of result.data) {
@@ -123,7 +123,7 @@ class MillDriverV2 extends Driver {
                     }
                     console.log('this.devices:', this.devices);
 
-                    return { success: true, devices: this.devices.length };
+                    return await session.nextView();
                 } else {
                     console.error('Autoscan failed:', result.message);
                 }
@@ -176,7 +176,7 @@ class MillDriverV2 extends Driver {
             }
 
             if (this.devices.length > 0) {
-                return await session.nextView();
+                return { success: true, devices: this.devices };
             } else {
                 return { error: 'No devices found' };
             }
