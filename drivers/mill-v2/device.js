@@ -216,6 +216,11 @@ class MillDeviceV2 extends Device {
         if (changedKeys && changedKeys.includes('username') && changedKeys.includes('password')) {
             this.homey.app.dDebug('Username and password changed');
             this.homey.app.connectToMill();
+        } else if (changedKeys && changedKeys.includes('ipAddress')) {
+            this.homey.app.dDebug('IP address changed');
+            this.millApi = new MillLocal(newSettings.ipAddress);
+            this.deviceInstance = newSettings.ipAddress;
+            await this.scheduleRefresh();
         }
     }
 
