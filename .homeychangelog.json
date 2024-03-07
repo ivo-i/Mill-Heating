@@ -100,5 +100,8 @@
   },
   "2.4.11": {
     "en": "Enhanced thermostat mode options, introduced energy consumption settings."
+  },
+  "2.4.12": {
+    "en": "Adding a missing capability."
   }
 }
