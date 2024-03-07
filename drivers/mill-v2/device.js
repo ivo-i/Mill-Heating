@@ -30,6 +30,9 @@ class MillDeviceV2 extends Device {
             this.millApi = new MillCloud(this.homey.app);
             this.deviceInstance = this.deviceId;
         }
+        if (!this.getCapabilities().includes('measure_power')) {
+            this.addCapability('measure_power').catch(this.error);
+        }
 
         // capabilities
         this.registerCapabilityListener('target_temperature', this.onCapabilityTargetTemperature.bind(this));

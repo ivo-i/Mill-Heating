@@ -97,5 +97,8 @@
   },
   "2.4.10": {
     "en": "Fixed the autoscan feature in the pairing process. Also fixed some bugs, causing you not to be able to add the heater IP address manually."
+  },
+  "2.4.11": {
+    "en": "Enhanced thermostat mode options, introduced energy consumption settings."
   }
 }
