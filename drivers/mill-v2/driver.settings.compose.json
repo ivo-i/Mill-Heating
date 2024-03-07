@@ -63,5 +63,24 @@
 			"en": "The house ID of the device.",
 			"no": "Hus ID til enheten."
 		}
-	}
+	},
+	{
+		"id": "energy_consumption",
+		"type": "number",
+		"label": {
+		  "en": "Power (W)",
+		  "no": "Energi (W)",
+		  "nl": "Energie (W)"
+		},
+		"value": 1200,
+		"min": 100,
+		"max": 3600,
+		"units": {
+		  "en": "Watt"
+		},
+		"hint": {
+		  "en": "Max. power in watt that the heater uses when switched on. E.g. for the NE1200WIFI this will be 1200",
+		  "no": "Maksimum energi når ovnen er påslått. F.eks. 1200 for AV1200WIFI/NE1200WIFI."
+		}
+	  }
 ]

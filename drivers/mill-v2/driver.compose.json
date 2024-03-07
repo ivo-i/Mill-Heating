@@ -15,6 +15,10 @@
       "approximated": true
     }
   },
+  "platforms": [
+    "local"
+  ],
+  "connectivity": [],
   "images": {
     "large": "/drivers/mill/assets/images/large.png",
     "small": "/drivers/mill/assets/images/small.png"

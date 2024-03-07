@@ -1,6 +1,6 @@
 {
   "id": "com.Coderax.MillHeating",
-  "version": "2.4.10",
+  "version": "2.4.11",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "name": {
@@ -37,8 +37,8 @@
     "nl": "Verwarming Ontmoet Innovatie – Voel de Warmte, Beheers de Toekomst! 🚀🔥"
   },
   "author": {
-    "name": "Jesper Grimstad",
-    "email": "jesper.grimstad@hotmail.com"
+    "name": "Ivelin Ivanov",
+    "email": "iv.sv.ivanov@gmail.com"
   },
   "homeyCommunityTopicId": 87777,
   "contributing": {
@@ -47,7 +47,7 @@
         "username": "Coderaxxx"
       },
       "githubSponsors": {
-        "username": "Coderaxx"
+        "username": "ivo-i"
       }
     }
   },
@@ -81,6 +81,9 @@
     "developers": [
       {
         "name": "omBratteng"
+      },
+      {
+        "name": "Coderax"
       }
     ],
     "translators": [
