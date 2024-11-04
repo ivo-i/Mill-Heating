@@ -78,6 +78,9 @@
   "contributors": {
     "developers": [
       {
+        "name": "ivo-i"
+      },
+      {
         "name": "omBratteng"
       },
       {
@@ -295,6 +298,76 @@
                 }
               }
             ]
+          }
+        ]
+      },
+      {
+        "id": "alarm_temperature",
+        "title": {
+          "en": "Temperatre alarm !{{is|isn't}} active",
+          "no": "Temperatur alarm !{{|ikke}} aktiv"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=mill-sense"
+          }
+        ]
+      },
+      {
+        "id": "alarm_humidity",
+        "title": {
+          "en": "Humidity alarm !{{is|isn't}} active",
+          "no": "Luftfuktighetsalarm !{{|ikke}} aktiv"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=mill-sense"
+          }
+        ]
+      },
+      {
+        "id": "alarm_co2",
+        "title": {
+          "en": "CO2 alarm !{{is|isn't}} active",
+          "no": "CO2-alarm !{{|ikke}} aktiv"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=mill-sense"
+          }
+        ]
+      },
+      {
+        "id": "alarm_tvoc",
+        "title": {
+          "en": "TVOC alarm !{{is|isn't}} active",
+          "no": "TVOC-alarm !{{|ikke}} aktiv"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=mill-sense"
+          }
+        ]
+      },
+      {
+        "id": "alarm_charging_status",
+        "title": {
+          "en": "!{{Is|Isn't}} in charging mode",
+          "no": "Er !{{|ikke}} i ladding modus"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=mill-sense"
           }
         ]
       }

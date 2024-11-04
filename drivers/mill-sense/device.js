@@ -46,6 +46,27 @@ class MillSense extends Device {
       await this.addCapability('alarm_charging_status');
     }
 
+    // conditions
+    this.isAlarmTvocCondition = await this.homey.flow.getConditionCard('alarm_temperature');
+    this.isAlarmTvocCondition
+      .registerRunListener(() => (this.getCapabilityValue('alarm_temperature') === true));
+
+    this.isAlarmTvocCondition = await this.homey.flow.getConditionCard('alarm_humidity');
+    this.isAlarmTvocCondition
+      .registerRunListener(() => (this.getCapabilityValue('alarm_humidity') === true));
+
+    this.isAlarmTvocCondition = await this.homey.flow.getConditionCard('alarm_co2');
+    this.isAlarmTvocCondition
+      .registerRunListener(() => (this.getCapabilityValue('alarm_co2') === true));
+
+    this.isAlarmTvocCondition = await this.homey.flow.getConditionCard('alarm_tvoc');
+    this.isAlarmTvocCondition
+      .registerRunListener(() => (this.getCapabilityValue('alarm_tvoc') === true));
+
+    this.isAlarmTvocCondition = await this.homey.flow.getConditionCard('alarm_charging_status');
+    this.isAlarmTvocCondition
+      .registerRunListener(() => (this.getCapabilityValue('alarm_charging_status') === true));
+  
     const capabilities = this.getCapabilities();
     const expectedOrder = [
       'measure_temperature',
