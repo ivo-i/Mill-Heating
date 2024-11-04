@@ -13,7 +13,7 @@
     "measure_humidity",
     "alarm_humidity",
     "measure_co2",
-    "alarm_co2",
+    "alarm_eco2",
     "measure_tvoc",
     "alarm_tvoc",
     "measure_battery",
@@ -36,7 +36,7 @@
         "no": "Luftfuktighet Alarm"
       }
     },
-    "alarm_co2": {
+    "alarm_eco2": {
       "title": "eCO2 Alarm"
     },
     "alarm_tvoc": {

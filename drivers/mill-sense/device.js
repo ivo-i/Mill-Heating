@@ -33,8 +33,8 @@ class MillSense extends Device {
     if (!this.hasCapability('alarm_humidity')) {
       await this.addCapability('alarm_humidity');
     }
-    if (!this.hasCapability('alarm_co2')) {
-      await this.addCapability('alarm_co2');
+    if (!this.hasCapability('alarm_eco2')) {
+      await this.addCapability('alarm_eco2');
     }
     if (!this.hasCapability('alarm_tvoc')) {
       await this.addCapability('alarm_tvoc');
@@ -47,25 +47,65 @@ class MillSense extends Device {
     }
 
     // conditions
-    this.isAlarmTvocCondition = await this.homey.flow.getConditionCard('alarm_temperature');
-    this.isAlarmTvocCondition
-      .registerRunListener(() => (this.getCapabilityValue('alarm_temperature') === true));
+    this.homey.flow.getConditionCard('alarm_temperature')
+    .registerRunListener(async (args) => {
+      if (args.device) {
+        return args.device.getCapabilityValue('alarm_temperature');
+      }
+      return false;
+    });
 
-    this.isAlarmTvocCondition = await this.homey.flow.getConditionCard('alarm_humidity');
-    this.isAlarmTvocCondition
-      .registerRunListener(() => (this.getCapabilityValue('alarm_humidity') === true));
+    this.homey.flow.getConditionCard('alarm_humidity')
+    .registerRunListener(async (args) => {
+      if (args.device) {
+        return args.device.getCapabilityValue('alarm_humidity');
+      }
+      return false;
+    });
 
-    this.isAlarmTvocCondition = await this.homey.flow.getConditionCard('alarm_co2');
-    this.isAlarmTvocCondition
-      .registerRunListener(() => (this.getCapabilityValue('alarm_co2') === true));
+    this.homey.flow.getConditionCard('alarm_eco2')
+    .registerRunListener(async (args) => {
+      if (args.device) {
+        return args.device.getCapabilityValue('alarm_eco2');
+      }
+      return false;
+    });
 
-    this.isAlarmTvocCondition = await this.homey.flow.getConditionCard('alarm_tvoc');
-    this.isAlarmTvocCondition
-      .registerRunListener(() => (this.getCapabilityValue('alarm_tvoc') === true));
+    this.homey.flow.getConditionCard('alarm_tvoc')
+    .registerRunListener(async (args) => {
+      if (args.device) {
+        return args.device.getCapabilityValue('alarm_tvoc');
+      }
+      return false;
+    });
 
-    this.isAlarmTvocCondition = await this.homey.flow.getConditionCard('alarm_charging_status');
-    this.isAlarmTvocCondition
-      .registerRunListener(() => (this.getCapabilityValue('alarm_charging_status') === true));
+    this.homey.flow.getConditionCard('alarm_charging_status')
+    .registerRunListener(async (args) => {
+      if (args.device) {
+        return args.device.getCapabilityValue('alarm_charging_status');
+      }
+      return false;
+    });
+    
+    // this.isAlarmTvocCondition = await this.homey.flow.getConditionCard('alarm_temperature');
+    // this.isAlarmTvocCondition
+    //   .registerRunListener(() => (this.getCapabilityValue('alarm_temperature') === true));
+
+    // this.isAlarmTvocCondition = await this.homey.flow.getConditionCard('alarm_humidity');
+    // this.isAlarmTvocCondition
+    //   .registerRunListener(() => (this.getCapabilityValue('alarm_humidity') === true));
+
+    // this.isAlarmTvocCondition = await this.homey.flow.getConditionCard('alarm_eco2');
+    // this.isAlarmTvocCondition
+    //   .registerRunListener(() => (this.getCapabilityValue('alarm_eco2') === true));
+
+    // this.isAlarmTvocCondition = await this.homey.flow.getConditionCard('alarm_tvoc');
+    // this.isAlarmTvocCondition
+    //   .registerRunListener(() => (this.getCapabilityValue('alarm_tvoc') === true));
+
+    // this.isAlarmTvocCondition = await this.homey.flow.getConditionCard('alarm_charging_status');
+    // this.isAlarmTvocCondition
+    //   .registerRunListener(() => (this.getCapabilityValue('alarm_charging_status') === true));
   
     const capabilities = this.getCapabilities();
     const expectedOrder = [
@@ -74,7 +114,7 @@ class MillSense extends Device {
       'measure_humidity',
       'alarm_humidity',
       'measure_co2',
-      'alarm_co2',
+      'alarm_eco2',
       'measure_tvoc',
       'alarm_tvoc',
       'measure_battery',
@@ -167,7 +207,7 @@ class MillSense extends Device {
           await this.setCapabilityValue('measure_battery', 0);
           await this.setCapabilityValue('alarm_temperature', false);
           await this.setCapabilityValue('alarm_humidity', false);
-          await this.setCapabilityValue('alarm_co2', false);
+          await this.setCapabilityValue('alarm_eco2', false);
           await this.setCapabilityValue('alarm_tvoc', false);
           if (device.lastMetrics.batteryPercentage < 20) {
             await this.setCapabilityValue('alarm_battery', true);
@@ -199,9 +239,9 @@ class MillSense extends Device {
           }
 
           if (device.lastMetrics.eco2 > device.deviceSettings.desired.ccs811_ranges.eco2_red) {
-            await this.setCapabilityValue('alarm_co2', true);
+            await this.setCapabilityValue('alarm_eco2', true);
           } else {
-            await this.setCapabilityValue('alarm_co2', false);
+            await this.setCapabilityValue('alarm_eco2', false);
           }
 
           if (device.lastMetrics.tvoc > device.deviceSettings.desired.ccs811_ranges.tvoc_red) {

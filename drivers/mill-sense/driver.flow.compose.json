@@ -39,7 +39,7 @@
             "args": []
         },
         {
-            "id": "alarm_co2",
+            "id": "alarm_eco2",
             "title": {
                 "en": "CO2 alarm !{{is|isn't}} active",
                 "no": "CO2-alarm !{{|ikke}} aktiv"
