@@ -1,0 +1,36 @@
+{
+  "type": "enum",
+  "title": {
+    "en": "Power Mode",
+    "no": "Strømnivåkontrollmodus"
+  },
+  "desc": {
+    "en": "Power level control mode ",
+    "no": "Strømnivåkontrollmodus"
+  },
+  "values": [
+    {
+      "id": "40",
+      "title": {
+        "en": "40%",
+        "no": "40%"
+      }
+    },
+    {
+      "id": "60",
+      "title": {
+        "en": "60%",
+        "no": "60%"
+      }
+    },
+    {
+      "id": "100",
+      "title": {
+        "en": "100%",
+        "no": "100%"      
+      }
+    }
+  ],
+  "getable": true,
+  "setable": true
+}
