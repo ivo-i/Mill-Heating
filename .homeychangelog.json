@@ -112,5 +112,8 @@
   },
   "2.4.15": {
     "en": "New flow card conditions for Sense Air."
+  },
+  "2.4.16": {
+    "en": "Adding support for power level adjustment for Oil Heaters."
   }
 }
