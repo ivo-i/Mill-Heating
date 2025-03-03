@@ -53,7 +53,23 @@ class MillDriverV2 extends Driver {
             const result = await this.MillLocal.pingLocalDevice(data);
             //console.log('result:', result);
             if (result.success === true) {
-                const deviceType = result.data.name.toLowerCase().includes('socket') ? 'Sockets' : 'Heaters';
+
+                const nameLower = result.data.name.toLowerCase();
+                let deviceType;
+
+                if (nameLower.includes('socket')) {
+                    deviceType = 'Sockets';
+                } else if (nameLower.includes('HeaterGen3Oil')) {
+                    deviceType = 'OilHeaters';
+                } else if (nameLower.includes('HeaterGen3Panel')) {
+                    deviceType = 'PanelHeaters';
+                } else if (nameLower.includes('heater')) {
+                    deviceType = 'Heaters';
+                } else {
+                    deviceType = 'Unknown';
+                }
+
+                //const deviceType = result.data.name.toLowerCase().includes('socket') ? 'Sockets' : 'Heaters';
                 const device = {
                     name: result.data.name,
                     data: {
@@ -98,7 +114,21 @@ class MillDriverV2 extends Driver {
                 if (result.success) {
                     this.homey.app.dDebug('Autoscan completed successfully:', result.data);
                     for (const device of result.data) {
-                        const deviceType = device.name.toLowerCase().includes('socket') ? 'Sockets' : 'Heaters';
+                        const nameLower = result.data.name.toLowerCase();
+                        let deviceType;
+        
+                        if (nameLower.includes('socket')) {
+                            deviceType = 'Sockets';
+                        } else if (nameLower.includes('HeaterGen3Oil')) {
+                            deviceType = 'OilHeaters';
+                        } else if (nameLower.includes('HeaterGen3Panel')) {
+                            deviceType = 'PanelHeaters';
+                        } else if (nameLower.includes('heater')) {
+                            deviceType = 'Heaters';
+                        } else {
+                            deviceType = 'Unknown';
+                        }        
+                        //const deviceType = device.name.toLowerCase().includes('socket') ? 'Sockets' : 'Heaters';
                         const deviceObj = {
                             name: device.name,
                             data: {

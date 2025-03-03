@@ -5,6 +5,7 @@
   "class": "thermostat",
   "capabilities": [
     "onoff",
+    "mill_gen3oil_power_mode",
     "measure_temperature",
     "target_temperature",
     "mill_onoff",

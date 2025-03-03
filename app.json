@@ -93,7 +93,7 @@
       }
     ]
   },
-  "support": "mailto:mill@coderax.dev?subject=Mill%20Heating%20-%20Homey%20app",
+  "support": "https://community.homey.app/t/app-pro-mill-heating/",
   "flow": {
     "triggers": [
       {
@@ -676,6 +676,7 @@
       "class": "thermostat",
       "capabilities": [
         "onoff",
+        "mill_gen3oil_power_mode",
         "measure_temperature",
         "target_temperature",
         "mill_onoff",
@@ -1035,6 +1036,42 @@
       "getable": true,
       "setable": false,
       "insights": true
+    },
+    "mill_gen3oil_power_mode": {
+      "type": "enum",
+      "title": {
+        "en": "Power Mode",
+        "no": "Strømnivåkontrollmodus"
+      },
+      "desc": {
+        "en": "Power level control mode ",
+        "no": "Strømnivåkontrollmodus"
+      },
+      "values": [
+        {
+          "id": "40",
+          "title": {
+            "en": "40%",
+            "no": "40%"
+          }
+        },
+        {
+          "id": "60",
+          "title": {
+            "en": "60%",
+            "no": "60%"
+          }
+        },
+        {
+          "id": "100",
+          "title": {
+            "en": "100%",
+            "no": "100%"
+          }
+        }
+      ],
+      "getable": true,
+      "setable": true
     },
     "mill_mode": {
       "type": "enum",

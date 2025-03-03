@@ -8,6 +8,7 @@ const MillCloud = require('../../lib/millCloud');
 class MillDeviceV2 extends Device {
     async onInit() {
         this.deviceId = this.getData().id;
+        this.deviceName = this.getData().name;
         this.apiVersion = this.getData().apiVersion;
         this.ipAddress = this.getData().ipAddress;
         this.deviceType = this.getData().deviceType;
@@ -38,7 +39,16 @@ class MillDeviceV2 extends Device {
         this.registerCapabilityListener('target_temperature', this.onCapabilityTargetTemperature.bind(this));
         this.registerCapabilityListener('onoff', this.onCapabilityOnOff.bind(this));
 
-        // conditions
+        this.log(`[${this.getName()}] --- Device initialized`, this.deviceName);
+        if (this.deviceName.includes('HeaterGen3Oil')) {
+            this.log(`[${this.getName()}] --- Device set capability Power Mode: `, this.deviceName);
+            await this.addCapability('mill_gen3oil_power_mode').catch(this.error);
+            this.registerCapabilityListener('mill_gen3oil_power_mode', this.onCapabilityPowerMode.bind(this));
+        } else {    
+            //remove capability mill_gen3oil_power_mode if it exists
+            this.removeCapability('mill_gen3oil_power_mode');
+        }
+            // conditions
         this.isHeatingCondition = await this.homey.flow.getConditionCard('mill_is_heating');
         this.isHeatingCondition
             .registerRunListener(() => (this.deviceData.switched_on === true));
@@ -149,7 +159,7 @@ class MillDeviceV2 extends Device {
                 if (this.deviceType === 'cloud') {
                     this.homey.app.dDebug(`[${this.getName()}] Mill state refreshed`, {
                         ambTemp: device.ambient_temperature,
-                        hudmidity: device.humidity,
+                        humidity: device.humidity,
                         currentPower: device.current_power,
                         rawAmbTemp: device.raw_ambient_temperature,
                         setTemp: device.set_temperature,
@@ -165,7 +175,7 @@ class MillDeviceV2 extends Device {
                     if (!this.lastLoggedTime || currentTime - this.lastLoggedTime >= 600000) {
                         this.homey.app.dDebug(`[${this.getName()}] Mill state refreshed`, {
                             ambTemp: device.ambient_temperature,
-                            hudmidity: device.humidity,
+                            humidity: device.humidity,
                             currentPower: device.current_power,
                             rawAmbTemp: device.raw_ambient_temperature,
                             setTemp: device.set_temperature,
@@ -186,16 +196,25 @@ class MillDeviceV2 extends Device {
                         this.setCapabilityValue('measure_temperature', device.ambient_temperature),
                         this.setCapabilityValue('target_temperature', device.set_temperature < 4 ? this.lastSetTemperature : device.set_temperature),
                         this.setCapabilityValue('mill_onoff', device.operation_mode !== 'OFF' && device.control_signal > 0),
-                        this.setCapabilityValue('onoff', device.operation_mode !== 'OFF')
+                        this.setCapabilityValue('onoff', device.operation_mode !== 'OFF'),
+                        this.setCapabilityValue('measure_power', device.operation_mode !== 'OFF' ? device.current_power : 0)
                     ];
+
+                    if  (this.deviceName.includes('HeaterGen3Oil')) {
+                        const oilHeaterPowerData = await this.millApi.getOilHeaterPowerMode();
+                        device.oilHeaterPowerMode = String(oilHeaterPowerData.value);
+                        jobs.push(this.setCapabilityValue('mill_gen3oil_power_mode', device.oilHeaterPowerMode));
+                        this.log(`[${this.getName()}] State refreshed`,device)
+                    }
 
                     this.lastSetTemperature = device.set_temperature > 4 ? device.set_temperature : this.lastSetTemperature || 21;
 
-                    if (this.hasCapability('measure_power')) {
-                        const totalPowerUsage = device.current_power;
-                        //this.homey.app.dDebug(`Total power usage for ${this.getName()} ${totalPowerUsage}w`);
-                        jobs.push(await this.setCapabilityValue('measure_power', device.operation_mode !== 'OFF' ? totalPowerUsage : 0));
-                    }
+                    // if (this.hasCapability('measure_power')) {
+                    //     const totalPowerUsage = device.current_power;
+                    //     //this.homey.app.dDebug(`Total power usage for ${this.getName()} ${totalPowerUsage}w`);
+                    //     this.log(`[${this.getName()}] set power to`,device.current_power)
+                    //     jobs.push(await this.setCapabilityValue('measure_power', device.operation_mode !== 'OFF' ? totalPowerUsage : 0));
+                    // }
 
                     return Promise.all(jobs).catch((err) => {
                         this.homey.app.dError(`[${this.getName()}] Error caught while refreshing state`, err.message);
@@ -208,6 +227,14 @@ class MillDeviceV2 extends Device {
 
     async onAdded() {
         this.homey.app.dDebug('Device added', this.getState());
+        this.log('Device mill_gen3oil_power_mode added with name ',this.getName());
+
+        if (this.getData().name.includes('HeaterGen3Oil')) {
+            this.log('Adding capability mill_gen3oil_power_mode to ',this.getName());
+            await this.addCapability('mill_gen3oil_power_mode').catch(this.error);
+        } else {    
+            this.removeCapability('mill_gen3oil_power_mode');
+        }
     }
 
     async onDeleted() {
@@ -227,6 +254,27 @@ class MillDeviceV2 extends Device {
         }
     }
 
+    async onCapabilityPowerMode(value, opts) {
+        this.log(`onCapabilityPowerMode(${value})`);
+        //const temp = Math.ceil(value);
+        const power = value;
+        if (power !== value && this.deviceData.switched_on !== false) {
+            await this.setCapabilityValue('mill_gen3oil_power_mode', power);
+            this.homey.app.dDebug(`onCapabilityPowerMode(${value}=>${power})`);
+        }
+
+        this.millApi.setOilHeaterPowerMode(power, this.deviceInstance, this.deviceType)
+            .then(async () => {
+                this.log(`onCapabilityPowerMode(${power}) done`);
+                this.homey.app.dDebug(`[${this.getName()}] Changed power mode to ${power}.`);
+                // await this.scheduleRefresh(2);
+                await this.refreshMillService();
+            }).catch((err) => {
+                this.log(`onCapabilityPowerMode(${power}) error`);
+                this.homey.app.dError(`[${this.getName()}] Change power mode to ${power} resulted in error`, err);
+            });
+    }
+
     async onCapabilityTargetTemperature(value, opts) {
         this.log(`onCapabilityTargetTemperature(${value})`);
         //const temp = Math.ceil(value);
@@ -240,7 +288,7 @@ class MillDeviceV2 extends Device {
             .then(async () => {
                 this.log(`onCapabilityTargetTemperature(${temp}) done`);
                 this.homey.app.dDebug(`[${this.getName()}] Changed temp to ${temp}.`);
-                await this.scheduleRefresh(5);
+                await this.refreshMillService;
             }).catch((err) => {
                 this.log(`onCapabilityTargetTemperature(${temp}) error`);
                 this.homey.app.dError(`[${this.getName()}] Change temp to ${temp} resulted in error`, err);
@@ -253,7 +301,7 @@ class MillDeviceV2 extends Device {
             .then(async () => {
                 this.log(`onCapabilityOnOff(${value}) done`);
                 this.homey.app.dDebug(`[${this.getName()}] Changed mode to ${mode}.`);
-                await this.scheduleRefresh(5);
+                await this.refreshMillService;
             }).catch((err) => {
                 this.log(`onCapabilityOnOff(${value}) error`);
                 this.homey.app.dError(`[${this.getName()}] Change mode to ${mode} resulted in error`, err);
