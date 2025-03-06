@@ -61,6 +61,8 @@ class MillDriverV2 extends Driver {
                     deviceType = 'Sockets';
                 } else if (nameLower.includes('HeaterGen3Oil')) {
                     deviceType = 'OilHeaters';
+                } else if (nameLower.includes('HeaterGen2Oil')) {
+                    deviceType = 'OilHeaters';
                 } else if (nameLower.includes('HeaterGen3Panel')) {
                     deviceType = 'PanelHeaters';
                 } else if (nameLower.includes('heater')) {
@@ -120,6 +122,8 @@ class MillDriverV2 extends Driver {
                         if (nameLower.includes('socket')) {
                             deviceType = 'Sockets';
                         } else if (nameLower.includes('HeaterGen3Oil')) {
+                            deviceType = 'OilHeaters';
+                        } else if (nameLower.includes('HeaterGen2Oil')) {
                             deviceType = 'OilHeaters';
                         } else if (nameLower.includes('HeaterGen3Panel')) {
                             deviceType = 'PanelHeaters';

@@ -40,7 +40,7 @@ class MillDeviceV2 extends Device {
         this.registerCapabilityListener('onoff', this.onCapabilityOnOff.bind(this));
 
         this.log(`[${this.getName()}] --- Device initialized`, this.deviceName);
-        if (this.deviceName.includes('HeaterGen3Oil')) {
+        if (this.deviceName.includes('HeaterGen3Oil') || this.deviceName.includes('HeaterGen2Oil')) {
             this.log(`[${this.getName()}] --- Device set capability Power Mode: `, this.deviceName);
             await this.addCapability('mill_gen3oil_power_mode').catch(this.error);
             this.registerCapabilityListener('mill_gen3oil_power_mode', this.onCapabilityPowerMode.bind(this));
@@ -200,7 +200,7 @@ class MillDeviceV2 extends Device {
                         this.setCapabilityValue('measure_power', device.operation_mode !== 'OFF' ? device.current_power : 0)
                     ];
 
-                    if  (this.deviceName.includes('HeaterGen3Oil')) {
+                    if (this.deviceName.includes('HeaterGen3Oil') || this.deviceName.includes('HeaterGen2Oil')) {
                         const oilHeaterPowerData = await this.millApi.getOilHeaterPowerMode();
                         device.oilHeaterPowerMode = String(oilHeaterPowerData.value);
                         jobs.push(this.setCapabilityValue('mill_gen3oil_power_mode', device.oilHeaterPowerMode));
@@ -229,7 +229,7 @@ class MillDeviceV2 extends Device {
         this.homey.app.dDebug('Device added', this.getState());
         this.log('Device mill_gen3oil_power_mode added with name ',this.getName());
 
-        if (this.getData().name.includes('HeaterGen3Oil')) {
+        if (this.deviceName.includes('HeaterGen3Oil') || this.deviceName.includes('HeaterGen2Oil')) {
             this.log('Adding capability mill_gen3oil_power_mode to ',this.getName());
             await this.addCapability('mill_gen3oil_power_mode').catch(this.error);
         } else {    
