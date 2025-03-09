@@ -118,5 +118,8 @@
   },
   "2.4.17": {
     "en": "Added support for Oil Gen3 maximum power control mode."
+  },
+  "2.4.18": {
+    "en": "Minor fixes."
   }
 }
