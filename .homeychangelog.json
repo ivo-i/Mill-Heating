@@ -115,5 +115,8 @@
   },
   "2.4.16": {
     "en": "Adding support for power level adjustment for Oil Heaters."
+  },
+  "2.4.17": {
+    "en": "Added support for Oil Gen3 maximum power control mode."
   }
 }
