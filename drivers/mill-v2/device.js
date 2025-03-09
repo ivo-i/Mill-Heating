@@ -36,22 +36,48 @@ class MillDeviceV2 extends Device {
         }
 
         // capabilities
-        this.registerCapabilityListener('target_temperature', this.onCapabilityTargetTemperature.bind(this));
+        this.registerCapabilityListener('target_temperature', this.setCapabilityTargetTemperature.bind(this));
         this.registerCapabilityListener('onoff', this.onCapabilityOnOff.bind(this));
 
         this.log(`[${this.getName()}] --- Device initialized`, this.deviceName);
         if (this.deviceName.includes('HeaterGen3Oil') || this.deviceName.includes('HeaterGen2Oil')) {
             this.log(`[${this.getName()}] --- Device set capability Power Mode: `, this.deviceName);
-            await this.addCapability('mill_gen3oil_power_mode').catch(this.error);
-            this.registerCapabilityListener('mill_gen3oil_power_mode', this.onCapabilityPowerMode.bind(this));
+            await this.addCapability('mill_gen3oil_max_power_percentage').catch(this.error);
+            this.registerCapabilityListener('mill_gen3oil_max_power_percentage', this.setCapabilityMaxPowerPercentage.bind(this));
         } else {    
-            //remove capability mill_gen3oil_power_mode if it exists
-            this.removeCapability('mill_gen3oil_power_mode');
+            // remove capability mill_gen3oil_max_power_percentage ifit exists
+            this.removeCapability('mill_gen3oil_max_power_percentage');
         }
             // conditions
         this.isHeatingCondition = await this.homey.flow.getConditionCard('mill_is_heating');
         this.isHeatingCondition
             .registerRunListener(() => (this.deviceData.switched_on === true));
+        
+        if (this.deviceName.includes('HeaterGen3Oil') || this.deviceName.includes('HeaterGen2Oil')) {
+            // triggers
+            this.maxPowerChangedTrigger = await this.homey.flow.getDeviceTriggerCard('mill_gen3oil_max_power_percentage_changed');
+
+            this.maxPowerChangedToTrigger = await this.homey.flow.getDeviceTriggerCard('mill_gen3oil_max_power_percentage_changed_to');
+            this.maxPowerChangedToTrigger
+            .registerRunListener((args, state) => args.mill_gen3oil_max_power_percentage === state.mill_gen3oil_max_power_percentage);
+            // this.maxPowerChangedToTrigger
+            // .registerRunListener((args) => args.mill_gen3oil_max_power_percentage === this.deviceData.maxHeaterPowerPercentage);
+
+            // conditions
+            this.isMatchingMaxPowerCondition = await this.homey.flow.getConditionCard('mill_gen3oil_max_power_percentage');
+            this.isMatchingMaxPowerCondition
+            .registerRunListener(args => (args.mill_gen3oil_max_power_percentage === this.deviceData.maxHeaterPowerPercentage));
+
+            // actions
+            this.setMaxPowerAction = await this.homey.flow.getActionCard('mill_gen3oil_set_max_power_percentage');
+            this.setMaxPowerAction
+            .registerRunListener((args) => {
+                this.log(`[${args.device.getName()}] Flow changed mode to ${args.mill_gen3oil_max_power_percentage}`);
+                this.homey.app.dDebug(`[${args.device.getName()}] Flow changed mode to ${args.mill_gen3oil_max_power_percentage}`);
+                return args.device.setCapabilityMaxPowerPercentage(args.mill_gen3oil_max_power_percentage);
+                // this.millApi.setOilHeaterMaxPowerPercentage(power, this.deviceInstance, this.deviceType)
+            });
+        }
 
         /*this.homey.setInterval(async () => {
             await this.refreshMillService();
@@ -188,7 +214,15 @@ class MillDeviceV2 extends Device {
                         this.lastLoggedTime = currentTime;
                     }
                 }
-
+                if (this.deviceName.includes('HeaterGen3Oil') || this.deviceName.includes('HeaterGen2Oil')) {
+                    device.maxHeaterPowerPercentage = String((await this.millApi.getOilHeaterMaxPowerPercentage()).value);
+                    if (this.deviceData.maxHeaterPowerPercentage !== device.maxHeaterPowerPercentage) {
+                        this.log(`[${this.getName()}] Triggering mode change from ${this.deviceData.maxHeaterPowerPercentage} to ${device.maxHeaterPowerPercentage}`);
+                        this.maxPowerChangedToTrigger.trigger(this, null, { mill_gen3oil_max_power_percentage: device.maxHeaterPowerPercentage })
+                        .catch(this.error);
+                    }
+                }
+                
                 this.deviceData = device;
 
                 if (device.operation_mode !== undefined) {
@@ -201,10 +235,12 @@ class MillDeviceV2 extends Device {
                     ];
 
                     if (this.deviceName.includes('HeaterGen3Oil') || this.deviceName.includes('HeaterGen2Oil')) {
-                        const oilHeaterPowerData = await this.millApi.getOilHeaterPowerMode();
-                        device.oilHeaterPowerMode = String(oilHeaterPowerData.value);
-                        jobs.push(this.setCapabilityValue('mill_gen3oil_power_mode', device.oilHeaterPowerMode));
-                        this.log(`[${this.getName()}] State refreshed`,device)
+                        // const oilHeaterPowerData = await this.millApi.getOilHeaterMaxPowerPercentage();
+                        // device.oilHeaterPowerMode = String(oilHeaterPowerData.value);
+                        // device.MaxHeaterPowerPercentage = String((await this.millApi.getOilHeaterMaxPowerPercentage()).value);
+                        // device.MaxHeaterPowerPercentage = String(await this.millApi.getOilHeaterMaxPowerPercentage().value);
+                        jobs.push(this.setCapabilityValue('mill_gen3oil_max_power_percentage', device.maxHeaterPowerPercentage));
+                        this.log(`[${this.getName()}] State refreshed`,this.deviceData)
                     }
 
                     this.lastSetTemperature = device.set_temperature > 4 ? device.set_temperature : this.lastSetTemperature || 21;
@@ -227,13 +263,13 @@ class MillDeviceV2 extends Device {
 
     async onAdded() {
         this.homey.app.dDebug('Device added', this.getState());
-        this.log('Device mill_gen3oil_power_mode added with name ',this.getName());
+        this.log('Device mill_gen3oil_max_power_percentage added with name ',this.getName());
 
         if (this.deviceName.includes('HeaterGen3Oil') || this.deviceName.includes('HeaterGen2Oil')) {
-            this.log('Adding capability mill_gen3oil_power_mode to ',this.getName());
-            await this.addCapability('mill_gen3oil_power_mode').catch(this.error);
+            this.log('Adding capability mill_gen3oil_max_power_percentage to ',this.getName());
+            await this.addCapability('mill_gen3oil_max_power_percentage').catch(this.error);
         } else {    
-            this.removeCapability('mill_gen3oil_power_mode');
+            this.removeCapability('mill_gen3oil_max_power_percentage');
         }
     }
 
@@ -254,43 +290,43 @@ class MillDeviceV2 extends Device {
         }
     }
 
-    async onCapabilityPowerMode(value, opts) {
-        this.log(`onCapabilityPowerMode(${value})`);
+    async setCapabilityMaxPowerPercentage(value, opts) {
+        this.log(`setCapabilityMaxPowerPercentage(${value})`);
         //const temp = Math.ceil(value);
         const power = value;
         if (power !== value && this.deviceData.switched_on !== false) {
-            await this.setCapabilityValue('mill_gen3oil_power_mode', power);
-            this.homey.app.dDebug(`onCapabilityPowerMode(${value}=>${power})`);
+            await this.setCapabilityValue('mill_gen3oil_max_power_percentage', power);
+            this.homey.app.dDebug(`setCapabilityMaxPowerPercentage(${value}=>${power})`);
         }
 
-        this.millApi.setOilHeaterPowerMode(power, this.deviceInstance, this.deviceType)
+        this.millApi.setOilHeaterMaxPowerPercentage(power, this.deviceInstance, this.deviceType)
             .then(async () => {
-                this.log(`onCapabilityPowerMode(${power}) done`);
-                this.homey.app.dDebug(`[${this.getName()}] Changed power mode to ${power}.`);
+                this.log(`onCapabilityMaxPowerPercentage(${power}) done`);
+                this.homey.app.dDebug(`[${this.getName()}] Changed max power level to ${power}.`);
                 // await this.scheduleRefresh(2);
                 await this.refreshMillService();
             }).catch((err) => {
-                this.log(`onCapabilityPowerMode(${power}) error`);
-                this.homey.app.dError(`[${this.getName()}] Change power mode to ${power} resulted in error`, err);
+                this.log(`onCapabilityMaxPowerPercentage(${power}) error`);
+                this.homey.app.dError(`[${this.getName()}] Change max power level to ${power} resulted in error`, err);
             });
     }
 
-    async onCapabilityTargetTemperature(value, opts) {
-        this.log(`onCapabilityTargetTemperature(${value})`);
+    async setCapabilityTargetTemperature(value, opts) {
+        this.log(`setCapabilityTargetTemperature(${value})`);
         //const temp = Math.ceil(value);
         const temp = value;
         if (temp !== value && this.deviceData.switched_on !== false) {
             await this.setCapabilityValue('target_temperature', temp);
-            this.homey.app.dDebug(`onCapabilityTargetTemperature(${value}=>${temp})`);
+            this.homey.app.dDebug(`setCapabilityTargetTemperature(${value}=>${temp})`);
         }
 
         this.millApi.setTemperature(temp, this.deviceInstance, this.deviceType)
             .then(async () => {
-                this.log(`onCapabilityTargetTemperature(${temp}) done`);
+                this.log(`setCapabilityTargetTemperature(${temp}) done`);
                 this.homey.app.dDebug(`[${this.getName()}] Changed temp to ${temp}.`);
                 await this.refreshMillService;
             }).catch((err) => {
-                this.log(`onCapabilityTargetTemperature(${temp}) error`);
+                this.log(`setCapabilityTargetTemperature(${temp}) error`);
                 this.homey.app.dError(`[${this.getName()}] Change temp to ${temp} resulted in error`, err);
             });
     }

@@ -212,6 +212,96 @@
             "filter": "driver_id=mill-sense"
           }
         ]
+      },
+      {
+        "id": "mill_gen3oil_max_power_percentage_changed",
+        "title": {
+          "en": "Maximum power setting has changed",
+          "no": "Maximum power setting has changed",
+          "nl": ""
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=mill-v2"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "mill_gen3oil_max_power_percentage",
+            "type": "string",
+            "title": {
+              "en": "Maximum power",
+              "no": "Maximum power",
+              "nl": ""
+            },
+            "example": "100"
+          }
+        ]
+      },
+      {
+        "id": "mill_gen3oil_max_power_percentage_changed_to",
+        "title": {
+          "en": "Maximum power setting has been changed",
+          "no": "Maximum power setting has been changed",
+          "nl": "Maximum power setting has been changed"
+        },
+        "titleFormatted": {
+          "en": "Maximum power setting has been changed to [[mill_gen3oil_max_power_percentage]]",
+          "no": "Maximum power setting has been changed to [[mill_gen3oil_max_power_percentage]]",
+          "nl": "Maximum power setting has been changed to [[mill_gen3oil_max_power_percentage]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=mill-v2"
+          },
+          {
+            "type": "dropdown",
+            "name": "mill_gen3oil_max_power_percentage",
+            "title": {
+              "en": "Maximum power",
+              "no": "Maximum power",
+              "nl": "Maximum power"
+            },
+            "values": [
+              {
+                "id": "0",
+                "label": {
+                  "en": "0%",
+                  "no": "0%",
+                  "nl": ""
+                }
+              },
+              {
+                "id": "40",
+                "label": {
+                  "en": "40%",
+                  "no": "40%",
+                  "nl": "40%"
+                }
+              },
+              {
+                "id": "60",
+                "label": {
+                  "en": "60%",
+                  "no": "60%",
+                  "nl": "60%"
+                }
+              },
+              {
+                "id": "100",
+                "label": {
+                  "en": "100%",
+                  "no": "100%",
+                  "nl": "100%"
+                }
+              }
+            ]
+          }
+        ]
       }
     ],
     "conditions": [
@@ -370,6 +460,69 @@
             "filter": "driver_id=mill-sense"
           }
         ]
+      },
+      {
+        "id": "mill_gen3oil_max_power_percentage",
+        "title": {
+          "en": "Maximum power percentage !{{is|isn't}}",
+          "no": "Maximum power percentage !{{is|isn't}}",
+          "nl": "Maximum power percentage !{{is|isn't}}"
+        },
+        "titleFormatted": {
+          "en": "Maximum power percentage !{{is|isn't}} [[mill_gen3oil_max_power_percentage]]",
+          "no": "Maximum power percentage !{{is|isn't}} [[mill_gen3oil_max_power_percentage]]",
+          "nl": "Maximum power percentage !{{is|isn't}} [[mill_gen3oil_max_power_percentage]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=mill-v2"
+          },
+          {
+            "type": "dropdown",
+            "name": "mill_gen3oil_max_power_percentage",
+            "title": {
+              "en": "Maximum power",
+              "no": "Maximum power",
+              "nl": "Maximum power"
+            },
+            "values": [
+              {
+                "id": "0",
+                "label": {
+                  "en": "0%",
+                  "no": "0%",
+                  "nl": "0%"
+                }
+              },
+              {
+                "id": "40",
+                "label": {
+                  "en": "40%",
+                  "no": "40%",
+                  "nl": "40%"
+                }
+              },
+              {
+                "id": "60",
+                "label": {
+                  "en": "60%",
+                  "no": "60%",
+                  "nl": "60%"
+                }
+              },
+              {
+                "id": "100",
+                "label": {
+                  "en": "100%",
+                  "no": "100%",
+                  "nl": "100%"
+                }
+              }
+            ]
+          }
+        ]
       }
     ],
     "actions": [
@@ -438,6 +591,69 @@
                   "en": "Off",
                   "no": "Av",
                   "nl": "Uit"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "mill_gen3oil_set_max_power_percentage",
+        "title": {
+          "en": "Set maximum power",
+          "no": "Set maximum power",
+          "nl": "Set maximum power"
+        },
+        "titleFormatted": {
+          "en": "Set maximum power to [[mill_gen3oil_max_power_percentage]]",
+          "no": "Set maximum power to [[mill_gen3oil_max_power_percentage]]",
+          "nl": "Set maximum power to [[mill_gen3oil_max_power_percentage]]"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=mill-v2"
+          },
+          {
+            "type": "dropdown",
+            "name": "mill_gen3oil_max_power_percentage",
+            "title": {
+              "en": "Maximum power",
+              "no": "Maximum power",
+              "nl": "Maximum power"
+            },
+            "values": [
+              {
+                "id": "0",
+                "label": {
+                  "en": "0%",
+                  "no": "0%",
+                  "nl": "0%"
+                }
+              },
+              {
+                "id": "40%",
+                "label": {
+                  "en": "40%",
+                  "no": "40%",
+                  "nl": "40%"
+                }
+              },
+              {
+                "id": "60",
+                "label": {
+                  "en": "60%",
+                  "no": "60%",
+                  "nl": "60%"
+                }
+              },
+              {
+                "id": "100",
+                "label": {
+                  "en": "100%",
+                  "no": "100%",
+                  "nl": "100%"
                 }
               }
             ]
@@ -676,7 +892,7 @@
       "class": "thermostat",
       "capabilities": [
         "onoff",
-        "mill_gen3oil_power_mode",
+        "mill_gen3oil_max_power_percentage",
         "measure_temperature",
         "target_temperature",
         "mill_onoff",
@@ -1037,17 +1253,24 @@
       "setable": false,
       "insights": true
     },
-    "mill_gen3oil_power_mode": {
+    "mill_gen3oil_max_power_percentage": {
       "type": "enum",
       "title": {
-        "en": "Power Mode",
-        "no": "Strømnivåkontrollmodus"
+        "en": "Maximum Power %",
+        "no": "Maksimal effekt %"
       },
       "desc": {
-        "en": "Power level control mode ",
-        "no": "Strømnivåkontrollmodus"
+        "en": "Set maximum power level in %",
+        "no": "Angi maksimalt effektnivå i %"
       },
       "values": [
+        {
+          "id": "0",
+          "title": {
+            "en": "0%",
+            "no": "0%"
+          }
+        },
         {
           "id": "40",
           "title": {
