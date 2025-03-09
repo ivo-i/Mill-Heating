@@ -40,7 +40,7 @@ class MillDeviceV2 extends Device {
         this.registerCapabilityListener('onoff', this.onCapabilityOnOff.bind(this));
 
         this.log(`[${this.getName()}] --- Device initialized`, this.deviceName);
-        if (this.deviceName.includes('HeaterGen3Oil') || this.deviceName.includes('HeaterGen2Oil')) {
+        if (this.deviceName.includes('HeaterGen3Oil')) {
             this.log(`[${this.getName()}] --- Device set capability Power Mode: `, this.deviceName);
             await this.addCapability('mill_gen3oil_max_power_percentage').catch(this.error);
             this.registerCapabilityListener('mill_gen3oil_max_power_percentage', this.setCapabilityMaxPowerPercentage.bind(this));
@@ -53,7 +53,7 @@ class MillDeviceV2 extends Device {
         this.isHeatingCondition
             .registerRunListener(() => (this.deviceData.switched_on === true));
         
-        if (this.deviceName.includes('HeaterGen3Oil') || this.deviceName.includes('HeaterGen2Oil')) {
+        if (this.deviceName.includes('HeaterGen3Oil')) {
             // triggers
             this.maxPowerChangedTrigger = await this.homey.flow.getDeviceTriggerCard('mill_gen3oil_max_power_percentage_changed');
 
@@ -214,7 +214,7 @@ class MillDeviceV2 extends Device {
                         this.lastLoggedTime = currentTime;
                     }
                 }
-                if (this.deviceName.includes('HeaterGen3Oil') || this.deviceName.includes('HeaterGen2Oil')) {
+                if (this.deviceName.includes('HeaterGen3Oil')) {
                     device.maxHeaterPowerPercentage = String((await this.millApi.getOilHeaterMaxPowerPercentage()).value);
                     if (this.deviceData.maxHeaterPowerPercentage !== device.maxHeaterPowerPercentage) {
                         this.log(`[${this.getName()}] Triggering mode change from ${this.deviceData.maxHeaterPowerPercentage} to ${device.maxHeaterPowerPercentage}`);
@@ -234,7 +234,7 @@ class MillDeviceV2 extends Device {
                         this.setCapabilityValue('measure_power', device.operation_mode !== 'OFF' ? device.current_power : 0)
                     ];
 
-                    if (this.deviceName.includes('HeaterGen3Oil') || this.deviceName.includes('HeaterGen2Oil')) {
+                    if (this.deviceName.includes('HeaterGen3Oil')) {
                         // const oilHeaterPowerData = await this.millApi.getOilHeaterMaxPowerPercentage();
                         // device.oilHeaterPowerMode = String(oilHeaterPowerData.value);
                         // device.MaxHeaterPowerPercentage = String((await this.millApi.getOilHeaterMaxPowerPercentage()).value);
@@ -265,7 +265,7 @@ class MillDeviceV2 extends Device {
         this.homey.app.dDebug('Device added', this.getState());
         this.log('Device mill_gen3oil_max_power_percentage added with name ',this.getName());
 
-        if (this.deviceName.includes('HeaterGen3Oil') || this.deviceName.includes('HeaterGen2Oil')) {
+        if (this.deviceName.includes('HeaterGen3Oil')) {
             this.log('Adding capability mill_gen3oil_max_power_percentage to ',this.getName());
             await this.addCapability('mill_gen3oil_max_power_percentage').catch(this.error);
         } else {    
