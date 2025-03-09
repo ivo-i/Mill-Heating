@@ -37,7 +37,7 @@ class MillDeviceV2 extends Device {
 
         // capabilities
         this.registerCapabilityListener('target_temperature', this.setCapabilityTargetTemperature.bind(this));
-        this.registerCapabilityListener('onoff', this.onCapabilityOnOff.bind(this));
+        this.registerCapabilityListener('onoff', this.setCapabilityOnOff.bind(this));
 
         this.log(`[${this.getName()}] --- Device initialized`, this.deviceName);
         if (this.deviceName.includes('HeaterGen3Oil')) {
@@ -303,8 +303,8 @@ class MillDeviceV2 extends Device {
             .then(async () => {
                 this.log(`onCapabilityMaxPowerPercentage(${power}) done`);
                 this.homey.app.dDebug(`[${this.getName()}] Changed max power level to ${power}.`);
-                // await this.scheduleRefresh(2);
-                await this.refreshMillService();
+                await this.scheduleRefresh(2);
+                // await this.refreshMillService();
             }).catch((err) => {
                 this.log(`onCapabilityMaxPowerPercentage(${power}) error`);
                 this.homey.app.dError(`[${this.getName()}] Change max power level to ${power} resulted in error`, err);
@@ -324,22 +324,24 @@ class MillDeviceV2 extends Device {
             .then(async () => {
                 this.log(`setCapabilityTargetTemperature(${temp}) done`);
                 this.homey.app.dDebug(`[${this.getName()}] Changed temp to ${temp}.`);
-                await this.refreshMillService;
+                // await this.refreshMillService;
+                await this.scheduleRefresh(2);
             }).catch((err) => {
                 this.log(`setCapabilityTargetTemperature(${temp}) error`);
                 this.homey.app.dError(`[${this.getName()}] Change temp to ${temp} resulted in error`, err);
             });
     }
 
-    async onCapabilityOnOff(value, opts) {
+    async setCapabilityOnOff(value, opts) {
         let mode = value ? 'Control individually' : 'Off';
         this.millApi.setOperationMode(mode, this.deviceInstance, this.deviceType)
             .then(async () => {
-                this.log(`onCapabilityOnOff(${value}) done`);
+                this.log(`setCapabilityOnOff(${value}) done`);
                 this.homey.app.dDebug(`[${this.getName()}] Changed mode to ${mode}.`);
-                await this.refreshMillService;
+                // await this.refreshMillService;
+                await this.scheduleRefresh(2);
             }).catch((err) => {
-                this.log(`onCapabilityOnOff(${value}) error`);
+                this.log(`setCapabilityOnOff(${value}) error`);
                 this.homey.app.dError(`[${this.getName()}] Change mode to ${mode} resulted in error`, err);
             });
     }
