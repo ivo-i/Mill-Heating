@@ -7,8 +7,13 @@ class MillSilentProCompact extends Device {
   async onInit() {
     this.deviceId = this.getData().id;
     this.millApi = new millCloud(this.homey.app);
-    this.device = this.millApi.getDevice(this.deviceId);
-
+    // this.device = this.millApi.getDevice(this.deviceId);
+    try {
+      this.device = await this.millApi.getDevice(this.deviceId);
+    } catch (error) {
+      this.homey.app.dError(`[${this.getName()}] Error retrieving device data on init`, error);
+    }
+    
     this.log(`[${this.getName()}] ${this.getClass()} (${this.deviceId}) initialized`);
 
     // Add new capailities for devices that don't have them yet

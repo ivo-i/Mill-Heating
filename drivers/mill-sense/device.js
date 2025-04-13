@@ -7,7 +7,12 @@ class MillSense extends Device {
   async onInit() {
     this.deviceId = this.getData().id;
     this.millApi = new millCloud(this.homey.app);
-    this.device = this.millApi.getDevice(this.deviceId);
+    // this.device = this.millApi.getDevice(this.deviceId);
+    try {
+      this.device = await this.millApi.getDevice(this.deviceId);
+    } catch (error) {
+      this.homey.app.dError(`[${this.getName()}] Error retrieving device data on init`, error);
+    }
 
     this.log(`[${this.getName()}] ${this.getClass()} (${this.deviceId}) initialized`);
 
@@ -270,14 +275,20 @@ class MillSense extends Device {
     this.homey.app.dDebug('Device deleted', this.getState());
   }
 
+  // async onSettings(oldSettings, newSettings, changedKeys) {
+  //   this.log('onSettings', oldSettings, newSettings, changedKeys);
+  //   if (changedKeys && changedKeys.includes('username') && changedKeys.includes('password')) {
+  //     this.homey.app.dDebug('Username and password changed');
+  //     this.connectToMill();
+  //   }
+  // }
   async onSettings(oldSettings, newSettings, changedKeys) {
     this.log('onSettings', oldSettings, newSettings, changedKeys);
     if (changedKeys && changedKeys.includes('username') && changedKeys.includes('password')) {
       this.homey.app.dDebug('Username and password changed');
-      this.connectToMill();
+      this.homey.app.connectToMill();
     }
   }
-
 }
 
 module.exports = MillSense;

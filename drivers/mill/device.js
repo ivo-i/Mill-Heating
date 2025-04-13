@@ -8,8 +8,14 @@ class MillDevice extends Device {
   async onInit() {
     this.deviceId = this.getData().id;
     this.millApi = new millCloud(this.homey.app);
-    this.room = this.millApi.listRoomDevices(this.deviceId);
-    this.room = new Room(this.room);
+    // this.room = this.millApi.listRoomDevices(this.deviceId);
+    // this.room = new Room(this.room);
+    try {
+      const roomData = await this.millApi.listRoomDevices(this.deviceId);
+      this.room = new Room(roomData);
+    } catch (error) {
+      this.homey.app.dError(`[${this.getName()}] Error retrieving room data on init`, error);
+    }
 
     this.user = null;
     this.isAuthenticated = false;
@@ -174,31 +180,58 @@ class MillDevice extends Device {
   }
 
   async updatePowerUsage() {
-    const room = await this.millApi.listRoomDevices(this.getData().id);
-    this.room = new Room(room);
-
-    if (!this.room.roomHeatStatus) {
-      //this.log(`[${this.getName()}] Room is off, skipping power usage update`);
-      await this.setCapabilityValue('measure_power', 0);
-      return;
-    }
-
-    this.log(`[${this.getName()}] Updating power usage`);
-
-    let powerUsage = [];
-    for (const device of this.room.devices) {
-      if (device.lastMetrics.currentPower) {
-        const devicePowerUsage = device.lastMetrics.currentPower;
-        powerUsage.push(devicePowerUsage);
+    try {
+      const room = await this.millApi.listRoomDevices(this.getData().id);
+      this.room = new Room(room);
+      if (!this.room.roomHeatStatus) {
+        await this.setCapabilityValue('measure_power', 0);
+        return;
       }
-    }
-
-    if (this.hasCapability('measure_power')) {
-      const totalPowerUsage = powerUsage.reduce((a, b) => a + b, 0);
-      this.log(`Total power usage for ${this.getName()} ${totalPowerUsage}w`);
-      await this.setCapabilityValue('measure_power', this.room.roomHeatStatus ? totalPowerUsage : 0);
+  
+      this.log(`[${this.getName()}] Updating power usage`);
+  
+      let powerUsage = [];
+      for (const device of this.room.devices) {
+        if (device.lastMetrics.currentPower) {
+          powerUsage.push(device.lastMetrics.currentPower);
+        }
+      }
+  
+      if (this.hasCapability('measure_power')) {
+        const totalPowerUsage = powerUsage.reduce((a, b) => a + b, 0);
+        this.log(`Total power usage for ${this.getName()} ${totalPowerUsage}w`);
+        await this.setCapabilityValue('measure_power', this.room.roomHeatStatus ? totalPowerUsage : 0);
+      }
+    } catch (error) {
+      this.homey.app.dError(`[${this.getName()}] Error updating power usage`, error);
     }
   }
+  // async updatePowerUsage() {
+  //   const room = await this.millApi.listRoomDevices(this.getData().id);
+  //   this.room = new Room(room);
+
+  //   if (!this.room.roomHeatStatus) {
+  //     //this.log(`[${this.getName()}] Room is off, skipping power usage update`);
+  //     await this.setCapabilityValue('measure_power', 0);
+  //     return;
+  //   }
+
+  //   this.log(`[${this.getName()}] Updating power usage`);
+
+  //   let powerUsage = [];
+  //   for (const device of this.room.devices) {
+  //     if (device.lastMetrics.currentPower) {
+  //       const devicePowerUsage = device.lastMetrics.currentPower;
+  //       powerUsage.push(devicePowerUsage);
+  //     }
+  //   }
+
+  //   if (this.hasCapability('measure_power')) {
+  //     const totalPowerUsage = powerUsage.reduce((a, b) => a + b, 0);
+  //     this.log(`Total power usage for ${this.getName()} ${totalPowerUsage}w`);
+  //     await this.setCapabilityValue('measure_power', this.room.roomHeatStatus ? totalPowerUsage : 0);
+  //   }
+  // }
 
   async onAdded() {
     this.homey.app.dDebug('Device added', this.getState());
