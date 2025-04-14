@@ -108,7 +108,12 @@ class MillDriverV2 extends Driver {
                     this.homey.app.dError('Autoscan error:', info.error);
                 } else {
                     //this.homey.app.dDebug('Autoscan message:', message);
-                    await session.emit('autoscanMessage', info);
+                    try {
+                        await session.emit('autoscanMessage', info);
+                    } catch (error) {
+                        // If the session is closed or invalid, this will catch the error
+                        this.homey.app.dError('Failed to emit because pairing session is no longer valid:', error);
+                    }
                 }
             }).then(async result => {
                 if (result.success) {

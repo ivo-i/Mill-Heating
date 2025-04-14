@@ -66,7 +66,7 @@ class MillDevice extends Device {
     }, 300 * 1000);
 
     this.refreshTimeout = null;
-    this.room = null;
+    // this.room = null;
     this.refreshState();
   }
 

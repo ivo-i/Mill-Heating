@@ -263,7 +263,7 @@ class MillDeviceV2 extends Device {
 
     async onAdded() {
         this.homey.app.dDebug('Device added', this.getState());
-        this.log('Device mill_gen3oil_max_power_percentage added with name ',this.getName());
+        this.log('Device added with name ',this.getName());
 
         if (this.deviceName.includes('HeaterGen3Oil')) {
             this.log('Adding capability mill_gen3oil_max_power_percentage to ',this.getName());
@@ -276,6 +276,7 @@ class MillDeviceV2 extends Device {
     async onDeleted() {
         clearTimeout(this.refreshTimeout);
         this.homey.app.dDebug('Device deleted', this.getState());
+        this.log('Device deleted with name ',this.getName());
     }
 
     async onSettings(oldSettings, newSettings, changedKeys) {

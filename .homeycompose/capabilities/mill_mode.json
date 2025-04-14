@@ -50,6 +50,14 @@
         "no": "Av",
         "nl": "Uit"
       }
+    },
+    {
+      "id": "vacation",
+      "title": {
+        "en": "Vacation",
+        "no": "Ferie",
+        "nl": "Vakantie"
+      }
     }
   ],
   "getable": true,
