@@ -65,7 +65,7 @@
 		}
 	},
 	{
-		"id": "energy_consumption",
+		"id": "power_consumption",
 		"type": "number",
 		"label": {
 		  "en": "Power (W)",

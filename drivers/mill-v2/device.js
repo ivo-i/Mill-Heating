@@ -34,6 +34,9 @@ class MillDeviceV2 extends Device {
         if (!this.getCapabilities().includes('measure_power')) {
             this.addCapability('measure_power').catch(this.error);
         }
+        if (!this.getCapabilities().includes('measure_temperature')) {
+            this.addCapability('measure_temperature').catch(this.error);
+        }
 
         // capabilities
         this.registerCapabilityListener('target_temperature', this.setCapabilityTargetTemperature.bind(this));
@@ -47,6 +50,14 @@ class MillDeviceV2 extends Device {
         } else {    
             // remove capability mill_gen3oil_max_power_percentage ifit exists
             this.removeCapability('mill_gen3oil_max_power_percentage');
+        }
+
+        if (this.deviceName.includes('Socket')) {
+            this.log(`[${this.getName()}] --- Device add capability Humidity: `, this.deviceName);
+            await this.addCapability('measure_humidity').catch(this.error);
+        } else {    
+            // remove capability measure_humidity ifit exists
+            this.removeCapability('measure_humidity');
         }
             // conditions
         this.isHeatingCondition = await this.homey.flow.getConditionCard('mill_is_heating');
@@ -79,6 +90,20 @@ class MillDeviceV2 extends Device {
             });
         }
 
+
+        if (this.deviceName.includes('Socket')) {
+            // triggers
+            // this.currentHumidityChangedTrigger = await this.homey.flow.getDeviceTriggerCard('measure_humidity_changed');
+
+            // this.currentHumidityChangedToTrigger = await this.homey.flow.getDeviceTriggerCard('measure_humidity_changed_to');
+            // this.currentHumidityChangedToTrigger
+            // .registerRunListener((args, state) => args.measure_humidity === state.measure_humidity);
+  
+            // // conditions
+            // this.currentHumidityCondition = await this.homey.flow.getConditionCard('measure_humidity');
+            // this.currentHumidityCondition
+            // .registerRunListener(args => (args.measure_humidity === this.deviceData.humidity));
+        }
         /*this.homey.setInterval(async () => {
             await this.refreshMillService();
         }, 5 * 1000);*/
@@ -222,7 +247,14 @@ class MillDeviceV2 extends Device {
                         .catch(this.error);
                     }
                 }
-                
+                // if (this.deviceName.includes('Socket')) {
+                //     deviceHumidity = String(device.humidity);
+                //     if (this.deviceData.humidity !== deviceHumidity) {
+                //         this.log(`[${this.getName()}] Triggering mode change from ${this.deviceData.humidity} to ${deviceHumidity}`);
+                //         this.currentHumidityChangedTrigger.trigger(this, null, { measure_humidity: deviceHumidity })
+                //         .catch(this.error);
+                //     }
+                // }
                 this.deviceData = device;
 
                 if (device.operation_mode !== undefined) {
@@ -231,7 +263,7 @@ class MillDeviceV2 extends Device {
                         this.setCapabilityValue('target_temperature', device.set_temperature < 4 ? this.lastSetTemperature : device.set_temperature),
                         this.setCapabilityValue('mill_onoff', device.operation_mode !== 'OFF' && device.control_signal > 0),
                         this.setCapabilityValue('onoff', device.operation_mode !== 'OFF'),
-                        this.setCapabilityValue('measure_power', device.operation_mode !== 'OFF' ? device.current_power : 0)
+                        this.setCapabilityValue('measure_power', device.operation_mode !== 'OFF' ? device.current_power : 0),
                     ];
 
                     if (this.deviceName.includes('HeaterGen3Oil')) {
@@ -240,6 +272,11 @@ class MillDeviceV2 extends Device {
                         // device.MaxHeaterPowerPercentage = String((await this.millApi.getOilHeaterMaxPowerPercentage()).value);
                         // device.MaxHeaterPowerPercentage = String(await this.millApi.getOilHeaterMaxPowerPercentage().value);
                         jobs.push(this.setCapabilityValue('mill_gen3oil_max_power_percentage', device.maxHeaterPowerPercentage));
+                        this.log(`[${this.getName()}] State refreshed`,this.deviceData)
+                    }
+
+                    if (this.deviceName.includes('Socket')) {
+                        jobs.push(this.setCapabilityValue('measure_humidity',  Math.floor(parseFloat(device.humidity))));
                         this.log(`[${this.getName()}] State refreshed`,this.deviceData)
                     }
 

@@ -5,7 +5,7 @@
             "title": {
                 "en": "Maximum power setting has changed",
                 "no": "Maximum power setting has changed",
-                "nl": ""
+                "nl": "Maximum power setting has changed"
             },
             "args": [],
             "tokens": [
@@ -15,7 +15,7 @@
                     "title": {
                         "en": "Maximum power",
                         "no": "Maximum power",
-                        "nl": ""
+                        "nl": "Maximum power"
                     },
                     "example": "100"
                 }

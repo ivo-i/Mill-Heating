@@ -6,6 +6,7 @@
   "capabilities": [
     "onoff",
     "mill_gen3oil_max_power_percentage",
+    "measure_humidity",
     "measure_temperature",
     "target_temperature",
     "mill_onoff",
@@ -57,7 +58,7 @@
       },
       "children": [
         {
-          "id": "energy_consumption",
+          "id": "power_consumption",
           "type": "number",
           "label": {
             "en": "Power (W)",

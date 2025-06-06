@@ -6,7 +6,7 @@
   "sdk": 3,
   "name": {
     "en": "Mill Heating",
-    "no": "Mill Heating Norway",
+    "no": "Mill Heating",
     "nl": "Mill Heating"
   },
   "tags": {
@@ -218,7 +218,7 @@
         "title": {
           "en": "Maximum power setting has changed",
           "no": "Maximum power setting has changed",
-          "nl": ""
+          "nl": "Maximum power setting has changed"
         },
         "args": [
           {
@@ -234,7 +234,7 @@
             "title": {
               "en": "Maximum power",
               "no": "Maximum power",
-              "nl": ""
+              "nl": "Maximum power"
             },
             "example": "100"
           }
@@ -712,7 +712,7 @@
           },
           "children": [
             {
-              "id": "energy_consumption",
+              "id": "power_consumption",
               "type": "number",
               "label": {
                 "en": "Power (W)",
@@ -893,6 +893,7 @@
       "capabilities": [
         "onoff",
         "mill_gen3oil_max_power_percentage",
+        "measure_humidity",
         "measure_temperature",
         "target_temperature",
         "mill_onoff",
@@ -1001,7 +1002,7 @@
           }
         },
         {
-          "id": "energy_consumption",
+          "id": "power_consumption",
           "type": "number",
           "label": {
             "en": "Power (W)",
