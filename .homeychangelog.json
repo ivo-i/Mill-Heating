@@ -130,5 +130,8 @@
   },
   "2.4.21": {
     "en": "Bug fixes."
+  },
+  "2.5.0": {
+    "en": "Support for humidity on Socket Gen3/Gen4. Updated Node.JS modules. Multiple bugfixes."
   }
 }
