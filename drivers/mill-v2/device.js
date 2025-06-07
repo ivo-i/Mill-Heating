@@ -189,7 +189,7 @@ class MillDeviceV2 extends Device {
     }
 
     async scheduleRefresh(interval) {
-        const refreshInterval = interval || this.apiVersion == 'cloud' ? await this.homey.settings.get('interval') : 1;
+        const refreshInterval = interval || this.apiVersion == 'cloud' ? await this.homey.settings.get('interval') : 3;
         this.refreshTimeout = this.homey.setTimeout(this.refreshState.bind(this), refreshInterval * 1000);
 
         const currentTime = new Date().getTime();
@@ -272,12 +272,13 @@ class MillDeviceV2 extends Device {
                         // device.MaxHeaterPowerPercentage = String((await this.millApi.getOilHeaterMaxPowerPercentage()).value);
                         // device.MaxHeaterPowerPercentage = String(await this.millApi.getOilHeaterMaxPowerPercentage().value);
                         jobs.push(this.setCapabilityValue('mill_gen3oil_max_power_percentage', device.maxHeaterPowerPercentage));
-                        this.log(`[${this.getName()}] State refreshed`,this.deviceData)
+                        // this.log(`[${this.getName()}] State refreshed`,this.deviceData)
                     }
+
 
                     if (this.deviceName.includes('Socket')) {
                         jobs.push(this.setCapabilityValue('measure_humidity',  Math.floor(parseFloat(device.humidity))));
-                        this.log(`[${this.getName()}] State refreshed`,this.deviceData)
+                        // this.log(`[${this.getName()}] State refreshed`,this.deviceData)
                     }
 
                     this.lastSetTemperature = device.set_temperature > 4 ? device.set_temperature : this.lastSetTemperature || 21;
