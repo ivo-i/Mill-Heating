@@ -228,8 +228,8 @@ class MillSense extends Device {
           await this.setCapabilityValue('alarm_charging_status', false);
 
           if ((device.lastMetrics.temperature != 0 &&
-            device.lastMetrics.temperature <= 5) ||
-            device.lastMetrics.temperature >= 35) {
+            device.lastMetrics.temperature <= this.device.deviceSettings.desired.ens210_ranges.temperature_green) ||
+            device.lastMetrics.temperature >= this.device.deviceSettings.desired.ens210_ranges.temperature_red) {
             await this.setCapabilityValue('alarm_temperature', true);
           } else {
             await this.setCapabilityValue('alarm_temperature', false);
