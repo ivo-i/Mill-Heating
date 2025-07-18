@@ -85,6 +85,9 @@
       },
       {
         "name": "Coderax"
+      },
+      {
+        "name": "Philip Østli"
       }
     ],
     "translators": [
@@ -94,6 +97,7 @@
     ]
   },
   "support": "https://community.homey.app/t/app-pro-mill-heating/",
+  "source": "https://github.com/ivo-i/Mill-Heating",
   "flow": {
     "triggers": [
       {
