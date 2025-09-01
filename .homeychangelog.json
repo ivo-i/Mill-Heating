@@ -139,5 +139,11 @@
   },
   "2.5.2": {
     "en": "Minor changes."
+  },
+  "2.6.0": {
+    "en": "Added support for power usage statistics."
+  },
+  "2.6.1": {
+    "en": "Fix."
   }
 }

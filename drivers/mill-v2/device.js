@@ -38,6 +38,10 @@ class MillDeviceV2 extends Device {
             this.addCapability('measure_temperature').catch(this.error);
         }
 
+        if (!this.hasCapability('meter_power'))   await this.addCapability('meter_power');
+        if (this.getCapabilityValue('meter_power') == null) {
+            await this.setCapabilityValue('meter_power', 0);
+        }
         // capabilities
         this.registerCapabilityListener('target_temperature', this.setCapabilityTargetTemperature.bind(this));
         this.registerCapabilityListener('onoff', this.setCapabilityOnOff.bind(this));
@@ -263,7 +267,9 @@ class MillDeviceV2 extends Device {
                         this.setCapabilityValue('target_temperature', device.set_temperature < 4 ? this.lastSetTemperature : device.set_temperature),
                         this.setCapabilityValue('mill_onoff', device.operation_mode !== 'OFF' && device.control_signal > 0),
                         this.setCapabilityValue('onoff', device.operation_mode !== 'OFF'),
-                        this.setCapabilityValue('measure_power', device.operation_mode !== 'OFF' ? device.current_power : 0),
+                        // this.setCapabilityValue('measure_power', device.operation_mode !== 'OFF' ? device.current_power : 0),
+                        this.setCapabilityValue('measure_power', Number(device.current_power) || 0),
+                        this._accumulateEnergyFromWatts(Number(device.current_power) || 0)
                     ];
 
                     if (this.deviceName.includes('HeaterGen3Oil')) {
@@ -285,7 +291,7 @@ class MillDeviceV2 extends Device {
 
                     // if (this.hasCapability('measure_power')) {
                     //     const totalPowerUsage = device.current_power;
-                    //     //this.homey.app.dDebug(`Total power usage for ${this.getName()} ${totalPowerUsage}w`);
+                    //     this.homey.app.dDebug(`Total power usage for ${this.getName()} ${totalPowerUsage}w`);
                     //     this.log(`[${this.getName()}] set power to`,device.current_power)
                     //     jobs.push(await this.setCapabilityValue('measure_power', device.operation_mode !== 'OFF' ? totalPowerUsage : 0));
                     // }
@@ -384,6 +390,50 @@ class MillDeviceV2 extends Device {
                 this.homey.app.dError(`[${this.getName()}] Change mode to ${mode} resulted in error`, err);
             });
     }
+
+    async _initEnergyAccumulator() {
+        // this.log('_initEnergyAccumulator called for device: ',this.getName());
+        if (this._energyAccInitialized) return;
+        this._energyAccInitialized = true;
+
+        // Load persisted values (if any)
+        const storedKwh = await this.getStoreValue('meter_power_acc_kwh').catch(() => null);
+        const storedTs  = await this.getStoreValue('meter_power_last_ts').catch(() => null);
+        this._energyKWh = (typeof storedKwh === 'number' && isFinite(storedKwh) && storedKwh >= 0)
+            ? storedKwh : (this.getCapabilityValue('meter_power') || 0);
+        this._lastEnergyTs = (typeof storedTs === 'number' && isFinite(storedTs) && storedTs > 0)
+            ? storedTs : Date.now();
+        // Ensure the capability is in sync
+        if (this.hasCapability('meter_power')) {
+            await this.setCapabilityValue('meter_power', Number(this._energyKWh.toFixed(5))).catch(() => {});
+        }
+        this._energyAccInitialized = true;
+  }
+
+  async _accumulateEnergyFromWatts(wattsNow) {
+    // this.homey.app.dDebug('_accumulateEnergyFromWatts called with value', wattsNow, ' device: ', this.getState());
+    // this.log('_accumulateEnergyFromWatts called with value ', wattsNow, ' device: ',this.getName());
+
+    if (!this._energyAccInitialized) await this._initEnergyAccumulator();
+    const now = Date.now();
+    const last = this._lastEnergyTs || now;
+    // dt in seconds, clamped to avoid huge jumps after long sleeps (max 5 min)
+    const dtSecRaw = (now - last) / 1000;
+    const dtSec = Math.min(Math.max(dtSecRaw, 0), 300);
+    const watts = Number(wattsNow);
+    const w = Number.isFinite(watts) && watts > 0 ? watts : 0;
+    // kWh increment: W * s / 3,600,000
+    const inc = (w * dtSec) / 3600000;
+    this._energyKWh = (this._energyKWh || 0) + inc;
+    this._lastEnergyTs = now;
+    // Persist & publish
+    await this.setStoreValue('meter_power_acc_kwh', this._energyKWh).catch(() => {});
+    await this.setStoreValue('meter_power_last_ts', this._lastEnergyTs).catch(() => {});
+    // this.log('_accumulateEnergyFromWatts called with Energy value ', Number(this._energyKWh.toFixed(5)), ' device: ',this.getName());
+    if (this.hasCapability('meter_power')) {
+      await this.setCapabilityValue('meter_power', Number(this._energyKWh.toFixed(5))).catch(() => {});
+    }
+  }
 }
 
 module.exports = MillDeviceV2;

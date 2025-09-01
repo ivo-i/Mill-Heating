@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "com.Coderax.MillHeating",
-  "version": "2.5.2",
+  "version": "2.6.1",
   "compatibility": ">=5.0.0",
   "sdk": 3,
   "name": {
@@ -901,17 +901,21 @@
         "measure_temperature",
         "target_temperature",
         "mill_onoff",
-        "measure_power"
+        "measure_power",
+        "meter_power"
       ],
       "capabilitiesOptions": {
         "measure_power": {
-          "approximated": true
+          "approximated": false
         }
       },
       "platforms": [
         "local"
       ],
       "connectivity": [],
+      "energy": {
+        "meterPowerImportedCapability": "meter_power"
+      },
       "images": {
         "large": "/drivers/mill/assets/images/large.png",
         "small": "/drivers/mill/assets/images/small.png"

@@ -10,17 +10,19 @@
     "measure_temperature",
     "target_temperature",
     "mill_onoff",
-    "measure_power"
+    "measure_power",
+    "meter_power"
   ],
   "capabilitiesOptions": {
     "measure_power": {
-      "approximated": true
+      "approximated": false
     }
   },
   "platforms": [
     "local"
   ],
   "connectivity": [],
+  "energy": { "meterPowerImportedCapability": "meter_power" },
   "images": {
     "large": "/drivers/mill/assets/images/large.png",
     "small": "/drivers/mill/assets/images/small.png"
